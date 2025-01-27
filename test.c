@@ -64,6 +64,8 @@ int COMMAND_RESULT2=0;
 
 int COMMAND_ARRAY_INDEX_COUNTER=0;
 
+int RESPONSE_WAIT=10000;
+
 int COMMANDARRAY [16];
 int RESPONSEARRAY[16];
 
@@ -74,6 +76,24 @@ for(int index=0;index++;index<=15){
 }//for
 //Initialisation of variables
 
+//response_wait
+int response_wait(){
+for(int count=0;count++;count<=RESPONSE_WAIT){}
+return 0;
+}//response_wait
+
+
+//shift all to left, insert new bit at end
+//command_leftShift_insertEnd
+int command_leftShift_insertEnd(){
+    for(int index=0;index++;index<=14){
+    COMMANDARRAY[index] = COMMANDARRAY[index+1];
+    }//for
+    COMMANDARRAY[15]=read_input();
+return 0;  
+}//command_leftShift_insertEnd
+
+   
 //clock
 int clock(){
 return 0;
@@ -86,11 +106,14 @@ return 0;
 }//read_input
 
 
-//bit_respond
-int bit_respond(int clock_counter){
-    RESPONSEARRAY[clock_counter-16] ; // TBC
+//two_byte_respond
+int two_byte_respond(int clock_counter){
+    for(int index=0;index++;index<=15){
+    RESPONSEARRAY[index] ; // TBC
+    response_wait();
+    }//for
 return 0;
-}//bit_respond
+}//two_byte_respond
 
        
 //ack_response
@@ -200,28 +223,27 @@ int execute(){
 return 0;
 }//execute
 
-
+//MAIN LOOP
 while(1){//while
-        int SKIP = 1;
-        if( CLOCK_COUNTER == 31 ){ CLOCK_COUNTER = 0; }
-        if( COMMAND_ARRAY_INDEX_COUNTER == 15 ){ COMMAND_ARRAY_INDEX_COUNTER = 0; }
+        int SKIP = 0;
         //HIGH
-        if( (clock() == HIGH) & (CLOCK_COUNTER >= 0) & (CLOCK_COUNTER <= 15) ){
-                     COMMANDARRAY[ CLOCK_COUNTER ] = read_input();
-                     captured_command();//void
-                     execute();//int
-                     bit_respond(CLOCK_COUNTER);
-                     while(OBC_CLOCK==HIGH){}
-        }
+        if (clock() == HIGH) {
+                             //shift all to left, insert new bit at end
+                             command_leftShift_insertEnd();
+                             captured_command();//int
+                             execute();//int
+                             two_byte_respond();
+                             while(clock()==HIGH){}
+                             SKIP=1;
+        }//if
         //HIGH
         //LOW
-        if( (SKIP!=1) & (clock()==LOW) & (CLOCK_COUNTER>=16) & (CLOCK_COUNTER<=31) ){
-                     while(OBC_CLOCK==LOW){}
-        }
+        if( (SKIP==0) & (clock()==LOW) ){
+                                         while(clock()==LOW){}
+        }//if
         //LOW
-        CLOCK_COUNTER = CLOCK_COUNTER + 1;
-        COMMAND_ARRAY_INDEX_COUNTER = COMMAND_ARRAY_INDEX_COUNTER + 1;
-}//main while loop  
-
+}//while  
+//MAIN LOOP
+   
 return 0;
 }//main
