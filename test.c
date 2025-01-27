@@ -1,7 +1,10 @@
 
 int main(){//main
 
-int CLOCKREAD=0;
+
+int HIGH      =1;
+int LOW       =0;
+int CLOCKREAD =0;
 int CLOCKPAUSE=0;
 int clock(){}
 
@@ -61,7 +64,8 @@ int RESPONSEARRAY[16];
 
 int command_result1=0;
 int command_result2=0;
-
+int COMMAND_RESULT1=0;
+int COMMAND_RESULT2=0;
 
 int COMMAND_ARRAY_INDEX_COUNTER=0;
 
@@ -165,7 +169,6 @@ while(1){//while
         //LOW
         CLOCK_COUNTER = CLOCK_COUNTER + 1;
         COMMAND_ARRAY_INDEX_COUNTER = COMMAND_ARRAY_INDEX_COUNTER + 1;
-
 }//main while loop  
 
 return 0;
