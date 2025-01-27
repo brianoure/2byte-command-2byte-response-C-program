@@ -83,21 +83,40 @@ return 0;
 }//read_input
 
 
-//respond
-int respond(){
+//bit_respond
+int bit_respond(){
+    
 return 0;
-}//respond
+}//bit_respond
 
+       
 //ack_response
 int ack_response(){
+    for(int index=0;index++;index<=7){
+    RESPONSEARRAY[index] = (int) (  ((int)(ACK>>(7-index))) & 1    );
+    }//for
 return 0;
 }//ack_response
 
 
 //nack_response
 int nack_response(){
+    for(int index=0;index++;index<=7){
+    RESPONSEARRAY[index] = (int) (  ((int)(NACK>>(7-index))) & 1    );
+    }//for
 return 0;
 }//nack_response
+   
+
+
+//my_response
+int my_response( int myvalue){
+    for(int index=0;index++;index<=7){
+    RESPONSEARRAY[index] = (int) (  ((int)(myvalue>>(7-index))) & 1    );
+    }//for
+return 0;
+}//my_response
+   
    
 //capture_command    
 int captured_command(){
@@ -118,69 +137,69 @@ int execute(){
     //SON
     if (COMMAND_RESULT1==SON){
                              int else_check=1;
-                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;}//ACK
-                             if(else_check==1               ){}//NACK
+                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;ack_response();}//ACK
+                             if(else_check==1               ){nack_response();}//NACK
     }//son
     //SOF  
     if (COMMAND_RESULT1==SOF){
                              int else_check=1;
-                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;}//ACK
-                             if(else_check==1               ){}//NACK
+                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;ack_response();}//ACK
+                             if(else_check==1               ){nack_response();}//NACK
     }//son
     //SOF
     //SM
     if (COMMAND_RESULT1==SOF){
                              int else_check=1;
-                             if(COMMAND_RESULT2==INITIALIZE    ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==DETUMBLE      ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==NORMAL        ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==COMMUNICATION ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==PAYLOAD       ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==IMAGE         ){else_check=0;}//ACK
-                             if(COMMAND_RESULT2==EMERGENCY     ){else_check=0;}//ACK
-                             if(else_check==1                  ){}//NACK
+                             if(COMMAND_RESULT2==INITIALIZE    ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==DETUMBLE      ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==NORMAL        ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==COMMUNICATION ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==PAYLOAD       ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==IMAGE         ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==EMERGENCY     ){else_check=0;ack_response();}//ACK
+                             if(else_check==1                  ){nack_response();}//NACK
     }//SM
     //GM
-    if (COMMAND_RESULT1==GM ){response(ACK,CURRENTMODE       );}//ACK
+    if (COMMAND_RESULT1==GM  ){ack_response();  my_response(CURRENTMODE       );}//ACK
     //GM
     //GSC
-    if (COMMAND_RESULT1==GSC){response(ACK,CURRENTSYSTEMCLOCK);}//ACK
+    if (COMMAND_RESULT1==GSC ){ack_response();  my_response(CURRENTSYSTEMCLOCK);}//ACK
     //GSC
-    if (COMMAND_RESULT1==SSC){response(ACK,0);}//ACK
+    if (COMMAND_RESULT1==SSC ){ack_response();  /*my_response(0)*/              }//ACK
     //GSC
     //GOSTM
-    if(COMMAND_RESULT1==GOSTM){response(ACK,0);}//ACK
+    if(COMMAND_RESULT1==GOSTM){ack_response();  int resp = (int)();my_response(   resp    );             }//ACK
     //GOSTM
     //KEN
-    if(COMMAND_RESULT1==KEN  ){response(ACK,0);}//ACK
+    if(COMMAND_RESULT1==KEN  ){ack_response();  /*my_response(0)*/              }//ACK
     //KEN
     //KDIS
-    if(COMMAND_RESULT1==KDIS ){response(ACK,0);}//ACK
+    if(COMMAND_RESULT1==KDIS ){ack_response();  /*my_response(0)*/              }//ACK
     //KDIS
 return 0;
 }//execute
 
 
 while(1){//while
-        SKIP = 1;
+        int SKIP = 1;
         if( CLOCK_COUNTER == 31 ){ CLOCK_COUNTER = 0; }
         if( COMMAND_ARRAY_INDEX_COUNTER == 15 ){ COMMAND_ARRAY_INDEX_COUNTER = 0; }
         //HIGH
@@ -188,12 +207,12 @@ while(1){//while
                      COMMANDARRAY[ CLOCK_COUNTER ] = read_input();
                      captured_command();//void
                      execute();//int
+                     bit_respond(RESPONSEARRAY[CLOCK_COUNTER-16]);
                      while(OBC_CLOCK==HIGH){}
         }
         //HIGH
         //LOW
         if( (SKIP!=1) & (OBC_CLOCK==LOW) & (CLOCK_COUNTER>=16) & (CLOCK_COUNTER<=31) ){
-                     respond();
                      while(OBC_CLOCK==LOW){}
         }
         //LOW
