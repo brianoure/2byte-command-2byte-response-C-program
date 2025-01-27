@@ -1,7 +1,8 @@
 int main(){//main
 
+int CLOCKREAD=0;
 int CLOCKPAUSE=0;
-int CLOCKREAD =0;
+int clock(){}
 
 int PING      = 0;//command
 int ACK       = 0;//response
@@ -81,6 +82,20 @@ return 0;
 
 
 while(1){//while
+
+if( clock()==CLOCKREAD  ){ 
+while( clock()==CLOCKREAD  ){}
+}
+
+if( clock()==CLOCKPAUSE ){
+while( clock()==CLOCKPAUSE ){}
+} 
+
+
+
+
+
+
 int current_command = read_command_input();
   
 if(current_command==PING  ){response(ACK,0);}
