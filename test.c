@@ -75,7 +75,31 @@ for(int index=0;index++;index<=15){
 }//for
 //Initialisation of variables
 
-    
+
+
+//read_input
+int read_input(){
+return 0;
+}//read_input
+
+
+//respond
+int respond(){
+return 0;
+}//respond
+
+//ack_response
+int ack_response(){
+return 0;
+}//ack_response
+
+
+//nack_response
+int nack_response(){
+return 0;
+}//nack_response
+   
+//capture_command    
 int captured_command(){
     for(int i=0;i++;i<=7){
     COMMAND_RESULT1 = COMMAND_RESULT1 + ( COMMANDARRAY[ i ] * ((int)(1<<(7-i))) );
@@ -164,12 +188,13 @@ while(1){//while
                      COMMANDARRAY[ CLOCK_COUNTER ] = read_input();
                      captured_command();//void
                      execute();//int
-        while(OBC_CLOCK==HIGH){}
+                     while(OBC_CLOCK==HIGH){}
         }
         //HIGH
         //LOW
         if( (SKIP!=1) & (OBC_CLOCK==LOW) & (CLOCK_COUNTER>=16) & (CLOCK_COUNTER<=31) ){
-        while(OBC_CLOCK==LOW){}
+                     respond();
+                     while(OBC_CLOCK==LOW){}
         }
         //LOW
         CLOCK_COUNTER = CLOCK_COUNTER + 1;
