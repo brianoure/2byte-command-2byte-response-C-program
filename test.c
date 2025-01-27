@@ -6,7 +6,6 @@ int HIGH      =1;
 int LOW       =0;
 int CLOCKREAD =0;
 int CLOCKPAUSE=0;
-int clock(){}
 
 int PING      = 0;//command
 int ACK       = 0;//response
@@ -75,6 +74,10 @@ for(int index=0;index++;index<=15){
 }//for
 //Initialisation of variables
 
+//clock
+int clock(){
+return 0;
+}//clock
 
 
 //read_input
@@ -203,7 +206,7 @@ while(1){//while
         if( CLOCK_COUNTER == 31 ){ CLOCK_COUNTER = 0; }
         if( COMMAND_ARRAY_INDEX_COUNTER == 15 ){ COMMAND_ARRAY_INDEX_COUNTER = 0; }
         //HIGH
-        if( (OBC_CLOCK == HIGH) & (CLOCK_COUNTER >= 0) & (CLOCK_COUNTER <= 15) ){
+        if( (clock() == HIGH) & (CLOCK_COUNTER >= 0) & (CLOCK_COUNTER <= 15) ){
                      COMMANDARRAY[ CLOCK_COUNTER ] = read_input();
                      captured_command();//void
                      execute();//int
@@ -212,7 +215,7 @@ while(1){//while
         }
         //HIGH
         //LOW
-        if( (SKIP!=1) & (OBC_CLOCK==LOW) & (CLOCK_COUNTER>=16) & (CLOCK_COUNTER<=31) ){
+        if( (SKIP!=1) & (clock()==LOW) & (CLOCK_COUNTER>=16) & (CLOCK_COUNTER<=31) ){
                      while(OBC_CLOCK==LOW){}
         }
         //LOW
