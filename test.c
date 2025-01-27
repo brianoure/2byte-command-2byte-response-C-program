@@ -87,8 +87,8 @@ return 0;
 
 
 //bit_respond
-int bit_respond(){
-    
+int bit_respond(int clock_counter){
+    RESPONSEARRAY[clock_counter-16] ; // TBC
 return 0;
 }//bit_respond
 
@@ -210,7 +210,7 @@ while(1){//while
                      COMMANDARRAY[ CLOCK_COUNTER ] = read_input();
                      captured_command();//void
                      execute();//int
-                     bit_respond(RESPONSEARRAY[CLOCK_COUNTER-16]);
+                     bit_respond(CLOCK_COUNTER);
                      while(OBC_CLOCK==HIGH){}
         }
         //HIGH
