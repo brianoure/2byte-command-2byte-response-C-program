@@ -107,7 +107,7 @@ return 0;
 
 
 //two_byte_respond
-int two_byte_respond(int clock_counter){
+int two_byte_respond(){
     for(int index=0;index++;index<=15){
     RESPONSEARRAY[index] ; // TBC
     response_wait();
@@ -231,14 +231,16 @@ while(1){//while
                              //shift all to left, insert new bit at end
                              command_leftShift_insertEnd();
                              captured_command();//int
-                             execute();//int
-                             two_byte_respond();
+                             //execute();//int
+                             //two_byte_respond();
                              while(clock()==HIGH){}
                              SKIP=1;
         }//if
         //HIGH
         //LOW
         if( (SKIP==0) & (clock()==LOW) ){
+                                         execute();//int
+                                         two_byte_respond();
                                          while(clock()==LOW){}
         }//if
         //LOW
