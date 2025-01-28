@@ -163,62 +163,62 @@ int execute(){
     //SON
     if (COMMAND_RESULT1==SON){
                              int else_check=1;
-                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;ack_response();/*action*/}//ACK
                              if(else_check==1               ){nack_response();}//NACK
     }//son
     //SOF  
     if (COMMAND_RESULT1==SOF){
                              int else_check=1;
-                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;ack_response();/*action*/}//ACK
                              if(else_check==1               ){nack_response();}//NACK
     }//son
     //SOF
     //SM
     if (COMMAND_RESULT1==SOF){
                              int else_check=1;
-                             if(COMMAND_RESULT2==INITIALIZE    ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==DETUMBLE      ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==NORMAL        ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==COMMUNICATION ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==PAYLOAD       ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==IMAGE         ){else_check=0;ack_response();}//ACK
-                             if(COMMAND_RESULT2==EMERGENCY     ){else_check=0;ack_response();}//ACK
+                             if(COMMAND_RESULT2==INITIALIZE    ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==DETUMBLE      ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==NORMAL        ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==COMMUNICATION ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==PAYLOAD       ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==IMAGE         ){else_check=0;ack_response();/*action*/}//ACK
+                             if(COMMAND_RESULT2==EMERGENCY     ){else_check=0;ack_response();/*action*/}//ACK
                              if(else_check==1                  ){nack_response();}//NACK
     }//SM
     //GM
-    if (COMMAND_RESULT1==GM  ){ack_response();  my_response(CURRENTMODE       );}//ACK
+    if (COMMAND_RESULT1==GM  ){ack_response();  my_response(CURRENTMODE       );/*action*/}//ACKK
     //GM
     //GSC
-    if (COMMAND_RESULT1==GSC ){ack_response();  my_response(CURRENTSYSTEMCLOCK);}//ACK
+    if (COMMAND_RESULT1==GSC ){ack_response();  my_response(CURRENTSYSTEMCLOCK);/*action*/}//ACK
     //GSC
-    if (COMMAND_RESULT1==SSC ){ack_response();  /*my_response(0)*/              }//ACK
+    if (COMMAND_RESULT1==SSC ){ack_response();  /*my_response(0)*/              /*action*/}//ACK
     //GSC
     //GOSTM
-    if(COMMAND_RESULT1==GOSTM){ack_response();  int resp = (int)();my_response(   resp    );             }//ACK
+    if(COMMAND_RESULT1==GOSTM){ack_response();  int resp = (int)();my_response(   resp    );      /*action*/}//ACK
     //GOSTM
     //KEN
-    if(COMMAND_RESULT1==KEN  ){ack_response();  /*my_response(0)*/              }//ACK
+    if(COMMAND_RESULT1==KEN  ){ack_response();  /*my_response(0)*/             /*action*/}//ACK
     //KEN
     //KDIS
-    if(COMMAND_RESULT1==KDIS ){ack_response();  /*my_response(0)*/              }//ACK
+    if(COMMAND_RESULT1==KDIS ){ack_response();  /*my_response(0)*/             /*action*/}//ACK
     //KDIS
 return 0;
 }//execute
