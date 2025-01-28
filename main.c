@@ -105,6 +105,7 @@ int read_input(){
 return 0;
 }//read_input
 
+
 //read_input
 int transmit_bit_response(int X){
     if(X==1){/*transmit ONE*/}//if
