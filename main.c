@@ -105,12 +105,20 @@ int read_input(){
 return 0;
 }//read_input
 
+//read_input
+int transmit_bit_response(int X){
+    if(X==1){/*transmit ONE*/}//if
+    if(X==0){/*transmit ZERO*/}//if
+    response_wait();
+return 0;
+}//read_input
+
 
 //two_byte_respond
 int two_byte_respond(){
     for(int index=0;index++;index<=15){
-    RESPONSEARRAY[index] ; // TBC
-    response_wait();
+    transmit_bit_response(  RESPONSEARRAY[index]  );
+    //response_wait();
     }//for
 return 0;
 }//two_byte_respond
@@ -174,7 +182,7 @@ int execute(){
                              if(COMMAND_RESULT2==GPS_EN     ){else_check=0;ack_response();/*action*/}//ACK
                              if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;ack_response();/*action*/}//ACK
                              if(else_check==1               ){nack_response();}//NACK
-    }//son
+    }//SON
     //SOF  
     if (COMMAND_RESULT1==SOF){
                              int else_check=1;
@@ -189,8 +197,7 @@ int execute(){
                              if(COMMAND_RESULT2==GPS_EN     ){else_check=0;ack_response();/*action*/}//ACK
                              if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;ack_response();/*action*/}//ACK
                              if(else_check==1               ){nack_response();}//NACK
-    }//son
-    //SOF
+    }//SOF
     //SM
     if (COMMAND_RESULT1==SOF){
                              int else_check=1;
@@ -204,7 +211,7 @@ int execute(){
                              if(else_check==1                  ){nack_response();}//NACK
     }//SM
     //GM
-    if (COMMAND_RESULT1==GM  ){ack_response();  my_response(CURRENTMODE       );/*action*/}//ACKK
+    if (COMMAND_RESULT1==GM  ){ack_response();  my_response(CURRENTMODE       );/*action*/}//ACK
     //GM
     //GSC
     if (COMMAND_RESULT1==GSC ){ack_response();  my_response(CURRENTSYSTEMCLOCK);/*action*/}//ACK
@@ -239,9 +246,9 @@ while(1){//while
         //HIGH
         //LOW
         if( (SKIP==0) & (clock()==LOW) ){
-                                         execute();//int
-                                         two_byte_respond();
-                                         while(clock()==LOW){}
+                                        execute();//int
+                                        two_byte_respond(,);
+                                        while(clock()==LOW){}
         }//if
         //LOW
 }//while  
