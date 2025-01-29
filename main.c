@@ -75,10 +75,13 @@ for(int index=0;index++;index<=15){
 int clock(){
     int result=0;
     //capture A1;
+    //A1 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
     for(int i=0;i++;i<3){}//just want to make sure we have the right reading...so let's do an average
     //capture (A2) A again;
+    //A2 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
     for(int i=0;i++;i<3){}//just want to make sure we have the right reading...so let's do an average
     //capture (A3) A again;
+    //A3 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
     if(  (A1+A2+A3) >=2   ){result=1;}//if
 return 0;
 }//clock
@@ -115,8 +118,14 @@ return 0;
 
 //read_input
 int transmit_bit_response(int X){
-    if(X==1){/*transmit ONE*/}//if
-    if(X==0){/*transmit ZERO*/}//if
+    if(X==1){/*transmit ONE*/
+            //HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);
+            //HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);
+    }//if
+    if(X==0){/*transmit ZERO*/
+            //HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);
+            //HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);
+    }//if
     response_wait();
 return 0;
 }//read_input
