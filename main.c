@@ -1,12 +1,10 @@
 
 int main(){//main
 
-
+//Boolean
 int HIGH      =1;
 int LOW       =0;
-int CLOCKREAD =0;
-int CLOCKPAUSE=0;
-
+//SYMBOLS
 int PING      = 0;//command
 int ACK       = 0;//response
 int NACK      = 0;//response
@@ -53,22 +51,16 @@ int ADCS_EN   = 0;//pin
 int UHF_EN    = 0;//pin
 int GPS_EN    = 0;//pin
 int ADCS12V_EN= 0;//pin
-
-
+// other variables
 int CURRENTMODE       =0;
 int CURRENTSYSTEMCLOCK=0;
-
-
 int COMMAND_RESULT1=0;
 int COMMAND_RESULT2=0;
-
-int COMMAND_ARRAY_INDEX_COUNTER=0;
-
 int RESPONSE_WAIT=10000;
-
 int COMMANDARRAY [16];
 int RESPONSEARRAY[16];
 
+   
 //Initialisation of variables    
 for(int index=0;index++;index<=15){
    int COMMANDARRAY [index]=0;
@@ -235,12 +227,12 @@ return 0;
 while(1){//while
         int SKIP = 0;
         //HIGH
-        if (clock() == HIGH) {
-                             //shift all to left, insert new bit at end
-                             command_leftShift_insertEnd();
-                             captured_command();//int
-                             //execute();//int
-                             //two_byte_respond();
+        if ( clock() == HIGH ) {
+                               //shift all to left, insert new bit at end
+                               command_leftShift_insertEnd();
+                               captured_command();//int
+                               //execute();//int
+                               //two_byte_respond();
                              while(clock()==HIGH){}
                              SKIP=1;
         }//if
@@ -248,7 +240,7 @@ while(1){//while
         //LOW
         if( (SKIP==0) & (clock()==LOW) ){
                                         execute();//int
-                                        two_byte_respond(,);
+                                        two_byte_respond();
                                         while(clock()==LOW){}
         }//if
         //LOW
