@@ -156,6 +156,7 @@ int captured_command(){
 return 0;
 }//captured_command
 
+
 //my_full_response
 int my_full_response( int firstbyte, int secondbyte){
     for( int index=0; index++; index<=7 ){
@@ -171,7 +172,7 @@ return 0;
 //execute
 int execute(){
     //PING
-    if( COMMAND_RESULT1==PING ){ack_response1();}//ACK
+    if( COMMAND_RESULT1==PING ){ack_response1();}//ACK...........Fault reporrting mechanisms?
     //SON
     if (COMMAND_RESULT1==SON){
                              int else_check=1;
