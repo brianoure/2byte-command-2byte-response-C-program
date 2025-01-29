@@ -21,8 +21,8 @@ int SSC       = 0;//command
 int GFP       = 0;//command
 int SFP       = 0;//command
 int FON       = 0;//command
-int TWELVEBUS = 0;//parameter
-int FIVEBUS   = 0;//parameter
+int TWELVEBUS = 0;//telemetry parameter
+int FIVEBUS   = 0;//telemetry parameter
 int THREEBUS  = 0;//parameter
 int FOF       = 0;//command
 int GOSTM     = 0;//command
@@ -32,13 +32,14 @@ int GD        = 0;//command
 int PD        = 0;//command
 int RD        = 0;//command
 int WD        = 0;//command
-int INITIALIZE    = 0;//parameter
-int DETUMBLE      = 0;//parameter
-int NORMAL        = 0;//parameter
-int COMMUNICATION = 0;//parameter
-int PAYLOAD       = 0;//parameter
-int IMAGE         = 0;//parameter
-int EMERGENCY = 0;//pin
+int INITIALIZE    = 0;//mode parameter
+int DETUMBLE      = 0;//mode parameter
+int NORMAL        = 0;//mode parameter
+int COMMUNICATION = 0;//mode parameter
+int PAYLOAD       = 0;//mode parameter
+int IMAGE         = 0;//mode parameter
+int EMERGENCY     = 0;//mode parameter
+int CUSTOM        = 0;//mode parameter
 int PL5V_EN   = 0;//pin
 int ADCS5V_EN = 0;//pin
 int RS12V_EN  = 0;//pin
@@ -52,38 +53,22 @@ int UHF_EN    = 0;//pin
 int GPS_EN    = 0;//pin
 int ADCS12V_EN= 0;//pin
 // other variables
+int RESPONSE_WAIT=10000;
 int CURRENTMODE       =0;
 int CURRENTSYSTEMCLOCK=0;
 int COMMAND_RESULT1=0;
 int COMMAND_RESULT2=0;
-int RESPONSE_WAIT=10000;
 int COMMANDARRAY [16];
 int RESPONSEARRAY[16];
 
    
-//Initialisation of variables    
+//Array Initialisation    
 for(int index=0;index++;index<=15){
    int COMMANDARRAY [index]=0;
    int RESPONSEARRAY[index]=0;  
 }//for
 //Initialisation of variables
 
-//response_wait
-int response_wait(){
-for(int count=0;count++;count<=RESPONSE_WAIT){}
-return 0;
-}//response_wait
-
-
-//shift all to left, insert new bit at end
-//command_leftShift_insertEnd
-int command_leftShift_insertEnd(){
-    for(int index=0;index++;index<=14){
-    COMMANDARRAY[index] = COMMANDARRAY[index+1];
-    }//for
-    COMMANDARRAY[15]=read_input();
-return 0;  
-}//command_leftShift_insertEnd
 
    
 //clock
@@ -96,6 +81,22 @@ return 0;
 int read_input(){
 return 0;
 }//read_input
+   
+
+//response_wait
+int response_wait(){
+for(int count=0;count++;count<=RESPONSE_WAIT){ }//do nothing
+return 0;
+}//response_wait
+
+
+//shift all to left, insert new bit at end
+//command_leftShift_insertEnd
+int command_leftShift_insertEnd(){
+    for( int index=0; index++; index<=14 ){  COMMANDARRAY[index] = COMMANDARRAY[index+1];   }//for
+    COMMANDARRAY[15] = read_input();
+return 0;  
+}//command_leftShift_insertEnd
 
 
 //read_input
@@ -109,49 +110,48 @@ return 0;
 
 //two_byte_respond
 int two_byte_respond(){
-    for(int index=0;index++;index<=15){
-    transmit_bit_response(  RESPONSEARRAY[index]  );
-    //response_wait();
-    }//for
+    for( int index=0; index++; index<=15 ){  transmit_bit_response(  RESPONSEARRAY[index]  );  }//for
 return 0;
 }//two_byte_respond
 
        
-//ack_response
-int ack_response(){
-    for(int index=0;index++;index<=7){
-    RESPONSEARRAY[index] = (int) (  ((int)(ACK>>(7-index))) & 1    );
+//ack_response1
+int ack_response1(){
+    for( int index=0; index++; index<=7 ){
+    RESPONSEARRAY[index] = (int) ( ( (int) ( ACK>>(7-index) ) ) & 1 );   
     }//for
 return 0;
-}//ack_response
+}//ack_response1
 
 
-//nack_response
-int nack_response(){
+//nack_response1
+int nack_response1(){
     for(int index=0;index++;index<=7){
-    RESPONSEARRAY[index] = (int) (  ((int)(NACK>>(7-index))) & 1    );
+    RESPONSEARRAY[index] = (int) ( ( (int) ( NACK>>(7-index) ) ) & 1 );
     }//for
 return 0;
-}//nack_response
+}//nack_response1
    
 
 
-//my_response
-int my_response( int myvalue){
-    for(int index=0;index++;index<=7){
-    RESPONSEARRAY[index] = (int) (  ((int)(myvalue>>(7-index))) & 1    );
+//my_response2
+int my_response2( int myvalue){
+    for(int index=8;index++;index<=15){
+    RESPONSEARRAY[index] = (int) ( ( (int) ( myvalue>>(15-index) ) ) & 1 );
     }//for
 return 0;
-}//my_response
+}//my_response2
    
    
 //capture_command    
 int captured_command(){
-    for(int i=0;i++;i<=7){
-    COMMAND_RESULT1 = COMMAND_RESULT1 + ( COMMANDARRAY[ i ] * ((int)(1<<(7-i))) );
+    COMMAND_RESULT1 = 0;
+    for( int index=0; index++; index<=7 ){
+    COMMAND_RESULT1 = COMMAND_RESULT1 + ( COMMANDARRAY[ index ] * ( (int)( 1<<(7-index) ) ) );
     }//for
-    for(int i=8;i++;i<=15){
-    COMMAND_RESULT2 = COMMAND_RESULT2 + ( COMMANDARRAY[ i ] * ((int)(1<<(15-i))) );
+    COMMAND_RESULT2 = 0;
+    for( int index=8; index++; index<=15 ){
+    COMMAND_RESULT2 = COMMAND_RESULT2 + ( COMMANDARRAY[ index ] * ( (int)(1<<(15-index) ) ) );
     }//for
 return 0;
 }//captured_command
@@ -160,65 +160,65 @@ return 0;
 //execute
 int execute(){
     //PING
-    if( (COMMAND_RESULT1==PING) & (COMMAND_RESULT1==PING)  ){response(ACK,0);}
+    if( COMMAND_RESULT1==PING ){ack_response1();}
     //SON
     if (COMMAND_RESULT1==SON){
                              int else_check=1;
-                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;ack_response();/*action*/}//ACK
-                             if(else_check==1               ){nack_response();}//NACK
+                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(else_check==1               ){nack_response1();}//NACK
     }//SON
     //SOF  
     if (COMMAND_RESULT1==SOF){
                              int else_check=1;
-                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;ack_response();/*action*/}//ACK
-                             if(else_check==1               ){nack_response();}//NACK
+                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*action*/}//ACK
+                             if(else_check==1               ){nack_response1();}//NACK
     }//SOF
     //SM
-    if (COMMAND_RESULT1==SOF){
+    if (COMMAND_RESULT1==SM ){
                              int else_check=1;
-                             if(COMMAND_RESULT2==INITIALIZE    ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==DETUMBLE      ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==NORMAL        ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==COMMUNICATION ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==PAYLOAD       ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==IMAGE         ){else_check=0;ack_response();/*action*/}//ACK
-                             if(COMMAND_RESULT2==EMERGENCY     ){else_check=0;ack_response();/*action*/}//ACK
-                             if(else_check==1                  ){nack_response();}//NACK
+                             if(COMMAND_RESULT2==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;ack_response1();/*action*/}//ACK
+                             if(COMMAND_RESULT2==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;ack_response1();/*action*/}//ACK
+                             if(else_check==1                  ){nack_response1();}//NACK
     }//SM
     //GM
-    if (COMMAND_RESULT1==GM  ){ack_response();  my_response(CURRENTMODE       );/*action*/}//ACK
+    if (COMMAND_RESULT1==GM  ){ack_response1();my_response2(CURRENTMODE);/*action*/}//ACK
     //GM
     //GSC
-    if (COMMAND_RESULT1==GSC ){ack_response();  my_response(CURRENTSYSTEMCLOCK);/*action*/}//ACK
+    if (COMMAND_RESULT1==GSC ){ack_response1();my_response2(CURRENTSYSTEMCLOCK);/*action*/}//ACK
     //GSC
-    if (COMMAND_RESULT1==SSC ){ack_response();  /*my_response(0)*/              /*action*/}//ACK
+    if (COMMAND_RESULT1==SSC ){ack_response1();/*action*/}//ACK
     //GSC
     //GOSTM
-    if(COMMAND_RESULT1==GOSTM){ack_response();  int resp = (int)();my_response(   resp    );      /*action*/}//ACK
+    if(COMMAND_RESULT1==GOSTM){ack_response1();/*need something here*/;my_response2(   resp    );      /*action*/}//ACK
     //GOSTM
     //KEN
-    if(COMMAND_RESULT1==KEN  ){ack_response();  /*my_response(0)*/             /*action*/}//ACK
+    if(COMMAND_RESULT1==KEN  ){ack_response1();/*action*/}//ACK
     //KEN
     //KDIS
-    if(COMMAND_RESULT1==KDIS ){ack_response();  /*my_response(0)*/             /*action*/}//ACK
+    if(COMMAND_RESULT1==KDIS ){ack_response1();/*action*/}//ACK
     //KDIS
 return 0;
 }//execute
