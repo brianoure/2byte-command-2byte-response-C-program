@@ -73,19 +73,33 @@ for(int index=0;index++;index<=15){
    
 //clock
 int clock(){
+    int result=0;
+    //capture A1;
+    for(int i=0;i++;i<3){}//just want to make sure we have the right reading...so let's do an average
+    //capture (A2) A again;
+    for(int i=0;i++;i<3){}//just want to make sure we have the right reading...so let's do an average
+    //capture (A3) A again;
+    if(  (A1+A2+A3) >=2   ){result=1;}//if
 return 0;
 }//clock
 
 
 //read_input
 int read_input(){
-return 0;
+    int result=0;
+    //capture A1;
+    for(int i=0;i++;i<3){}//just want to make sure we have the right reading...so let's do an average
+    //capture (A2) A again;
+    for(int i=0;i++;i<3){}//just want to make sure we have the right reading...so let's do an average
+    //capture (A3) A again;
+    if(  (A1+A2+A3) >=2   ){result=1;}//if
+return result;
 }//read_input
    
 
 //response_wait
 int response_wait(){
-for(int count=0;count++;count<=RESPONSE_WAIT){ }//do nothing
+    for(int count=0;count++;count<=RESPONSE_WAIT){ }//do nothing
 return 0;
 }//response_wait
 
@@ -216,21 +230,21 @@ int execute(){
                              if(else_check==1                  ){nack_response1();}//NACK
     }//SM
     //GM
-    if (COMMAND_RESULT1==GM   ){ack_response1();my_response2(CURRENTMODE);/*action*/}//ACK
+    if (COMMAND_RESULT1==GM   ){ my_full_response(ACK,CURRENTMODE       );/*action*/}//ACK
     //GM
     //GSC
-    if (COMMAND_RESULT1==GSC  ){ack_response1();my_response2(CURRENTSYSTEMCLOCK);/*action*/}//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    //GSC
-    if (COMMAND_RESULT1==SSC  ){ack_response1();/*action*/}//ACK
+    if (COMMAND_RESULT1==GSC  ){ my_full_response(ACK,CURRENTSYSTEMCLOCK);/*action*/}//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    //SSC
+    if (COMMAND_RESULT1==SSC  ){ my_full_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;}//ACK
     //GSC
     //GOSTM
-    if (COMMAND_RESULT1==GOSTM){ack_response1();/*need something here*/;my_response2(   resp    );      /*action*/}//ACK
+    if (COMMAND_RESULT1==GOSTM){ my_full_response(ACK, 0  );      /*action*/}//ACK
     //GOSTM
     //KEN
-    if (COMMAND_RESULT1==KEN  ){ack_response1();my_response2(KEN );/*action*/}//ACK ...........shutting down all activity received from GCS or OBC
+    if (COMMAND_RESULT1==KEN  ){ my_full_response(ACK,KEN );/*action*/}//ACK ...........shutting down all activity received from GCS or OBC
     //KEN
     //KDIS
-    if (COMMAND_RESULT1==KDIS ){ack_response1();my_response2(KDIS);/*action*/}//ACK
+    if (COMMAND_RESULT1==KDIS ){ my_full_response(ACK,KDIS);/*action*/}//ACK
     //KDIS
 return 0;
 }//execute
