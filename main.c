@@ -156,11 +156,22 @@ int captured_command(){
 return 0;
 }//captured_command
 
-  
+//my_full_response
+int my_full_response( int firstbyte, int secondbyte){
+    for( int index=0; index++; index<=7 ){
+    RESPONSEARRAY[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 );   
+    }//for
+    for(int index=8;index++;index<=15){
+    RESPONSEARRAY[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 );
+    }//for
+return 0;
+}//my_full_response
+
+   
 //execute
 int execute(){
     //PING
-    if( COMMAND_RESULT1==PING ){ack_response1();}
+    if( COMMAND_RESULT1==PING ){ack_response1();}//ACK
     //SON
     if (COMMAND_RESULT1==SON){
                              int else_check=1;
@@ -207,7 +218,7 @@ int execute(){
     if (COMMAND_RESULT1==GM  ){ack_response1();my_response2(CURRENTMODE);/*action*/}//ACK
     //GM
     //GSC
-    if (COMMAND_RESULT1==GSC ){ack_response1();my_response2(CURRENTSYSTEMCLOCK);/*action*/}//ACK
+    if (COMMAND_RESULT1==GSC ){ack_response1();my_response2(CURRENTSYSTEMCLOCK);/*action*/}//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
     //GSC
     if (COMMAND_RESULT1==SSC ){ack_response1();/*action*/}//ACK
     //GSC
@@ -215,10 +226,10 @@ int execute(){
     if(COMMAND_RESULT1==GOSTM){ack_response1();/*need something here*/;my_response2(   resp    );      /*action*/}//ACK
     //GOSTM
     //KEN
-    if(COMMAND_RESULT1==KEN  ){ack_response1();/*action*/}//ACK
+    if(COMMAND_RESULT1==KEN  ){ack_response1();my_response2(KEN );/*action*/}//ACK ...........shutting down all activity received from GCS or OBC
     //KEN
     //KDIS
-    if(COMMAND_RESULT1==KDIS ){ack_response1();/*action*/}//ACK
+    if(COMMAND_RESULT1==KDIS ){ack_response1();my_response2(KDIS);/*action*/}//ACK
     //KDIS
 return 0;
 }//execute
