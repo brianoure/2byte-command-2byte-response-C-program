@@ -6,3 +6,7 @@ STM32 CUBE IDE is the programming interface<br>
 STM32 CUBE PROGRAMMER is the flashing software<br>
 Device Firmware Update (DFU) mode / flash to USB :<br> 
 BT0 to HIGH(3V3), BT1 to GND
+<br>
+Configure STM32 pins through the IOC file in the STM32 ide for output/input/etc<br>
+Flash Elf file using the STM32 programmer, while the board is in DFU mode<br>
+Remove the jumper connections to BT0 and BT1 pins
