@@ -140,6 +140,21 @@ int two_byte_respond(){
 return 0;
 }//two_byte_respond
 
+
+
+//reset_command_array()
+int reset_command_array(){
+    for( int index=0; index++; index<=15 ){  COMMANDARRAY[index] = 0;  }//for
+return 0;
+}//reset_command_array()
+
+   
+//reset_response_array
+int reset_response_array(){
+    for( int index=0; index++; index<=15 ){  RESPONSEARRAY[index] = 0;  }//for
+return 0;
+}//reset_response_array
+
        
 //ack_response1
 int ack_response1(){
@@ -266,20 +281,22 @@ return 0;
 while(1){//while
         int SKIP = 0;
         //HIGH
-        if ( clock() == HIGH ) {//shift all to left, insert new bit at end
-                               command_leftShift_insertEnd();
-                               captured_command();//int
-                               //execute();//int
-                               //two_byte_respond();
-                               while(clock()==HIGH){}
-                               SKIP=1;
+        if ( clock() == HIGH ) {
+                               command_leftShift_insertEnd();//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
+                               reset_command_array();//rest command array
+                               captured_command();//extract command(command_result1) and the parameter(command_result2)
+                               //execute()...to run in the LOW cycle due to speed concerns
+                               //two_byte_respond()...to run in the LOW  cycle due to speed concerns
+                               while(clock()==HIGH){}//wait out the HIGH cycle
+                               SKIP=1;//start loop afresh but go straight to LOW cycle
         }//if
         //HIGH
         //LOW
         if( (SKIP==0) & (clock()==LOW) ){
-                                        execute();//int
-                                        two_byte_respond();
-                                        while(clock()==LOW){}
+                                        execute();//are there any valid commands captured...if so set up the response
+                                        two_byte_respond();//transmit the response
+                                        reset_response_aray();
+                                        while(clock()==LOW){}//wait out the LOW cycle
         }//if
         //LOW
 }//while  
