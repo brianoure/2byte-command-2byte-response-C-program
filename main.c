@@ -63,14 +63,14 @@ int COMMAND_RESULT2=0;
 int COMMANDARRAY [16];
 int RESPONSEARRAY[16];
 
-   
+/***   
 //Array Initialisation    
 for( int index=0; index++; index<=15 ){
    int COMMANDARRAY [index]=0;
    int RESPONSEARRAY[index]=0;  
 }//for
 //Initialisation of variables
-
+**/
 
    
 //clock
@@ -283,10 +283,9 @@ while(1){//while
         //HIGH
         if ( clock() == HIGH ) {
                                command_leftShift_insertEnd();//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
-                               reset_command_array();//rest command array
+                               COMMAND_RESULT1=0;//refresh
+                               COMMAND_RESULT2=0;//refresh
                                captured_command();//extract command(command_result1) and the parameter(command_result2)
-                               //execute()...to run in the LOW cycle due to speed concerns
-                               //two_byte_respond()...to run in the LOW  cycle due to speed concerns
                                while(clock()==HIGH){}//wait out the HIGH cycle
                                SKIP=1;//start loop afresh but go straight to LOW cycle
         }//if
