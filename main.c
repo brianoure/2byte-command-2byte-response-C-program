@@ -105,6 +105,7 @@ return result;
 //response_wait
 int response_wait(){
     for(int count=0;count++;count<=RESPONSE_WAIT){ }//do nothing
+    //HAL delay could work too
 return 0;
 }//response_wait
 
@@ -185,10 +186,10 @@ return 0;
 //my_full_response
 int my_full_response( int firstbyte, int secondbyte){
     for( int index=0; index++; index<=7 ){
-    RESPONSEARRAY[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 );   
+    RESPONSEARRAY[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
     }//for
     for(int index=8;index++;index<=15){
-    RESPONSEARRAY[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 );
+    RESPONSEARRAY[index] = (int) ( ( (int) ( firstbyte >>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
     }//for
 return 0;
 }//my_full_response
