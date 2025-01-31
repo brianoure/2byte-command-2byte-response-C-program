@@ -45,13 +45,15 @@ int ADCS5V_EN = 0;//pin
 int RS12V_EN  = 0;//pin
 int XB12V_EN  = 0;//pin
 int CCU5V_EN  = 0;//pin
-int CCU5V_EN  = 0;//pin
 int RS3V3_EN  = 0;//pin
 int PL_EN     = 0;//pin
 int ADCS_EN   = 0;//pin
 int UHF_EN    = 0;//pin
 int GPS_EN    = 0;//pin
 int ADCS12V_EN= 0;//pin
+int SA1_I = 0;//pin
+int SA2_I = 0;//pin
+int SA3_I = 0;//pin
 // other variables
 int RESPONSE_WAIT=10000;
 int CURRENTMODE       =0;
@@ -247,7 +249,7 @@ int execute(){
     if (COMMAND_RESULT1==SSC  ){ my_full_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;}//ACK
     //GSC
     //GOSTM
-    if (COMMAND_RESULT1==GOSTM){ my_full_response(ACK, 0  );                                   }//ACK
+    if (COMMAND_RESULT1==GOSTM){ my_full_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1)    );     }//ACK
     //GOSTM
     //KEN
     if (COMMAND_RESULT1==KEN  ){ my_full_response(ACK,KEN );                                   }//ACK ...........shutting down all activity received from GCS or OBC
