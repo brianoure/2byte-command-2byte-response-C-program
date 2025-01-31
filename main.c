@@ -62,7 +62,7 @@ int COMMAND_RESULT1=0;
 int COMMAND_RESULT2=0;
 int COMMANDARRAY [16];
 int RESPONSEARRAY[16];
-int OK_TRANSMIT=0; 
+ 
 
 /***   
 //Array Initialisation    
@@ -217,7 +217,6 @@ int execute(){
     if( COMMAND_RESULT1==PING ){ack_response1();two_byte_respond();reset_response_array();}//ACK...........Fault reporrting mechanisms?
     //SON
     if (COMMAND_RESULT1==SON){
-                             OK_TRANSMIT=1;
                              int else_check=1;
                              if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -235,7 +234,6 @@ int execute(){
     }//SON
     //SOF  
     if (COMMAND_RESULT1==SOF){
-                             OK_TRANSMIT=1;
                              int else_check=1;
                              if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -301,6 +299,7 @@ while(1){//while
         //HIGH
         //LOW
         if( (SKIP==0) & (clock()==LOW) ){
+                                        reset_response_array();
                                         execute();//are there any valid commands captured...if so set up the response
                                         while(clock()==LOW){}//wait out the LOW cycle
         }//if
