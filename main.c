@@ -264,21 +264,21 @@ int execute(){
                              reset_response_array();
     }//SM
     //GM
-    if (COMMAND_RESULT1==GM   ){ my_full_response(ACK,CURRENTMODE       );two_byte_respond();reset_response_array();                }//ACK
+    if (COMMAND_RESULT1==GM   ){ my_full_response(ACK,CURRENTMODE       );two_byte_respond();reset_response_array(); }//ACK
     //GM
     //GSC
-    if (COMMAND_RESULT1==GSC  ){ my_full_response(ACK,CURRENTSYSTEMCLOCK);two_byte_respond();reset_response_array();               }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if (COMMAND_RESULT1==GSC  ){ my_full_response(ACK,CURRENTSYSTEMCLOCK);two_byte_respond();reset_response_array(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
     //SSC
-    if (COMMAND_RESULT1==SSC  ){ my_full_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;two_byte_respond();reset_response_array();}//ACK
+    if (COMMAND_RESULT1==SSC  ){ my_full_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;two_byte_respond();reset_response_array(); }//ACK
     //GSC
     //GOSTM
-    if (COMMAND_RESULT1==GOSTM){ my_full_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1 )    );  two_byte_respond();reset_response_array();   }//ACK
+    if (COMMAND_RESULT1==GOSTM){ my_full_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1 )    );  two_byte_respond();reset_response_array();  }//ACK
     //GOSTM
     //KEN
-    if (COMMAND_RESULT1==KEN  ){ my_full_response(ACK,KEN ); two_byte_respond();reset_response_array();}//ACK ...........shutting down all activity received from GCS or OBC
+    if (COMMAND_RESULT1==KEN  ){ my_full_response(ACK,KEN ); two_byte_respond();reset_response_array(); }//ACK ...........shutting down all activity received from GCS or OBC
     //KEN
     //KDIS
-    if (COMMAND_RESULT1==KDIS ){ my_full_response(ACK,KDIS); two_byte_respond();reset_response_array();}//ACK
+    if (COMMAND_RESULT1==KDIS ){ my_full_response(ACK,KDIS); two_byte_respond();reset_response_array(); }//ACK
     //KDIS
 return 0;
 }//execute /*8801001003133498*/
@@ -299,7 +299,6 @@ while(1){//while
         //HIGH
         //LOW
         if( (SKIP==0) & (clock()==LOW) ){
-                                        reset_response_array();
                                         execute();//are there any valid commands captured...if so set up the response
                                         while(clock()==LOW){}//wait out the LOW cycle
         }//if
