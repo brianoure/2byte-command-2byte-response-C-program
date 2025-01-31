@@ -62,6 +62,7 @@ int COMMAND_RESULT1=0;
 int COMMAND_RESULT2=0;
 int COMMANDARRAY [16];
 int RESPONSEARRAY[16];
+int OK_TRANSMIT=0; 
 
 /***   
 //Array Initialisation    
@@ -213,9 +214,10 @@ return 0;
 //execute
 int execute(){
     //PING
-    if( COMMAND_RESULT1==PING ){ack_response1();}//ACK...........Fault reporrting mechanisms?
+    if( COMMAND_RESULT1==PING ){ack_response1();two_byte_respond();reset_response_array();}//ACK...........Fault reporrting mechanisms?
     //SON
     if (COMMAND_RESULT1==SON){
+                             OK_TRANSMIT=1;
                              int else_check=1;
                              if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -228,9 +230,12 @@ int execute(){
                              if(COMMAND_RESULT2==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(else_check==1               ){nack_response1();}//NACK
+                             two_byte_respond();
+                             reset_response_array();
     }//SON
     //SOF  
     if (COMMAND_RESULT1==SOF){
+                             OK_TRANSMIT=1;
                              int else_check=1;
                              if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -243,6 +248,8 @@ int execute(){
                              if(COMMAND_RESULT2==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(else_check==1               ){nack_response1();}//NACK
+                             two_byte_respond();
+                             reset_response_array();
     }//SOF
     //SM
     if (COMMAND_RESULT1==SM ){
@@ -255,26 +262,28 @@ int execute(){
                              if(COMMAND_RESULT2==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(else_check==1                  ){nack_response1();}//NACK
+                             two_byte_respond();
+                             reset_response_array();
     }//SM
     //GM
-    if (COMMAND_RESULT1==GM   ){ my_full_response(ACK,CURRENTMODE       );                     }//ACK
+    if (COMMAND_RESULT1==GM   ){ my_full_response(ACK,CURRENTMODE       );two_byte_respond();reset_response_array();                }//ACK
     //GM
     //GSC
-    if (COMMAND_RESULT1==GSC  ){ my_full_response(ACK,CURRENTSYSTEMCLOCK);                     }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if (COMMAND_RESULT1==GSC  ){ my_full_response(ACK,CURRENTSYSTEMCLOCK);two_byte_respond();reset_response_array();               }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
     //SSC
-    if (COMMAND_RESULT1==SSC  ){ my_full_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;}//ACK
+    if (COMMAND_RESULT1==SSC  ){ my_full_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;two_byte_respond();reset_response_array();}//ACK
     //GSC
     //GOSTM
-    if (COMMAND_RESULT1==GOSTM){ my_full_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1 )    );     }//ACK
+    if (COMMAND_RESULT1==GOSTM){ my_full_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1 )    );  two_byte_respond();reset_response_array();   }//ACK
     //GOSTM
     //KEN
-    if (COMMAND_RESULT1==KEN  ){ my_full_response(ACK,KEN );                                   }//ACK ...........shutting down all activity received from GCS or OBC
+    if (COMMAND_RESULT1==KEN  ){ my_full_response(ACK,KEN ); two_byte_respond();reset_response_array();}//ACK ...........shutting down all activity received from GCS or OBC
     //KEN
     //KDIS
-    if (COMMAND_RESULT1==KDIS ){ my_full_response(ACK,KDIS);                                   }//ACK
+    if (COMMAND_RESULT1==KDIS ){ my_full_response(ACK,KDIS); two_byte_respond();reset_response_array();}//ACK
     //KDIS
 return 0;
-}//execute
+}//execute /*8801001003133498*/
 
    
 //MAIN LOOP
@@ -287,14 +296,12 @@ while(1){//while
                                COMMAND_RESULT2=0;//refresh
                                captured_command();//extract command(command_result1) and the parameter(command_result2)
                                while(clock()==HIGH){}//wait out the HIGH cycle
-                               SKIP=1;//start loop afresh but go straight to LOW cycle
+                               SKIP = 1;//start loop afresh but go straight to LOW cycle
         }//if
         //HIGH
         //LOW
         if( (SKIP==0) & (clock()==LOW) ){
                                         execute();//are there any valid commands captured...if so set up the response
-                                        two_byte_respond();//transmit the response
-                                        reset_response_aray();
                                         while(clock()==LOW){}//wait out the LOW cycle
         }//if
         //LOW
