@@ -189,7 +189,7 @@ int my_full_response( int firstbyte, int secondbyte){
     RESPONSEARRAY[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
     }//for
     for(int index=8;index++;index<=15){
-    RESPONSEARRAY[index] = (int) ( ( (int) ( firstbyte >>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
+    RESPONSEARRAY[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
     }//for
 return 0;
 }//my_full_response
