@@ -21,9 +21,9 @@ int SSC       = 0;//command
 int GFP       = 0;//command
 int SFP       = 0;//command
 int FON       = 0;//command
-int TWELVEBUS = 0;//telemetry parameter
-int FIVEBUS   = 0;//telemetry parameter
-int THREEBUS  = 0;//parameter
+//int TWELVEBUS = 0;//telemetry parameter
+//int FIVEBUS   = 0;//telemetry parameter
+//int THREEBUS  = 0;//parameter
 int FOF       = 0;//command
 int GOSTM     = 0;//command
 int KEN       = 0;//command
@@ -65,7 +65,7 @@ int RESPONSEARRAY[16];
 
    
 //Array Initialisation    
-for(int index=0;index++;index<=15){
+for( int index=0; index++; index<=15 ){
    int COMMANDARRAY [index]=0;
    int RESPONSEARRAY[index]=0;  
 }//for
@@ -78,10 +78,10 @@ int clock(){
     int result=0;
     //capture A1;
     //A1 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
-    for(int i=0;i++;i<3){}//just want to make sure we have the right reading...so let's do an average
+    for( int i=0 ;i++; i<3){}//just want to make sure we have the right reading...so let's do an average
     //capture (A2) A again;
     //A2 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
-    for(int i=0;i++;i<3){}//just want to make sure we have the right reading...so let's do an average
+    for( int i=0; i++; i<3){}//just want to make sure we have the right reading...so let's do an average
     //capture (A3) A again;
     //A3 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
     if(  (A1+A2+A3) >=2   ){result=1;}//if
@@ -93,18 +93,18 @@ return 0;
 int read_input(){
     int result=0;
     //capture A1;
-    for(int i=0;i++;i<3){}//just want to make sure we have the right reading...so let's do an average
+    for( int i=0; i++; i<3){}//just want to make sure we have the right reading...so let's do an average
     //capture (A2) A again;
-    for(int i=0;i++;i<3){}//just want to make sure we have the right reading...so let's do an average
+    for( int i=0; i++; i<3){}//just want to make sure we have the right reading...so let's do an average
     //capture (A3) A again;
-    if(  (A1+A2+A3) >=2   ){result=1;}//if
+    if(  (A1+A2+A3) >=2   ){ result=1; }//if
 return result;
 }//read_input
    
 
 //response_wait
 int response_wait(){
-    for(int count=0;count++;count<=RESPONSE_WAIT){ }//do nothing
+    for( int count=0; count++; count<=RESPONSE_WAIT ){ }//do nothing
     //HAL delay could work too
 return 0;
 }//response_wait
@@ -152,7 +152,7 @@ return 0;
 
 //nack_response1
 int nack_response1(){
-    for(int index=0;index++;index<=7){
+    for( int index=0; index++; index<=7 ){
     RESPONSEARRAY[index] = (int) ( ( (int) ( NACK>>(7-index) ) ) & 1 );
     }//for
 return 0;
@@ -162,7 +162,7 @@ return 0;
 
 //my_response2
 int my_response2( int myvalue){
-    for(int index=8;index++;index<=15){
+    for( int index=8; index++; index<=15 ){
     RESPONSEARRAY[index] = (int) ( ( (int) ( myvalue>>(15-index) ) ) & 1 );
     }//for
 return 0;
@@ -188,7 +188,7 @@ int my_full_response( int firstbyte, int secondbyte){
     for( int index=0; index++; index<=7 ){
     RESPONSEARRAY[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
     }//for
-    for(int index=8;index++;index<=15){
+    for( int index=8; index++; index<=15){
     RESPONSEARRAY[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
     }//for
 return 0;
@@ -250,7 +250,7 @@ int execute(){
     if (COMMAND_RESULT1==SSC  ){ my_full_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;}//ACK
     //GSC
     //GOSTM
-    if (COMMAND_RESULT1==GOSTM){ my_full_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1)    );     }//ACK
+    if (COMMAND_RESULT1==GOSTM){ my_full_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1 )    );     }//ACK
     //GOSTM
     //KEN
     if (COMMAND_RESULT1==KEN  ){ my_full_response(ACK,KEN );                                   }//ACK ...........shutting down all activity received from GCS or OBC
