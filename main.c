@@ -1,3 +1,4 @@
+//Prferrable to use preamble
 
 int main(){//main
 
@@ -79,14 +80,14 @@ int clock(){
     int result=0;
     //capture A1;
     //A1 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
-    for( int i=0 ;i++; i<3){}//just want to make sure we have the right reading...so let's do an average
+    for( int i=0 ;i++; i<3){}//pause
     //capture (A2) A again;
     //A2 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
-    for( int i=0; i++; i<3){}//just want to make sure we have the right reading...so let's do an average
+    for( int i=0; i++; i<3){}//pause
     //capture (A3) A again;
     //A3 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
     if(  (A1+A2+A3) >=2   ){result=1;}//if
-return 0;
+return result;
 }//clock
 
 
@@ -94,9 +95,9 @@ return 0;
 int read_input(){
     int result=0;
     //capture A1;
-    for( int i=0; i++; i<3){}//just want to make sure we have the right reading...so let's do an average
+    for( int i=0; i++; i<3){}//pause...just want to make sure we have the right reading...so let's do an average
     //capture (A2) A again;
-    for( int i=0; i++; i<3){}//just want to make sure we have the right reading...so let's do an average
+    for( int i=0; i++; i<3){}//pause...just want to make sure we have the right reading...so let's do an average
     //capture (A3) A again;
     if(  (A1+A2+A3) >=2   ){ result=1; }//if
 return result;
