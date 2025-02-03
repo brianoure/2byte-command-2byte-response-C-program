@@ -1,4 +1,6 @@
 //Prferrable to use preamble
+//uint8_t, uint16_t, uint32_t or chars can be used to replace the int types- but int is universal and type size is not an issue 
+
 
 int main(){//main
 
@@ -93,12 +95,13 @@ return result;
 
 //read_input
 int read_input(){
+    //HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) returns 1 or 0
     int result=0;
-    //capture A1;
+    //int A1 = HAL_GPIO_ReadPin( GPIOA, GPIO_PIN_10 );
     for( int i=0; i++; i<3){}//pause...just want to make sure we have the right reading...so let's do an average
-    //capture (A2) A again;
+    //int A2 = HAL_GPIO_ReadPin( GPIOA, GPIO_PIN_10 );
     for( int i=0; i++; i<3){}//pause...just want to make sure we have the right reading...so let's do an average
-    //capture (A3) A again;
+    //int A3 = HAL_GPIO_ReadPin( GPIOA, GPIO_PIN_10 );
     if(  (A1+A2+A3) >=2   ){ result=1; }//if
 return result;
 }//read_input
@@ -273,7 +276,19 @@ int execute(){
     if (COMMAND_RESULT1==SSC  ){ my_full_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;two_byte_respond();reset_response_array(); }//ACK
     //GSC
     //GOSTM
-    if (COMMAND_RESULT1==GOSTM){ my_full_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1 )    );  two_byte_respond();reset_response_array();  }//ACK
+    if (COMMAND_RESULT1==GOSTM){
+        ////my_full_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1 )    );
+        int a = (int) (XB12V_I  <<7); 
+        int b = (int) (ADCS12V_I<<6);
+        int c = (int) (RS5V_I   <<5);
+        int d = (int) (RS3V3_I  <<4);
+        int e = (int) (SA1_I    <<3);
+        int f = (int) (SA2_I    <<2);
+        int g = (int) (SA3_I    <<1);
+        my_full_response(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
+        two_byte_respond();
+        reset_response_array();
+    }//ACK
     //GOSTM
     //KEN
     if (COMMAND_RESULT1==KEN  ){ my_full_response(ACK,KEN ); two_byte_respond();reset_response_array(); }//ACK ...........shutting down all activity received from GCS or OBC
