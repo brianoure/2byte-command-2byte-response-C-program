@@ -1,6 +1,7 @@
 //Prferrable to use preamble
 //uint8_t, uint16_t, uint32_t or chars can be used to replace the int types- but int is universal and type size is not an issue
 //rs485
+//
 
 
 int main(){//main
@@ -101,7 +102,7 @@ int read_input(){
 	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=2;}//pause00
 	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=2;}//pause01
 	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=0;}//zero10
-	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=1;}//one11
+	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=1;}//one 11
 return result;
 }//read_input
    
@@ -125,15 +126,23 @@ return 0;
 
 //read_input
 int transmit_bit_response(int X){
+    //PC10 PA15 Y(TX)
+    //0    0    2(pause)
+    //0    1    2(pause)
+    //1    0    0
+    //1    1    1
     if(X==1){/*transmit ONE*/
-            //HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);
-            //HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET);//1
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);//1
     }//if
     if(X==0){/*transmit ZERO*/
-            //HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);
-            //HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET  );//1
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);//0
     }//if
-    response_wait();
+    response_wait();//keep pins in X state
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);//0
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
+    response_wait();//keep pins in pause state
 return 0;
 }//read_input
 
@@ -143,7 +152,6 @@ int two_byte_respond(){
     for( int index=0; index++; index<=15 ){  transmit_bit_response(  RESPONSEARRAY[index]  );  }//for
 return 0;
 }//two_byte_respond
-
 
 
 //reset_command_array()
@@ -159,7 +167,8 @@ int reset_response_array(){
 return 0;
 }//reset_response_array
 
-       
+
+	
 //ack_response1
 int ack_response1(){
     for( int index=0; index++; index<=7 ){
@@ -169,6 +178,7 @@ return 0;
 }//ack_response1
 
 
+	
 //nack_response1
 int nack_response1(){
     for( int index=0; index++; index<=7 ){
@@ -285,8 +295,8 @@ int execute(){
         int f = (int) (SA2_I    <<2);
         int g = (int) (SA3_I    <<1);
         my_full_response(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
-        two_byte_respond();
-        reset_response_array();
+        //two_byte_respond();
+        //reset_response_array();
     }//ACK
     //GOSTM
     //KEN
@@ -298,28 +308,38 @@ int execute(){
 return 0;
 }//execute /*8801001003133498*/
 
-   
+
+int reset_and_assign_command_result_integers(){
+    COMMAND_RESULT1 = 0;//refresh
+    COMMAND_RESULT2 = 0;//refresh
+    captured_command();//extract command(command_result1) and the parameter(command_result2)
+return 0;
+}
+
+	
 //MAIN LOOP
 while(1){//while
         int SKIP = 0;
         //HIGH
         if ( read_input() == HIGH ) {
                                     command_leftShift_insertEnd(1);//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
-                                    COMMAND_RESULT1=0;//refresh
-                                    COMMAND_RESULT2=0;//refresh
-                                    captured_command();//extract command(command_result1) and the parameter(command_result2)
-                                    while(read_input()==HIGH){}//wait out the HIGH cycle
-                                    SKIP = 1;//start loop afresh but go straight to LOW cycle
+                                    //COMMAND_RESULT1=0;//refresh
+                                    //COMMAND_RESULT2=0;//refresh
+                                    //captured_command();//extract command(command_result1) and the parameter(command_result2)
+                		    reset_and_assign_command_result_integers();                    
+				    while(read_input()==HIGH){}//wait out the HIGH cycle
+                                    SKIP = 1;//start loop afresh
         }//if
         //HIGH
         //LOW
-        if( (SKIP==0) & (read_input()==LOW   ) ){
-                                                command_leftShift_insertEnd(0);//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
-                                                COMMAND_RESULT1=0;//refresh
-                                                COMMAND_RESULT2=0;//refresh
-                                                captured_command();//extract command(command_result1) and the parameter(command_result2)
-                                                while(read_input()==LOW){}//wait out the HIGH cycle
-                                                SKIP = 1;//start loop afresh but go straight to LOW cycle
+        if( (SKIP==0) & (read_input()==LOW ) ){
+                                              command_leftShift_insertEnd(0);//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
+                                              //COMMAND_RESULT1=0;//refresh
+                                    	      //COMMAND_RESULT2=0;//refresh
+                                    	      //captured_command();//extract command(command_result1) and the parameter(command_result2)
+                		    	      reset_and_assign_command_result_integers();
+                                              while(read_input()==LOW){}//wait out the HIGH cycle
+                                              SKIP = 1;//start loop afresh
         }//if
         //LOW
         if( (SKIP==0) & (read_input()==PAUSE) ){
