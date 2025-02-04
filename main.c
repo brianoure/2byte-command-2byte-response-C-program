@@ -323,6 +323,7 @@ while(1){//while
         //HIGH
         if ( read_input() == HIGH ) {
                                     command_leftShift_insertEnd(1);//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
+		                    //execute();
                                     //COMMAND_RESULT1=0;//refresh
                                     //COMMAND_RESULT2=0;//refresh
                                     //captured_command();//extract command(command_result1) and the parameter(command_result2)
@@ -334,6 +335,7 @@ while(1){//while
         //LOW
         if( (SKIP==0) & (read_input()==LOW ) ){
                                               command_leftShift_insertEnd(0);//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
+					      //execute();
                                               //COMMAND_RESULT1=0;//refresh
                                     	      //COMMAND_RESULT2=0;//refresh
                                     	      //captured_command();//extract command(command_result1) and the parameter(command_result2)
