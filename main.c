@@ -11,55 +11,54 @@ int HIGH   = 1;
 int LOW    = 0;
 int PAUSE  = 2;
 //SYMBOLS
-int PING      = 0;//command
-int ACK       = 0;//response
-int NACK      = 0;//response
-int SON       = 0;//command
-int PAYLOAD   = 0;//parameter
-int UHF       = 0;//parameter
-int ADCS      = 0;//parameter
-int GPS       = 0;//parameter
-int SOF       = 0;//command
-int SM        = 0;//command
-int GM        = 0;//command
-int GSC       = 0;//command
-int SSC       = 0;//command
-int GFP       = 0;//command
-int SFP       = 0;//command
-int FON       = 0;//command
-//int TWELVEBUS = 0;//telemetry parameter
-//int FIVEBUS   = 0;//telemetry parameter
-//int THREEBUS  = 0;//parameter
-int FOF       = 0;//command
-int GOSTM     = 0;//command
-int KEN       = 0;//command
-int KDIS      = 0;//command
-int GD        = 0;//command
-int PD        = 0;//command
-int RD        = 0;//command
-int WD        = 0;//command
-int INITIALIZE    = 0;//mode parameter
-int DETUMBLE      = 0;//mode parameter
-int NORMAL        = 0;//mode parameter
-int COMMUNICATION = 0;//mode parameter
-int PAYLOAD       = 0;//mode parameter
-int IMAGE         = 0;//mode parameter
-int EMERGENCY     = 0;//mode parameter
-int CUSTOM        = 0;//mode parameter
-int PL5V_EN   = 0;//pin
-int ADCS5V_EN = 0;//pin
-int RS12V_EN  = 0;//pin
-int XB12V_EN  = 0;//pin
-int CCU5V_EN  = 0;//pin
-int RS3V3_EN  = 0;//pin
-int PL_EN     = 0;//pin
-int ADCS_EN   = 0;//pin
-int UHF_EN    = 0;//pin
-int GPS_EN    = 0;//pin
-int ADCS12V_EN= 0;//pin
-int SA1_I = 0;//pin
-int SA2_I = 0;//pin
-int SA3_I = 0;//pin
+int PING      = 34;//command
+int ACK       = 47;//response
+int NACK      = 52;//response
+int SON       = 140;//command
+int UHF       = 24;//parameter
+int ADCS      = 162;//parameter
+int GPS       = 75;//parameter
+int SOF       = 218;//command
+int SM        = 107;//command
+int GM        = 122;//command
+int GSC       = 94;//command
+int SSC       = 209;//command
+int GFP       = 134;//command
+int SFP       = 90;//command
+int FON       = 55;//command
+int TWELVEBUS = 100;//telemetry parameter
+int FIVEBUS   = 0;//telemetry parameter
+int THREEBUS  = 0;//parameter
+int FOF       = 233;//command
+int GOSTM     = 157;//command
+int KEN       = 255;//command
+int KDIS      = 227;//command
+int GD        = 15;//command
+int PD        = 245;//command
+int RD        = 222;//command
+int WD        = 133;//command
+int INITIALIZE    = 60;//mode parameter
+int DETUMBLE      = 71;//mode parameter
+int NORMAL        = 82;//mode parameter
+int COMMUNICATION = 93;//mode parameter
+int PAYLOAD       = 104;//mode parameter
+int IMAGE         = 115;//mode parameter
+int EMERGENCY     = 126;//mode parameter
+int CUSTOM        = 69;//mode parameter
+int PL5V_EN   = 230;//pin
+int ADCS5V_EN = 143;//pin
+int RS12V_EN  = 205;//pin
+int XB12V_EN  = 139;//pin
+int CCU5V_EN  = 155;//pin
+int RS3V3_EN  = 212;//pin
+int PL_EN     = 172;//pin
+int ADCS_EN   = 143;//pin
+int UHF_EN    = 189;//pin
+int GPS_EN    = 57;//pin
+int ADCS12V_EN= 199;//pin
+int SA1_I = 97;//pin
+int SA2_I = 79;//pin
+int SA3_I = 63;//pin
 // other variables
 int RESPONSE_WAIT=10000;
 int CURRENTMODE       =0;
@@ -70,6 +69,54 @@ int COMMANDARRAY [16];
 int RESPONSEARRAY[16];
  
 
+/***
+PING	34
+SON	140
+SOF	218
+SM	1O7
+GM	122
+GSC	94
+SSC	209
+GFP	134
+SFP	90
+FON	55
+FOF	233
+GOSTM	157
+KEN	255
+KDIS	227
+GD	15
+PD	245
+RD	222
+WD	133
+UHF	24
+ADCS	162
+GPS	75
+INITIALIZE	60
+DETUMBLE	71
+NORMAL	82
+COMMUNICATION	93
+PAYLOAD	104
+IMAGE	115
+EMERGENCY	126
+CUSTOM  69
+PL5V_EN	230
+ADCS5V_EN	143
+RS12V_EN	205
+XB12V_EN	139
+ CCU5V_EN	155
+ RS3V3_EN	212
+ PL_EN	172
+ADCS_EN	250
+UHF_EN	189
+GPS_EN	57
+ADCS12V_EN	199
+ACK	47
+NACK	52
+TWELVEBUS	100
+FIVEBUS	150
+THREEBUS	200
+**/
+	
 /***   
 //Array Initialisation    
 for( int index=0; index++; index<=15 ){
