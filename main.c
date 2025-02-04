@@ -1,12 +1,14 @@
 //Prferrable to use preamble
-//uint8_t, uint16_t, uint32_t or chars can be used to replace the int types- but int is universal and type size is not an issue 
+//uint8_t, uint16_t, uint32_t or chars can be used to replace the int types- but int is universal and type size is not an issue
+//rs485
 
 
 int main(){//main
 
 //Boolean
-int HIGH      =1;
-int LOW       =0;
+int HIGH   = 1;
+int LOW    = 0;
+int PAUSE  = 2;
 //SYMBOLS
 int PING      = 0;//command
 int ACK       = 0;//response
@@ -76,7 +78,7 @@ for( int index=0; index++; index<=15 ){
 //Initialisation of variables
 **/
 
-   
+/**   i2c pfft
 //clock
 int clock(){
     int result=0;
@@ -91,18 +93,15 @@ int clock(){
     if(  (A1+A2+A3) >=2   ){result=1;}//if
 return result;
 }//clock
-
+**/
 
 //read_input
 int read_input(){
-    //HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10) returns 1 or 0
     int result=0;
-    //int A1 = HAL_GPIO_ReadPin( GPIOA, GPIO_PIN_10 );
-    for( int i=0; i++; i<3){}//pause...just want to make sure we have the right reading...so let's do an average
-    //int A2 = HAL_GPIO_ReadPin( GPIOA, GPIO_PIN_10 );
-    for( int i=0; i++; i<3){}//pause...just want to make sure we have the right reading...so let's do an average
-    //int A3 = HAL_GPIO_ReadPin( GPIOA, GPIO_PIN_10 );
-    if(  (A1+A2+A3) >=2   ){ result=1; }//if
+	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=2;}//pause00
+	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=2;}//pause01
+	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=0;}//zero10
+	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=1;}//one11
 return result;
 }//read_input
    
@@ -117,9 +116,9 @@ return 0;
 
 //shift all to left, insert new bit at end
 //command_leftShift_insertEnd
-int command_leftShift_insertEnd(){
+int command_leftShift_insertEnd(int insertionbit){
     for( int index=0; index++; index<=14 ){  COMMANDARRAY[index] = COMMANDARRAY[index+1];   }//for
-    COMMANDARRAY[15] = read_input();
+    COMMANDARRAY[15] = insertionbit;
 return 0;  
 }//command_leftShift_insertEnd
 
@@ -304,21 +303,29 @@ return 0;
 while(1){//while
         int SKIP = 0;
         //HIGH
-        if ( clock() == HIGH ) {
-                               command_leftShift_insertEnd();//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
-                               COMMAND_RESULT1=0;//refresh
-                               COMMAND_RESULT2=0;//refresh
-                               captured_command();//extract command(command_result1) and the parameter(command_result2)
-                               while(clock()==HIGH){}//wait out the HIGH cycle
-                               SKIP = 1;//start loop afresh but go straight to LOW cycle
+        if ( read_input() == HIGH ) {
+                                    command_leftShift_insertEnd(1);//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
+                                    COMMAND_RESULT1=0;//refresh
+                                    COMMAND_RESULT2=0;//refresh
+                                    captured_command();//extract command(command_result1) and the parameter(command_result2)
+                                    while(clock()==HIGH){}//wait out the HIGH cycle
+                                    SKIP = 1;//start loop afresh but go straight to LOW cycle
         }//if
         //HIGH
         //LOW
-        if( (SKIP==0) & (clock()==LOW) ){
-                                        execute();//are there any valid commands captured...if so set up the response
-                                        while(clock()==LOW){}//wait out the LOW cycle
+        if( (SKIP==0) & (read_input()==LOW   ) ){
+                                                command_leftShift_insertEnd(0);//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
+                                                COMMAND_RESULT1=0;//refresh
+                                                COMMAND_RESULT2=0;//refresh
+                                                captured_command();//extract command(command_result1) and the parameter(command_result2)
+                                                while(clock()==LOW){}//wait out the HIGH cycle
+                                                SKIP = 1;//start loop afresh but go straight to LOW cycle
         }//if
         //LOW
+        if( (SKIP==0) & (read_input()==PAUSE) ){
+                                               execute();//are there any valid commands captured...if so set up the response
+                                               while(clock()==PAUSE){}//wait out the LOW cycle
+        }//if
 }//while  
 //MAIN LOOP
    
