@@ -119,7 +119,7 @@ THREEBUS	200
 	
 /***   
 //Array Initialisation    
-for( int index=0; index++; index<=15 ){
+for( int index=0; index<=15; index++ ){
    int COMMANDARRAY [index]=0;
    int RESPONSEARRAY[index]=0;  
 }//for
@@ -132,10 +132,10 @@ int clock(){
     int result=0;
     //capture A1;
     //A1 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
-    for( int i=0 ;i++; i<3){}//pause
+    for( int i=0 ; i<3;i++){}//pause
     //capture (A2) A again;
     //A2 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
-    for( int i=0; i++; i<3){}//pause
+    for( int i=0; i<3; i++;){}//pause
     //capture (A3) A again;
     //A3 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
     if(  (A1+A2+A3) >=2   ){result=1;}//if
@@ -156,7 +156,7 @@ return result;
 
 //response_wait
 int response_wait(){
-    for( int count=0; count++; count<=RESPONSE_WAIT ){ }//do nothing
+    for( int count=0;  count<=RESPONSE_WAIT ;count++; ){ }//do nothing
     //HAL delay could work too
 return 0;
 }//response_wait
@@ -165,7 +165,7 @@ return 0;
 //shift all to left, insert new bit at end
 //command_leftShift_insertEnd
 int command_leftShift_insertEnd(int insertionbit){
-    for( int index=0; index++; index<=14 ){  COMMANDARRAY[index] = COMMANDARRAY[index+1];   }//for
+    for( int index=0;  index<=14; index++; ){  COMMANDARRAY[index] = COMMANDARRAY[index+1];   }//for
     COMMANDARRAY[15] = insertionbit;
 return 0;  
 }//command_leftShift_insertEnd
@@ -196,21 +196,21 @@ return 0;
 
 //two_byte_respond
 int two_byte_respond(){
-    for( int index=0; index++; index<=15 ){  transmit_bit_response(  RESPONSEARRAY[index]  );  }//for
+    for( int index=0;  index<=15; index++; ){  transmit_bit_response(  RESPONSEARRAY[index]  );  }//for
 return 0;
 }//two_byte_respond
 
 
 //reset_command_array()
 int reset_command_array(){
-    for( int index=0; index++; index<=15 ){  COMMANDARRAY[index] = 0;  }//for
+    for( int index=0; index<=15;  index++; ){  COMMANDARRAY[index] = 0;  }//for
 return 0;
 }//reset_command_array()
 
    
 //reset_response_array
 int reset_response_array(){
-    for( int index=0; index++; index<=15 ){  RESPONSEARRAY[index] = 0;  }//for
+    for( int index=0;  index<=15; index++; ){  RESPONSEARRAY[index] = 0;  }//for
 return 0;
 }//reset_response_array
 
@@ -218,7 +218,7 @@ return 0;
 	
 //ack_response1
 int ack_response1(){
-    for( int index=0; index++; index<=7 ){
+    for( int index=0;  index<=7; index++; ){
     RESPONSEARRAY[index] = (int) ( ( (int) ( ACK>>(7-index) ) ) & 1 );   
     }//for
 return 0;
@@ -228,7 +228,7 @@ return 0;
 	
 //nack_response1
 int nack_response1(){
-    for( int index=0; index++; index<=7 ){
+    for( int index=0;  index<=7; index++; ){
     RESPONSEARRAY[index] = (int) ( ( (int) ( NACK>>(7-index) ) ) & 1 );
     }//for
 return 0;
@@ -238,7 +238,7 @@ return 0;
 
 //my_response2
 int my_response2( int myvalue){
-    for( int index=8; index++; index<=15 ){
+    for( int index=8;  index<=15; index++; ){
     RESPONSEARRAY[index] = (int) ( ( (int) ( myvalue>>(15-index) ) ) & 1 );
     }//for
 return 0;
@@ -248,11 +248,11 @@ return 0;
 //capture_command    
 int captured_command(){
     COMMAND_RESULT1 = 0;
-    for( int index=0; index++; index<=7 ){
+    for( int index=0;  index<=7;index++; ){
     COMMAND_RESULT1 = COMMAND_RESULT1 + ( COMMANDARRAY[ index ] * ( (int)( 1<<(7-index) ) ) );
     }//for
     COMMAND_RESULT2 = 0;
-    for( int index=8; index++; index<=15 ){
+    for( int index=8;  index<=15;index++; ){
     COMMAND_RESULT2 = COMMAND_RESULT2 + ( COMMANDARRAY[ index ] * ( (int)(1<<(15-index) ) ) );
     }//for
 return 0;
@@ -261,10 +261,10 @@ return 0;
 
 //my_full_response
 int my_full_response( int firstbyte, int secondbyte){
-    for( int index=0; index++; index<=7 ){
+    for( int index=0;  index<=7;index++; ){
     RESPONSEARRAY[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
     }//for
-    for( int index=8; index++; index<=15){
+    for( int index=8;  index<=15;index++;){
     RESPONSEARRAY[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
     }//for
 return 0;
