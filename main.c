@@ -194,11 +194,11 @@ return 0;
 }//read_input
 
 
-//two_byte_respond
-int two_byte_respond(){
+//send_response
+int send_response(){
     for( int index=0;  index<=15; index++ ){  transmit_bit_response(  RESPONSEARRAY[index]  );  }//for
 return 0;
-}//two_byte_respond
+}//send_response
 
 
 //reset_command_array()
@@ -259,8 +259,8 @@ return 0;
 }//captured_command
 
 
-//my_full_response
-int my_full_response( int firstbyte, int secondbyte){
+//write_response
+int write_response( int firstbyte, int secondbyte){
     for( int index=0;  index<=7;index++ ){
     RESPONSEARRAY[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
     }//for
@@ -268,13 +268,13 @@ int my_full_response( int firstbyte, int secondbyte){
     RESPONSEARRAY[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
     }//for
 return 0;
-}//my_full_response
+}//write_response
 
    
 //execute
 int execute(){
     //PING
-    if( COMMAND_RESULT1==PING ){ack_response1();two_byte_respond();reset_response_array();}//ACK...........Fault reporrting mechanisms?
+    if( COMMAND_RESULT1==PING ){ack_response1();send_response();reset_response_array();}//ACK...........Fault reporrting mechanisms?
     //SON
     if (COMMAND_RESULT1==SON){
                              int else_check=1;
@@ -289,7 +289,7 @@ int execute(){
                              if(COMMAND_RESULT2==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(else_check==1               ){nack_response1();}//NACK
-                             two_byte_respond();
+                             send_response();
                              reset_response_array();
     }//SON
     //SOF  
@@ -306,7 +306,7 @@ int execute(){
                              if(COMMAND_RESULT2==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(else_check==1               ){nack_response1();}//NACK
-                             two_byte_respond();
+                             send_response();
                              reset_response_array();
     }//SOF
     //SM
@@ -320,20 +320,20 @@ int execute(){
                              if(COMMAND_RESULT2==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(else_check==1                  ){nack_response1();}//NACK
-                             two_byte_respond();
+                             send_response();
                              reset_response_array();
     }//SM
     //GM
-    if (COMMAND_RESULT1==GM   ){ my_full_response(ACK,CURRENTMODE       );two_byte_respond();reset_response_array(); }//ACK
+    if (COMMAND_RESULT1==GM   ){ write_response(ACK,CURRENTMODE       );send_response();reset_response_array(); }//ACK
     //GM
     //GSC
-    if (COMMAND_RESULT1==GSC  ){ my_full_response(ACK,CURRENTSYSTEMCLOCK);two_byte_respond();reset_response_array(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if (COMMAND_RESULT1==GSC  ){ write_response(ACK,CURRENTSYSTEMCLOCK);send_response();reset_response_array(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
     //SSC
-    if (COMMAND_RESULT1==SSC  ){ my_full_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;two_byte_respond();reset_response_array(); }//ACK
+    if (COMMAND_RESULT1==SSC  ){ write_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response();reset_response_array(); }//ACK
     //GSC
     //GOSTM
     if (COMMAND_RESULT1==GOSTM){
-        ////my_full_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1 )    );
+        ////write_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1 )    );
         int a = (int) (XB12V_I  <<7); 
         int b = (int) (ADCS12V_I<<6);
         int c = (int) (RS5V_I   <<5);
@@ -341,16 +341,16 @@ int execute(){
         int e = (int) (SA1_I    <<3);
         int f = (int) (SA2_I    <<2);
         int g = (int) (SA3_I    <<1);
-        my_full_response(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
-        //two_byte_respond();
+        write_response(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
+        //send_response();
         //reset_response_array();
     }//ACK
     //GOSTM
     //KEN
-    if (COMMAND_RESULT1==KEN  ){ my_full_response(ACK,KEN ); two_byte_respond();reset_response_array(); }//ACK ...........shutting down all activity received from GCS or OBC
+    if (COMMAND_RESULT1==KEN  ){ write_response(ACK,KEN ); send_response();reset_response_array(); }//ACK ...........shutting down all activity received from GCS or OBC
     //KEN
     //KDIS
-    if (COMMAND_RESULT1==KDIS ){ my_full_response(ACK,KDIS); two_byte_respond();reset_response_array(); }//ACK
+    if (COMMAND_RESULT1==KDIS ){ write_response(ACK,KDIS); send_response();reset_response_array(); }//ACK
     //KDIS
 return 0;
 }//execute /*8801001003133498*/
