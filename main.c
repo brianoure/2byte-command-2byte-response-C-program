@@ -1,7 +1,7 @@
 //Prferrable to use preamble
 //uint8_t, uint16_t, uint32_t or chars can be used to replace the int types- but int is universal and type size is not an issue
-//rs485
-//
+//rs485 data when A and !A
+//i2c data when clock high
 
 
 int main(){//main
@@ -27,8 +27,8 @@ int GFP       = 134;//command
 int SFP       = 90;//command
 int FON       = 55;//command
 int TWELVEBUS = 100;//telemetry parameter
-int FIVEBUS   = 0;//telemetry parameter
-int THREEBUS  = 0;//parameter
+int FIVEBUS   = 150;//telemetry parameter
+int THREEBUS  = 200;//parameter
 int FOF       = 233;//command
 int GOSTM     = 157;//command
 int KEN       = 255;//command
