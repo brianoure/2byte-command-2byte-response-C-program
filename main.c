@@ -392,7 +392,7 @@ while(1){//while
         }//if
         //LOW
         if( (SKIP==0) & (read_input()==PAUSE) ){
-                                               execute();//are there any valid commands captured...if so set up the response
+                                               //execute();//are there any valid commands captured...if so set up the response
                                                //while(read_input()==PAUSE){}//wait out the LOW cycle
         }//if
 }//while  
