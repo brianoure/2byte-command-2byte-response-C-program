@@ -375,7 +375,7 @@ while(1){//while
                                     //COMMAND_RESULT2=0;//refresh
                                     //captured_command();//extract command(command_result1) and the parameter(command_result2)
                 		    reset_and_assign_command_result_integers();                    
-				    while(read_input()==HIGH){}//wait out the HIGH cycle
+				    //while(read_input()==HIGH){}//wait out the HIGH cycle
                                     SKIP = 1;//start loop afresh
         }//if
         //HIGH
@@ -387,13 +387,13 @@ while(1){//while
                                     	      //COMMAND_RESULT2=0;//refresh
                                     	      //captured_command();//extract command(command_result1) and the parameter(command_result2)
                 		    	      reset_and_assign_command_result_integers();
-                                              while(read_input()==LOW){}//wait out the HIGH cycle
+                                              //while(read_input()==LOW){}//wait out the HIGH cycle
                                               SKIP = 1;//start loop afresh
         }//if
         //LOW
         if( (SKIP==0) & (read_input()==PAUSE) ){
                                                execute();//are there any valid commands captured...if so set up the response
-                                               while(read_input()==PAUSE){}//wait out the LOW cycle
+                                               //while(read_input()==PAUSE){}//wait out the LOW cycle
         }//if
 }//while  
 //MAIN LOOP
