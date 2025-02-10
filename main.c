@@ -363,12 +363,12 @@ int reset_and_assign_command_result_integers(){
 return 0;
 }
 
-	
+int PREVIOUS=0;	
 //MAIN LOOP
 while(1){//while
         int SKIP = 0;
         //HIGH
-        if ( read_input() == HIGH ) {
+        if ( (read_input() == HIGH) & (PREVIOUS==PAUSE) ) {
                                     command_leftShift_insertEnd(1);//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
 		                    execute();
                                     //COMMAND_RESULT1=0;//refresh
@@ -376,11 +376,12 @@ while(1){//while
                                     //captured_command();//extract command(command_result1) and the parameter(command_result2)
                 		    reset_and_assign_command_result_integers();                    
 				    //while(read_input()==HIGH){}//wait out the HIGH cycle
+				    PREVIOUS=1;
                                     SKIP = 1;//start loop afresh
         }//if
         //HIGH
         //LOW
-        if( (SKIP==0) & (read_input()==LOW ) ){
+        if( (SKIP==0) & (read_input()==LOW ) & (PREVIOUS==PAUSE) ){
                                               command_leftShift_insertEnd(0);//shift all command array items to left(MSB), lose the first MSB bit, insert new (LSB) bit at end
 					      execute();
                                               //COMMAND_RESULT1=0;//refresh
@@ -388,12 +389,14 @@ while(1){//while
                                     	      //captured_command();//extract command(command_result1) and the parameter(command_result2)
                 		    	      reset_and_assign_command_result_integers();
                                               //while(read_input()==LOW){}//wait out the HIGH cycle
+					      PREVIOUS=0;
                                               SKIP = 1;//start loop afresh
         }//if
         //LOW
         if( (SKIP==0) & (read_input()==PAUSE) ){
                                                //execute();//are there any valid commands captured...if so set up the response
                                                //while(read_input()==PAUSE){}//wait out the LOW cycle
+		                               PREVIOUS=PAUSE;
         }//if
 }//while  
 //MAIN LOOP
