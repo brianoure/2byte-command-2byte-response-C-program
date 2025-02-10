@@ -274,7 +274,11 @@ return 0;
 //execute
 int execute(){
     //PING
-    if( COMMAND_RESULT1==PING ){ack_response1();send_response();reset_response_array();}//ACK...........Fault reporrting mechanisms?
+    if( COMMAND_RESULT1==PING ){
+	                       ack_response1();
+	                       send_response();
+	                       reset_response_array();
+    }//ACK...........Fault reporting mechanisms?
     //SON
     if (COMMAND_RESULT1==SON){
                              int else_check=1;
