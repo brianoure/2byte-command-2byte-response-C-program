@@ -209,6 +209,11 @@ return 0;
 
    
 //reset_response_array
+//Equivalent to 
+//int reset_response_array(){
+//RESPONSEARRAY[0] = 0;  RESPONSEARRAY[1] = 0;  RESPONSEARRAY[2] = 0;  RESPONSEARRAY[3] = 0;  RESPONSEARRAY[4] = 0;  RESPONSEARRAY[5] = 0;  RESPONSEARRAY[6] = 0;  RESPONSEARRAY[7] = 0;
+//return 0;	
+//}
 int reset_response_array(){
     for( int index=0;  index<=15; index++ ){  RESPONSEARRAY[index] = 0;  }//for
 return 0;
@@ -217,6 +222,11 @@ return 0;
 
 	
 //ack_response1
+//Equivalent to 
+//int ack_response1(){
+//RESPONSEARRAY[0] = (int) (ACK&128);  RESPONSEARRAY[1] = (int) (ACK&64);  RESPONSEARRAY[2] = (int) (ACK&32);  RESPONSEARRAY[3] = (int) (ACK&16);  RESPONSEARRAY[4] = (int) (ACK&8);  RESPONSEARRAY[5] = (int) (ACK&4);  RESPONSEARRAY[6] = (int) (ACK&2);  RESPONSEARRAY[7] = (int) (ACK&1);
+//return 0;
+//}
 int ack_response1(){
     for( int index=0;  index<=7; index++ ){
     RESPONSEARRAY[index] = (int) ( ( (int) ( ACK>>(7-index) ) ) & 1 );   
@@ -225,7 +235,12 @@ return 0;
 }//ack_response1
 
 
-	
+//nack_response1
+//Equivalent to 
+//int nack_response1(){
+//RESPONSEARRAY[0] = (int) (NACK&128);  RESPONSEARRAY[1] = (int) (NACK&64);  RESPONSEARRAY[2] = (int) (NACK&32);  RESPONSEARRAY[3] = (int) (NACK&16);  RESPONSEARRAY[4] = (int) (NACK&8);  RESPONSEARRAY[5] = (int) (NACK&4);  RESPONSEARRAY[6] = (int) (NACK&2);  RESPONSEARRAY[7] = (int) (NACK&1);
+//return 0;
+//}
 //nack_response1
 int nack_response1(){
     for( int index=0;  index<=7; index++ ){
@@ -235,7 +250,12 @@ return 0;
 }//nack_response1
    
 
-
+//my_response2
+//Equivalent to 
+//int my_response2(int myvalue){
+//RESPONSEARRAY[8] = (int) (myvalue&128);  RESPONSEARRAY[9] = (int) (myvalue&64);  RESPONSEARRAY[10] = (int) (myvalue&32);  RESPONSEARRAY[11] = (int) (myvalue&16);  RESPONSEARRAY[12] = (int) (myvalue&8);  RESPONSEARRAY[13] = (int) (myvalue&4);  RESPONSEARRAY[14] = (int) (myvalue&2);  RESPONSEARRAY[15] = (int) (myvalue&1);
+//return 0;
+//}
 //my_response2
 int my_response2( int myvalue){
     for( int index=8;  index<=15; index++ ){
@@ -244,7 +264,13 @@ int my_response2( int myvalue){
 return 0;
 }//my_response2
    
-   
+//capture_command
+//Equivalent to 
+//int capture_command(){
+//COMMAND_RESULT1 = COMMANDARRAY[0] + COMMANDARRAY[1] + COMMANDARRAY[2 ] + COMMANDARRAY[3 ] + COMMANDARRAY[4 ] + COMMANDARRAY[5 ] + COMMANDARRAY[6 ] + COMMANDARRAY[7 ] ;
+//COMMAND_RESULT2 = COMMANDARRAY[8] + COMMANDARRAY[9] + COMMANDARRAY[10] + COMMANDARRAY[11] + COMMANDARRAY[12] + COMMANDARRAY[13] + COMMANDARRAY[14] + COMMANDARRAY[15] ;
+//return 0;
+//}   
 //capture_command    
 int captured_command(){
     COMMAND_RESULT1 = 0;
@@ -258,7 +284,13 @@ int captured_command(){
 return 0;
 }//captured_command
 
-
+//write_response
+//Equivalent to
+//int write_response( int firstbyte, int secondbyte){
+//RESPONSEARRAY[0] = (int) (firstbyte &128); RESPONSEARRAY[1] = (int) (firstbyte &64); RESPONSEARRAY[2 ] = (int) (firstbyte &32); RESPONSEARRAY[3 ] = (int) (firstbyte &16); RESPONSEARRAY[4 ] = (int) (firstbyte &8); RESPONSEARRAY[5 ] = (int) (firstbyte &4); RESPONSEARRAY[6 ] = (int) (firstbyte &2); RESPONSEARRAY[7 ] = (int) (firstbyte &1);    
+//RESPONSEARRAY[8] = (int) (secondbyte&128); RESPONSEARRAY[9] = (int) (secondbyte&64); RESPONSEARRAY[10] = (int) (secondbyte&32); RESPONSEARRAY[11] = (int) (secondbyte&16); RESPONSEARRAY[12] = (int) (secondbyte&8); RESPONSEARRAY[13] = (int) (secondbyte&4); RESPONSEARRAY[14] = (int) (secondbyte&2); RESPONSEARRAY[15] = (int) (secondbyte&1);
+//return 0;
+//}
 //write_response
 int write_response( int firstbyte, int secondbyte){
     for( int index=0;  index<=7;index++ ){
