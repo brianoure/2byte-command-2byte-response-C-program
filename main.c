@@ -10,7 +10,7 @@ int main(){//main
 int HIGH   = 1;
 int LOW    = 0;
 int PAUSE  = 2;
-//SYMBOLS
+//TRANSMISSION AND RECEPTION (COMMUNICATION) SYMBOLS
 int PING      = 34;//command
 int ACK       = 47;//response
 int NACK      = 52;//response
