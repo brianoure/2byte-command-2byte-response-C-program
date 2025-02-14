@@ -10,6 +10,7 @@ int main(){//main
 uint8_t HIGH   = 1;
 uint8_t LOW    = 0;
 uint8_t PAUSE  = 2;
+uint8_t END    = 3;
 //TRANSMISSION AND RECEPTION (COMMUNICATION) SYMBOLS
 uint8_t PING      = 34;//command
 uint8_t ACK       = 47;//response
@@ -56,7 +57,7 @@ uint8_t ADCS_EN   = 143;//pin
 uint8_t UHF_EN    = 189;//pin
 uint8_t GPS_EN    = 57;//pin
 uint8_t ADCS12V_EN= 199;//pin
-uint8_t EPS_EN =97;//funny
+uint8_t EPS_EN =  97;//funny
 //BOOT0
 int SA1_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int SA2_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
@@ -401,6 +402,7 @@ int reset_and_assign_command_result_integers(){
     captured_command();//extract command(command_result1) and the parameter(command_result2)
 return 0;
 }
+
 
 int PREVIOUS=0;	
 //MAIN LOOP
