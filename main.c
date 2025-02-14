@@ -2,7 +2,7 @@
 //uint8_t, uint16_t, uint32_t or chars can be used to replace the int types- but int is universal and type size is not an issue
 //rs485 data when A and !A
 //i2c data when clock high
-
+//Dude, be cautious with your variables - public or global... _I are functions that read from input pins, _EN are raw integers(commands targeting output pins)
 
 int main(){//main
 
@@ -56,60 +56,59 @@ int ADCS_EN   = 143;//pin
 int UHF_EN    = 189;//pin
 int GPS_EN    = 57;//pin
 int ADCS12V_EN= 199;//pin
-int SA1_I = 97;//pin
-int SA2_I = 79;//pin
-int SA3_I = 63;//pin
-/**
-BOOT0
-RS4851_RX
-RS4851_DE
-RS4851_TX
-RS4852_RX
-RS4852_DE
-RS4852_TX
-SPI1_SS
-SPI1_SCK
-SPI1_MISO
-SPI1_MOSI
-SPI3_SS
-SPI3_SCK
-SPI3_MISO
-SPI3_MOSI
-I2C2_SCL
-I2C2_SDA
-SYNC_PULSE
-E_RST1
-E_RST0
-PWR_RST
-EPS_EN
-OBC_FAULT
-CCU_FLT
-OBC_I
-CCU_I
-ADCS_I
-ADCS_FLT
-UHF_I
-UHF_FLT
-PL_I
-PL_FLT
-RS_3V3_I
-RS3V3_FLT
-GPS_I
-GPS_FLT
-ADCS5V_I
-ADCS5V_FLT
-PL5V_I
-PL5V_FLT
-CCU5V_I
-CCU5V_FLT
-XB12V_I
-XB12V_FLT
-ADCS12V_FLT
-ADCS12V_I
-RS12V_FLT
-RS5V_FLT
-RS5V_I
-**/
+int EPS_EN =0;//funny
+//BOOT0
+int SA1_I() = 97;//pin
+int SA2_I()= 79;//pin
+int SA3_I() = 63;//pin
+int RS4851_RX(){return 0;}
+int RS4851_DE(){return 0;}
+int RS4851_TX(){return 0;}
+int RS4852_RX(){return 0;}
+int RS4852_DE(){return 0;}
+int RS4852_TX(){return 0;}
+int SPI1_SS(){return 0;}
+int SPI1_SCK(){return 0;}
+int SPI1_MISO(){return 0;}
+int SPI1_MOSI(){return 0;}
+int SPI3_SS(){return 0;}
+int SPI3_SCK(){return 0;}
+int SPI3_MISO(){return 0;}
+int SPI3_MOSI(){return 0;}
+int I2C2_SCL(){return 0;}
+int I2C2_SDA(){return 0;}
+int SYNC_PULSE(){return 0;}
+int E_RST1(){return 0;}
+int E_RST0(){return 0;}
+int PWR_RST(){return 0;}
+int OBC_FAULT(){return 0;}
+int CCU_FLT(){return 0;}
+int OBC_I(){return 0;}
+int CCU_I(){return 0;}
+int ADCS_I(){return 0;}
+int ADCS_FLT(){return 0;}
+int UHF_I(){return 0;}
+int UHF_FLT(){return 0;}
+int PL_I(){return 0;}
+int PL_FLT(){return 0;}
+int RS_3V3_I(){return 0;}
+int RS3V3_FLT(){return 0;}
+int GPS_I(){return 0;}
+int GPS_FLT(){return 0;}
+int ADCS5V_I(){return 0;}
+int ADCS5V_FLT(){return 0;}
+int PL5V_I(){return 0;}
+int PL5V_FLT(){return 0;}
+int CCU5V_I(){return 0;}
+int CCU5V_FLT(){return 0;}
+int XB12V_I(){return 0;}
+int XB12V_FLT(){return 0;}
+int ADCS12V_FLT(){return 0;}
+int ADCS12V_I(){return 0;}
+int RS12V_FLT(){return 0;}
+int RS5V_FLT(){return 0;}
+int RS5V_I(){return 0;}
+
 // other variables
 int RESPONSE_WAIT=10000;
 int CURRENTMODE       =0;
@@ -421,13 +420,13 @@ int execute(){
     //GOSTM
     if (COMMAND_RESULT1==GOSTM){
         ////write_response(ACK,   (int) ( ((int) (XB12V_I<<7)) | ((int) (ADCS12V_I<<6)) | ((int) (RS5V_I<<5)) | ((int) (RS3V3_I<<4)) | ((int) (SA1_I<<3)) | ((int) (SA2_I<<2)) | ((int) (SA3_I<<1)) |  1 )    );
-        int a = (int) (XB12V_I  <<7); 
-        int b = (int) (ADCS12V_I<<6);
-        int c = (int) (RS5V_I   <<5);
-        int d = (int) (RS3V3_I  <<4);
-        int e = (int) (SA1_I    <<3);
-        int f = (int) (SA2_I    <<2);
-        int g = (int) (SA3_I    <<1);
+        int a = (int) (XB12V_I()  <<7); 
+        int b = (int) (ADCS12V_I()<<6);
+        int c = (int) (RS5V_I()   <<5);
+        int d = (int) (RS3V3_I()  <<4);
+        int e = (int) (SA1_I()    <<3);
+        int f = (int) (SA2_I()    <<2);
+        int g = (int) (SA3_I()    <<1);
         write_response(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
         //send_response();
         //reset_response_array();
