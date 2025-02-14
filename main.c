@@ -44,19 +44,19 @@ uint8_t COMMUNICATION = 93;//mode parameter
 uint8_t PAYLOAD       = 104;//mode parameter
 uint8_t IMAGE         = 115;//mode parameter
 uint8_t EMERGENCY     = 126;//mode parameter
-int CUSTOM        = 69;//mode parameter
-int PL5V_EN   = 230;//pin
-int ADCS5V_EN = 143;//pin
-int RS12V_EN  = 205;//pin
-int XB12V_EN  = 139;//pin
-int CCU5V_EN  = 155;//pin
-int RS3V3_EN  = 212;//pin
-int PL_EN     = 172;//pin
-int ADCS_EN   = 143;//pin
-int UHF_EN    = 189;//pin
-int GPS_EN    = 57;//pin
-int ADCS12V_EN= 199;//pin
-int EPS_EN =97;//funny
+uint8_t CUSTOM        = 69;//mode parameter
+uint8_t PL5V_EN   = 230;//pin
+uint8_t ADCS5V_EN = 143;//pin
+uint8_t RS12V_EN  = 205;//pin
+uint8_t XB12V_EN  = 139;//pin
+uint8_t CCU5V_EN  = 155;//pin
+uint8_t RS3V3_EN  = 212;//pin
+uint8_t PL_EN     = 172;//pin
+uint8_t ADCS_EN   = 143;//pin
+uint8_t UHF_EN    = 189;//pin
+uint8_t GPS_EN    = 57;//pin
+uint8_t ADCS12V_EN= 199;//pin
+uint8_t EPS_EN =97;//funny
 //BOOT0
 int SA1_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int SA2_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
