@@ -309,13 +309,13 @@ return 0;
 //execute
 int execute(){
     //PING
-    if( COMMAND_RESULT1==PING ){
+    if( (COMMAND_RESULT1==PING) & (!(COMMAND_RESULT1==INVALIDCOMMAND)) ){
 	                       ack_response1();
 	                       send_response();
 	                       reset_response_array();
     }//ACK...........Fault reporting mechanisms?
     //SON
-    if (COMMAND_RESULT1==SON){
+    if ( (COMMAND_RESULT1==SON) & (!(COMMAND_RESULT1==INVALIDCOMMAND)) ){
                              int else_check=1;
                              if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -332,7 +332,7 @@ int execute(){
                              reset_response_array();
     }//SON
     //SOF  
-    if (COMMAND_RESULT1==SOF){
+    if ( (COMMAND_RESULT1==SOF)  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){
                              int else_check=1;
                              if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -349,7 +349,7 @@ int execute(){
                              reset_response_array();
     }//SOF
     //SM
-    if (COMMAND_RESULT1==SM ){
+    if (  (COMMAND_RESULT1==SM)  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){
                              int else_check=1;
                              if(COMMAND_RESULT2==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -363,15 +363,15 @@ int execute(){
                              reset_response_array();
     }//SM
     //GM
-    if (COMMAND_RESULT1==GM   ){ write_response(ACK,CURRENTMODE       );send_response();reset_response_array(); }//ACK
+    if (  (COMMAND_RESULT1==GM )  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){ write_response(ACK,CURRENTMODE       );send_response();reset_response_array(); }//ACK
     //GM
     //GSC
-    if (COMMAND_RESULT1==GSC  ){ write_response(ACK,CURRENTSYSTEMCLOCK);send_response();reset_response_array(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if (  (COMMAND_RESULT1==GSC)  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){ write_response(ACK,CURRENTSYSTEMCLOCK);send_response();reset_response_array(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
     //SSC
-    if (COMMAND_RESULT1==SSC  ){ write_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response();reset_response_array(); }//ACK
+    if (  (COMMAND_RESULT1==SSC)  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){ write_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response();reset_response_array(); }//ACK
     //GSC
     //GOSTM
-    if (COMMAND_RESULT1==GOSTM){
+    if (  (COMMAND_RESULT1==GOSTM)  & (!(COMMAND_RESULT1==INVALIDCOMMAND)) ){
         int a = (int) (XB12V_I()  <<7); 
         int b = (int) (ADCS12V_I()<<6);
         int c = (int) (RS5V_I()   <<5);
@@ -385,11 +385,12 @@ int execute(){
     }//ACK
     //GOSTM
     //KEN
-    if (COMMAND_RESULT1==KEN  ){ write_response(ACK,KEN ); send_response();reset_response_array(); }//ACK ...........shutting down all activity received from GCS or OBC
+    if ( (COMMAND_RESULT1==KEN )   & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){ write_response(ACK,KEN ); send_response();reset_response_array(); }//ACK ...........shutting down all activity received from GCS or OBC
     //KEN
     //KDIS
-    if (COMMAND_RESULT1==KDIS ){ write_response(ACK,KDIS); send_response();reset_response_array(); }//ACK
+    if (  (COMMAND_RESULT1==KDIS)  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){ write_response(ACK,KDIS); send_response();reset_response_array(); }//ACK
     //KDIS
+    //YOU CAN ALSO ADD LOGIC
 return 0;
 }//execute /*8801001003133498*/
 
