@@ -116,7 +116,7 @@ int COMMAND_RESULT1=0;
 int COMMAND_RESULT2=0;
 int COMMANDARRAY [16];
 int RESPONSEARRAY[16];
- 
+int INVALIDCOMMAND=1008;
 
 	
 /***   
@@ -277,11 +277,12 @@ return 0;
 int captured_command(){
     COMMAND_RESULT1 = 0;
     for( int index=0;  index<=7;index++ ){
-    COMMAND_RESULT1 = COMMAND_RESULT1 + ( COMMANDARRAY[ index ] * ( (int)( 1<<(7-index) ) ) );
+	    if(  (COMMANDARRAY[ index ]==0) | (COMMANDARRAY[ index ]==1)  ){  COMMAND_RESULT1 = COMMAND_RESULT1 + ( COMMANDARRAY[ index ] * ( (int)( 1<<(7-index) ) ) );  } else { COMMANDRESULT1==INVALIDCOMMAND;}
     }//for
     COMMAND_RESULT2 = 0;
     for( int index=8;  index<=15;index++){
-    COMMAND_RESULT2 = COMMAND_RESULT2 + ( COMMANDARRAY[ index ] * ( (int)(1<<(15-index) ) ) );
+	    if(  (COMMANDARRAY[ index ]==0) | (COMMANDARRAY[ index ]==1)  ){  COMMAND_RESULT2 = COMMAND_RESULT2 + ( COMMANDARRAY[ index ] * ( (int)(1<<(15-index) ) ) );  } else { COMMANDRESULT2==INVALIDCOMMAND;}
+    }//for
     }//for
 return 0;
 }//captured_command
