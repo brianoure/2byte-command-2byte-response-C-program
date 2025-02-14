@@ -176,7 +176,7 @@ return 0;
 //read_input
 int transmit_bit_response(int X){
     //PC10 PA15 Y(TX)
-    //0    0    2(pause)
+    //0    0    3(end)
     //0    1    2(pause)
     //1    0    0
     //1    1    1
