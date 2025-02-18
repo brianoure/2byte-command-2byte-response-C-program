@@ -119,33 +119,8 @@ int COMMANDARRAY [16];
 int RESPONSEARRAY[16];
 int INVALIDCOMMAND=1008;
 
+
 	
-/***   
-//Array Initialisation    
-for( int index=0; index<=15; index++ ){
-   int COMMANDARRAY [index]=0;
-   int RESPONSEARRAY[index]=0;  
-}//for
-//Initialisation of variables
-**/
-
-/**   i2c pfft
-//clock
-int clock(){
-    int result=0;
-    //capture A1;
-    //A1 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
-    for( int i=0 ; i<3;i++){}//pause
-    //capture (A2) A again;
-    //A2 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
-    for( int i=0; i<3; i++;){}//pause
-    //capture (A3) A again;
-    //A3 = HAL_GPIO_ReadPin (GPIOA, GPIO_PIN_9);
-    if(  (A1+A2+A3) >=2   ){result=1;}//if
-return result;
-}//clock
-**/
-
 //read_input
 int read_input(){
     int result=0;
@@ -405,10 +380,10 @@ return 0;
 
 
 int previous;
-int flip_21_detected=0
-int flip_12_detected=0
-int flip_20_detected=0
-int flip_02_detected=0
+int flip_21_detected=0;
+int flip_12_detected=0;
+int flip_20_detected=0;
+int flip_02_detected=0;
 //MAIN LOOP
 while(1){//while
 	raw_input = read_input()
@@ -425,7 +400,7 @@ while(1){//while
 	   reset_and_assign_command_result_integers();
 	   execute();
 	}//if
-        if (flip_20_detected & flip_02_detected){
+        if ( flip_20_detected & flip_02_detected ){
            shiftleft_insertendbit(0);
            flip_21_detected=0;
            flip_12_detected=0;
