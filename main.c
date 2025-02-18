@@ -230,36 +230,53 @@ return 0;
 
 //######################################
 
-//send_response
+//send_response_i2c
 int send_response_i2c(){
     for( int index=0;  index<=15; index++ ){  transmit_bit_response_i2c(  RESPONSEARRAY_I2C[index]  );  }//for
 return 0;
-}//send_response
+}//send_response_i2c
 
 //##################################
 
-//send_response
+//send_response_rs485
 int send_response_rs485(){
     for( int index=0;  index<=15; index++ ){  transmit_bit_response_rs485(  RESPONSEARRAY_RS485[index]  );  }//for
 return 0;
-}//send_response
+}//send_response_rs485
 
 //##################################
 	
-//reset_command_array()
-int reset_command_array(){
-    for( int index=0; index<=15;  index++ ){  COMMANDARRAY[index] = 0;  }//for
+//reset_command_array_i2c
+int reset_command_array_i2c(){
+    for( int index=0; index<=15;  index++ ){  COMMANDARRAY_I2C[index] = 0;  }//for
 return 0;
-}//reset_command_array()
+}//reset_command_array_i2c
 
-   
-//reset_response_array
-int reset_response_array(){
-    for( int index=0;  index<=15; index++ ){  RESPONSEARRAY[index] = 0;  }//for
+//#################################
+
+//reset_command_array_rs485
+int reset_command_array_rs485(){
+    for( int index=0; index<=15;  index++ ){  COMMANDARRAY_RS485[index] = 0;  }//for
 return 0;
-}//reset_response_array
+}//reset_command_array_rs485
 
+//#################################
 
+//reset_response_array_i2c
+int reset_response_array_rs485(){
+    for( int index=0;  index<=15; index++ ){  RESPONSEARRAY_I2C[index] = 0;  }//for
+return 0;
+}//reset_response_array_i2c
+	
+//#################################
+
+//reset_response_array_rs485
+int reset_response_array_rs485(){
+    for( int index=0;  index<=15; index++ ){  RESPONSEARRAY_RS485[index] = 0;  }//for
+return 0;
+}//reset_response_array_rs485
+
+//#################################
 	
 //ack_response1
 int ack_response1(){
