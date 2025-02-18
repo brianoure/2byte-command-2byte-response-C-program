@@ -379,11 +379,12 @@ return 0;
 }
 
 
+//########################   MAIN EVENT  ###########################################
 int previous;
-int flip_21_detected=0;
-int flip_12_detected=0;
-int flip_20_detected=0;
-int flip_02_detected=0;
+int flip_21_detected=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_12_detected=0;//change from 1(HIGH) to 2(PAUSE)
+int flip_20_detected=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_02_detected=0;//change from 0(LOW) to 2(PAUSE)
 //MAIN LOOP
 while(1){//while
 	raw_input = read_input()
@@ -412,6 +413,7 @@ while(1){//while
         previous = raw_input
 }//while  
 //MAIN LOOP
-   
+//#########################    MAIN EVENT   #################################
+
 return 0;
 }//main
