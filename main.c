@@ -59,7 +59,7 @@ uint8_t ADCS_EN   = 143;//pin
 uint8_t UHF_EN    = 189;//pin
 uint8_t GPS_EN    = 57;//pin
 uint8_t ADCS12V_EN= 199;//pin
-uint8_t EPS_EN =  97;//funny
+uint8_t EPS_EN    =  97;//funny
 //BOOT0
 int SA1_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int SA2_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
@@ -112,18 +112,18 @@ int RS12V_FLT()  {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int RS5V_FLT()   {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int RS5V_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 // other variables
-int RESPONSE_WAIT = 10000;
-int CURRENTMODE       = 0;
-int CURRENTSYSTEMCLOCK = 0;
-int COMMAND_RESULT1_I2C = 0;
-int COMMAND_RESULT2_I2C = 0;
+int RESPONSE_WAIT         = 10000;
+int CURRENTMODE           = 0;
+int CURRENTSYSTEMCLOCK    = 0;
+int COMMAND_RESULT1_I2C   = 0;
+int COMMAND_RESULT2_I2C   = 0;
 int COMMAND_RESULT1_RS485 = 0;
 int COMMAND_RESULT2_RS485 = 0;
-int COMMANDARRAY_I2C [16];
-int COMMANDARRAY_RS485 [16];
-int RESPONSEARRAY_I2C [16];
-int RESPONSEARRAY_RS485 [16];
-int INVALIDCOMMAND = 1008;
+int COMMANDARRAY_I2C     [16];
+int COMMANDARRAY_RS485   [16];
+int RESPONSEARRAY_I2C    [16];
+int RESPONSEARRAY_RS485  [16];
+int INVALIDCOMMAND       = 1008;
 
 //#####################################
 	
@@ -473,7 +473,7 @@ int execute_i2c(){
         int e = (int) (SA1_I()    <<3);
         int f = (int) (SA2_I()    <<2);
         int g = (int) (SA3_I()    <<1);
-        write_response(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
+        write_response_i2c(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
         //send_response();
         //reset_response_array();
     }//ACK
