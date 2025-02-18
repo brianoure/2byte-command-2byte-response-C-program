@@ -110,27 +110,48 @@ int RS12V_FLT()  {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int RS5V_FLT()   {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int RS5V_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 // other variables
-int RESPONSE_WAIT=10000;
-int CURRENTMODE       =0;
-int CURRENTSYSTEMCLOCK=0;
-int COMMAND_RESULT1=0;
-int COMMAND_RESULT2=0;
-int COMMANDARRAY [16];
-int RESPONSEARRAY[16];
-int INVALIDCOMMAND=1008;
+int RESPONSE_WAIT = 10000;
+int CURRENTMODE       = 0;
+int CURRENTSYSTEMCLOCK = 0;
+int COMMAND_RESULT1_I2C = 0;
+int COMMAND_RESULT2_I2C = 0;
+int COMMAND_RESULT1_RS485 = 0;
+int COMMAND_RESULT2_RS485 = 0;
+int COMMANDARRAY_I2C [16];
+int COMMANDARRAY_RS485 [16];
+int RESPONSEARRAY_I2C [16];
+int RESPONSEARRAY_RS485 [16];
+int INVALIDCOMMAND = 1008;
 
-
+//#####################################
 	
 //read_input
-int read_input(){
+int read_binary_input_i2c(){
     int result=0;
-	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=2;}//pause00
+	   //i2c in....input binary value is the pin value when the clock is high...int this case pin B15 is the clock and D10 is the signal
+	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=3;}//end00
 	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=2;}//pause01
 	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=0;}//zero10
 	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=1;}//one 11
+	   //i2c in
 return result;
 }//read_input
-   
+
+//#######################################
+
+//read_input
+int read_binary_input_rs485(){
+    int result=0;
+	   //rs485 in......input binary value is when  two lines are exctly opposite/complementing each other...you just have to agree which set represents the ONE and which set represents the ZERO
+	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=3;}//end00
+	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=1;}//one01
+	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=0;}//zero10
+	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=2;}//pause11
+	   //rs485 in
+return result;
+}//read_input
+	
+//######################################   
 
 //response_wait
 int response_wait(){
@@ -139,19 +160,31 @@ int response_wait(){
 return 0;
 }//response_wait
 
+//#####################################
 
 //shift all to left, insert new bit at end
-//command_leftShift_insertEnd
-int command_leftShift_insertEnd(int insertionbit){
-    for( int index=0;  index<=14; index++ ){  COMMANDARRAY[index] = COMMANDARRAY[index+1];   }//for
-    COMMANDARRAY[15] = insertionbit;
+//command_leftShift_insertEnd_i2c
+int command_leftShift_insertEnd_i2c(int insertionbit){
+    for( int index=0;  index<=14; index++ ){  COMMANDARRAY_I2C[index] = COMMANDARRAY_I2C[index+1];   }//for
+    COMMANDARRAY_I2C[15] = insertionbit;
 return 0;  
-}//command_leftShift_insertEnd
+}//command_leftShift_insertEnd_i2c
 
+//#################################
 
-//read_input
-int transmit_bit_response(int X){
-    //PC10 PA15 Y(TX)
+//shift all to left, insert new bit at end
+//command_leftShift_insertEnd_rs485
+int command_leftShift_insertEnd_rs485(int insertionbit){
+    for( int index=0;  index<=14; index++ ){  COMMANDARRAY_RS485[index] = COMMANDARRAY_RS485[index+1];   }//for
+    COMMANDARRAY_RS485[15] = insertionbit;
+return 0;  
+}//command_leftShift_insertEnd_rs485
+
+//#################################
+
+//transmit_bit_response_i2c
+int transmit_bit_response_i2c(int X){
+    //PC10 PA15 Y(TX) ...................CAUTION
     //0    0    3(end)
     //0    1    2(pause)
     //1    0    0
@@ -169,16 +202,50 @@ int transmit_bit_response(int X){
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
     response_wait();//keep pins in pause state
 return 0;
-}//read_input
+}//transmit_bit_response_i2c
 
+//######################################
+
+//transmit_bit_response_rs485
+int transmit_bit_response_rs485(int X){
+    //PC10 PA15 Y(TX).....................CAUTION
+    //0    0    3(end)
+    //0    1    1
+    //1    0    0
+    //1    1    2(pause)
+    if(X==1){/*transmit ONE*/
+            HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET);//1
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);//1
+    }//if
+    if(X==0){/*transmit ZERO*/
+            HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET  );//1
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);//0
+    }//if
+    response_wait();//keep pins in X state
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);//0
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
+    response_wait();//keep pins in pause state
+return 0;
+}//transmit_bit_response_rs485
+
+//######################################
 
 //send_response
-int send_response(){
-    for( int index=0;  index<=15; index++ ){  transmit_bit_response(  RESPONSEARRAY[index]  );  }//for
+int send_response_i2c(){
+    for( int index=0;  index<=15; index++ ){  transmit_bit_response_i2c(  RESPONSEARRAY_I2C[index]  );  }//for
 return 0;
 }//send_response
 
+//##################################
 
+//send_response
+int send_response_rs485(){
+    for( int index=0;  index<=15; index++ ){  transmit_bit_response_rs485(  RESPONSEARRAY_RS485[index]  );  }//for
+return 0;
+}//send_response
+
+//##################################
+	
 //reset_command_array()
 int reset_command_array(){
     for( int index=0; index<=15;  index++ ){  COMMANDARRAY[index] = 0;  }//for
@@ -187,11 +254,6 @@ return 0;
 
    
 //reset_response_array
-//Equivalent to 
-//int reset_response_array(){
-//RESPONSEARRAY[0] = 0;  RESPONSEARRAY[1] = 0;  RESPONSEARRAY[2] = 0;  RESPONSEARRAY[3] = 0;  RESPONSEARRAY[4] = 0;  RESPONSEARRAY[5] = 0;  RESPONSEARRAY[6] = 0;  RESPONSEARRAY[7] = 0;
-//return 0;	
-//}
 int reset_response_array(){
     for( int index=0;  index<=15; index++ ){  RESPONSEARRAY[index] = 0;  }//for
 return 0;
@@ -200,11 +262,6 @@ return 0;
 
 	
 //ack_response1
-//Equivalent to 
-//int ack_response1(){
-//RESPONSEARRAY[0] = (int) (ACK&128);  RESPONSEARRAY[1] = (int) (ACK&64);  RESPONSEARRAY[2] = (int) (ACK&32);  RESPONSEARRAY[3] = (int) (ACK&16);  RESPONSEARRAY[4] = (int) (ACK&8);  RESPONSEARRAY[5] = (int) (ACK&4);  RESPONSEARRAY[6] = (int) (ACK&2);  RESPONSEARRAY[7] = (int) (ACK&1);
-//return 0;
-//}
 int ack_response1(){
     for( int index=0;  index<=7; index++ ){
     RESPONSEARRAY[index] = (int) ( ( (int) ( ACK>>(7-index) ) ) & 1 );   
@@ -213,12 +270,6 @@ return 0;
 }//ack_response1
 
 
-//nack_response1
-//Equivalent to 
-//int nack_response1(){
-//RESPONSEARRAY[0] = (int) (NACK&128);  RESPONSEARRAY[1] = (int) (NACK&64);  RESPONSEARRAY[2] = (int) (NACK&32);  RESPONSEARRAY[3] = (int) (NACK&16);  RESPONSEARRAY[4] = (int) (NACK&8);  RESPONSEARRAY[5] = (int) (NACK&4);  RESPONSEARRAY[6] = (int) (NACK&2);  RESPONSEARRAY[7] = (int) (NACK&1);
-//return 0;
-//}
 //nack_response1
 int nack_response1(){
     for( int index=0;  index<=7; index++ ){
@@ -229,12 +280,6 @@ return 0;
    
 
 //my_response2
-//Equivalent to 
-//int my_response2(int myvalue){
-//RESPONSEARRAY[8] = (int) (myvalue&128);  RESPONSEARRAY[9] = (int) (myvalue&64);  RESPONSEARRAY[10] = (int) (myvalue&32);  RESPONSEARRAY[11] = (int) (myvalue&16);  RESPONSEARRAY[12] = (int) (myvalue&8);  RESPONSEARRAY[13] = (int) (myvalue&4);  RESPONSEARRAY[14] = (int) (myvalue&2);  RESPONSEARRAY[15] = (int) (myvalue&1);
-//return 0;
-//}
-//my_response2
 int my_response2( int myvalue){
     for( int index=8;  index<=15; index++ ){
     RESPONSEARRAY[index] = (int) ( ( (int) ( myvalue>>(15-index) ) ) & 1 );
@@ -242,13 +287,7 @@ int my_response2( int myvalue){
 return 0;
 }//my_response2
    
-//capture_command
-//Equivalent to 
-//int capture_command(){
-//COMMAND_RESULT1 = COMMANDARRAY[0] + COMMANDARRAY[1] + COMMANDARRAY[2 ] + COMMANDARRAY[3 ] + COMMANDARRAY[4 ] + COMMANDARRAY[5 ] + COMMANDARRAY[6 ] + COMMANDARRAY[7 ] ;
-//COMMAND_RESULT2 = COMMANDARRAY[8] + COMMANDARRAY[9] + COMMANDARRAY[10] + COMMANDARRAY[11] + COMMANDARRAY[12] + COMMANDARRAY[13] + COMMANDARRAY[14] + COMMANDARRAY[15] ;
-//return 0;
-//}   
+
 //capture_command    
 int captured_command(){
     COMMAND_RESULT1 = 0;
@@ -263,91 +302,101 @@ int captured_command(){
 return 0;
 }//captured_command
 
-//write_response
-//Equivalent to
-//int write_response( int firstbyte, int secondbyte){
-//RESPONSEARRAY[0] = (int) (firstbyte &128); RESPONSEARRAY[1] = (int) (firstbyte &64); RESPONSEARRAY[2 ] = (int) (firstbyte &32); RESPONSEARRAY[3 ] = (int) (firstbyte &16); RESPONSEARRAY[4 ] = (int) (firstbyte &8); RESPONSEARRAY[5 ] = (int) (firstbyte &4); RESPONSEARRAY[6 ] = (int) (firstbyte &2); RESPONSEARRAY[7 ] = (int) (firstbyte &1);    
-//RESPONSEARRAY[8] = (int) (secondbyte&128); RESPONSEARRAY[9] = (int) (secondbyte&64); RESPONSEARRAY[10] = (int) (secondbyte&32); RESPONSEARRAY[11] = (int) (secondbyte&16); RESPONSEARRAY[12] = (int) (secondbyte&8); RESPONSEARRAY[13] = (int) (secondbyte&4); RESPONSEARRAY[14] = (int) (secondbyte&2); RESPONSEARRAY[15] = (int) (secondbyte&1);
-//return 0;
-//}
-//write_response
-int write_response( int firstbyte, int secondbyte){
+//###################
+
+//write_response_i2c
+int write_response_i2c( int firstbyte, int secondbyte){
     for( int index=0;  index<=7;index++ ){
-    RESPONSEARRAY[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
+    RESPONSEARRAY_I2C[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
     }//for
     for( int index=8;  index<=15;index++ ){
-    RESPONSEARRAY[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
+    RESPONSEARRAY_I2C[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
     }//for
 return 0;
-}//write_response
+}//write_response_i2c
 
-   
+
+//#######################
+
+//write_response_rs485
+int write_response_rs485( int firstbyte, int secondbyte){
+    for( int index=0;  index<=7;index++ ){
+    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
+    }//for
+    for( int index=8;  index<=15;index++ ){
+    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
+    }//for
+return 0;
+}//write_response_rs485
+
+//#######################
+
 //execute
-int execute(){
+int execute_i2c(){
     //PING
-    if( (COMMAND_RESULT1==PING) & (!(COMMAND_RESULT1==INVALIDCOMMAND)) ){
-	                       ack_response1();
-	                       send_response();
-	                       reset_response_array();
+    if( (COMMAND_RESULT1_I2C==PING) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND)) ){
+	                       ack_response1_i2c();
+	                       send_response_i2c();
+	                       reset_response_array_i2c();
     }//ACK...........Fault reporting mechanisms?
     //SON
-    if ( (COMMAND_RESULT1==SON) & (!(COMMAND_RESULT1==INVALIDCOMMAND)) ){
+    if ( (COMMAND_RESULT1_I2C==SON) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND)) ){
                              int else_check=1;
-                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1               ){nack_response1();}//NACK
-                             send_response();
-                             reset_response_array();
+                             if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(else_check==1               ){nack_response1_i2c();}//NACK
+                             send_response_i2c();
+                             reset_response_array_i2c();
     }//SON
     //SOF  
-    if ( (COMMAND_RESULT1==SOF)  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){
+    if ( (COMMAND_RESULT1_I2C==SOF)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){
                              int else_check=1;
-                             if(COMMAND_RESULT2==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1               ){nack_response1();}//NACK
-                             send_response();
-                             reset_response_array();
+                             if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(else_check==1               ){nack_response1_i2c();}//NACK
+                             send_response_i2c();
+                             reset_response_array_i2c();
     }//SOF
     //SM
-    if (  (COMMAND_RESULT1==SM)  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){
+    if (  (COMMAND_RESULT1_I2C==SM)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){
                              int else_check=1;
-                             if(COMMAND_RESULT2==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;ack_response1();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1                  ){nack_response1();}//NACK
-                             send_response();
-                             reset_response_array();
+                             if(COMMAND_RESULT2_I2C==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(else_check==1                  ){nack_response1_i2c();}//NACK
+                             send_response_i2c();
+                             reset_response_array_i2c();
     }//SM
     //GM
-    if (  (COMMAND_RESULT1==GM )  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){ write_response(ACK,CURRENTMODE       );send_response();reset_response_array(); }//ACK
+    if (  (COMMAND_RESULT1_I2C==GM )  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,CURRENTMODE       );send_response_i2c();reset_response_array_i2c(); }//ACK
     //GM
     //GSC
-    if (  (COMMAND_RESULT1==GSC)  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){ write_response(ACK,CURRENTSYSTEMCLOCK);send_response();reset_response_array(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if (  (COMMAND_RESULT1_I2C==GSC)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,CURRENTSYSTEMCLOCK);send_response_i2c();reset_response_array_i2c(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
     //SSC
-    if (  (COMMAND_RESULT1==SSC)  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){ write_response(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response();reset_response_array(); }//ACK
+    if (  (COMMAND_RESULT1_I2C==SSC)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response_i2c();reset_response_array_i2c(); }//ACK
     //GSC
     //GOSTM
-    if (  (COMMAND_RESULT1==GOSTM)  & (!(COMMAND_RESULT1==INVALIDCOMMAND)) ){
+    if (  (COMMAND_RESULT1_I2C==GOSTM)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND)) ){
         int a = (int) (XB12V_I()  <<7); 
         int b = (int) (ADCS12V_I()<<6);
         int c = (int) (RS5V_I()   <<5);
@@ -361,59 +410,202 @@ int execute(){
     }//ACK
     //GOSTM
     //KEN
-    if ( (COMMAND_RESULT1==KEN )   & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){ write_response(ACK,KEN ); send_response();reset_response_array(); }//ACK ...........shutting down all activity received from GCS or OBC
+    if ( (COMMAND_RESULT1_I2C==KEN )   & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,KEN ); send_response_i2c();reset_response_array_i2c(); }//ACK ...........shutting down all activity received from GCS or OBC
     //KEN
     //KDIS
-    if (  (COMMAND_RESULT1==KDIS)  & (!(COMMAND_RESULT1==INVALIDCOMMAND))  ){ write_response(ACK,KDIS); send_response();reset_response_array(); }//ACK
+    if (  (COMMAND_RESULT1_I2C==KDIS)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,KDIS); send_response_i2c();reset_response_array_i2c(); }//ACK
     //KDIS
     //YOU CAN ALSO ADD LOGIC
 return 0;
-}//execute /*8801001003133498*/
+}//execute
+
+//##############
 
 
-int reset_and_assign_command_result_integers(){
-    COMMAND_RESULT1 = 0;//refresh
-    COMMAND_RESULT2 = 0;//refresh
-    captured_command();//extract command(command_result1) and the parameter(command_result2)
+//execute
+int execute_rs485(){
+    //PING
+    if( (COMMAND_RESULT1_RS485==PING) & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND)) ){
+	                       ack_response1_rs485();
+	                       send_response_rs485();
+	                       reset_response_array_rs485();
+    }//ACK...........Fault reporting mechanisms?
+    //SON
+    if ( (COMMAND_RESULT1_RS485==SON) & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND)) ){
+                             int else_check=1;
+                             if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(else_check==1               ){nack_response1_rs485();}//NACK
+                             send_response_rs485();
+                             reset_response_array_rs485();
+    }//SON
+    //SOF  
+    if ( (COMMAND_RESULT1_RS485==SOF)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){
+                             int else_check=1;
+                             if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(else_check==1               ){nack_response1_rs485();}//NACK
+                             send_response_rs485();
+                             reset_response_array_rs485();
+    }//SOF
+    //SM
+    if (  (COMMAND_RESULT1_RS485==SM)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){
+                             int else_check=1;
+                             if(COMMAND_RESULT2_RS485==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(else_check==1                  ){nack_response1_rs485();}//NACK
+                             send_response_rs485();
+                             reset_response_array_rs485();
+    }//SM
+    //GM
+    if (  (COMMAND_RESULT1_RS485==GM )  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,CURRENTMODE       );send_response_rs485();reset_response_array_rs485(); }//ACK
+    //GM
+    //GSC
+    if (  (COMMAND_RESULT1_RS485==GSC)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK);send_response_rs485();reset_response_array_rs485(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    //SSC
+    if (  (COMMAND_RESULT1_RS485==SSC)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response_rs485();reset_response_array_rs485(); }//ACK
+    //GSC
+    //GOSTM
+    if (  (COMMAND_RESULT1_RS485==GOSTM)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND)) ){
+        int a = (int) (XB12V_I()  <<7); 
+        int b = (int) (ADCS12V_I()<<6);
+        int c = (int) (RS5V_I()   <<5);
+        int d = (int) (RS3V3_I()  <<4);
+        int e = (int) (SA1_I()    <<3);
+        int f = (int) (SA2_I()    <<2);
+        int g = (int) (SA3_I()    <<1);
+        write_response_rs485(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
+        //send_response();
+        //reset_response_array();
+    }//ACK
+    //GOSTM
+    //KEN
+    if ( (COMMAND_RESULT1_RS485==KEN )   & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,KEN ); send_response_rs485();reset_response_array_rs485(); }//ACK ...........shutting down all activity received from GCS or OBC
+    //KEN
+    //KDIS
+    if (  (COMMAND_RESULT1_RS485==KDIS)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,KDIS); send_response_rs485();reset_response_array_rs485(); }//ACK
+    //KDIS
+    //YOU CAN ALSO ADD LOGIC
 return 0;
-}
+}//execute
+
+
+
+//##############
+
+int reset_and_assign_command_result_integers_i2c(){
+    COMMAND_RESULT1_I2C = 0;//refresh
+    COMMAND_RESULT2_I2C = 0;//refresh
+    captured_command_i2c();//extract command(command_result1) and the parameter(command_result2)
+return 0;
+}//reset_and_assign_command_result_integers
+
+//###########
+
+int reset_and_assign_command_result_integers_rs485(){
+    COMMAND_RESULT1_RS485 = 0;//refresh
+    COMMAND_RESULT2_RS485 = 0;//refresh
+    captured_command__rs485();//extract command(command_result1) and the parameter(command_result2)
+return 0;
+}//reset_and_assign_command_result_integers
+
+//################################################################### END OF DECLARATIONS ################################################
+
+
+
 
 
 //########################   MAIN EVENT  ###########################################
-int previous;
-int flip_21_detected=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_12_detected=0;//change from 1(HIGH) to 2(PAUSE)
-int flip_20_detected=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_02_detected=0;//change from 0(LOW) to 2(PAUSE)
+int previous_i2c;
+int flip_21_detected_i2c=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_12_detected_i2c=0;//change from 1(HIGH) to 2(PAUSE)
+int flip_20_detected_i2c=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_02_detected_i2c=0;//change from 0(LOW) to 2(PAUSE)
+//##
+int previous_rs485;
+int flip_21_detected_rs485=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_12_detected_rs485=0;//change from 1(HIGH) to 2(PAUSE)
+int flip_20_detected_rs485=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_02_detected_rs485=0;//change from 0(LOW) to 2(PAUSE)
+//##
 //MAIN LOOP
 while(1){//while
-	raw_input = read_input()
-	if ( (previous==2) & (raw_input==1) ){  flip_21_detected=1;  }
-        if ( (previous==1) & (raw_input==2) ){  flip_12_detected=1;  }
-        if ( (previous==2) & (raw_input==0) ){  flip_20_detected=1;  }
-        if ( (previous==0) & (raw_input==2) ){  flip_02_detected=1;  }
-        if ( flip_21_detected & flip_12_detected ){ 
-	   shiftleft_insertendbit(1);
-	   flip_21_detected=0;
-           flip_12_detected=0;
-           flip_20_detected=0;
-           flip_02_detected=0;
-	   reset_and_assign_command_result_integers();
-	   execute();
+	//######## I2C ############
+	raw_input_i2c = read_binary_input_i2c();
+	if ( (previous_i2c==2) & (raw_input_i2c==1) ){  flip_21_detected_i2c=1;  }
+        if ( (previous_i2c==1) & (raw_input_i2c==2) ){  flip_12_detected_i2c=1;  }
+        if ( (previous_i2c==2) & (raw_input_i2c==0) ){  flip_20_detected_i2c=1;  }
+        if ( (previous_i2c==0) & (raw_input_i2c==2) ){  flip_02_detected_i2c=1;  }
+        if ( flip_21_detected_i2c & flip_12_detected_i2c ){ 
+	   shiftleft_insertendbit_i2c(1);
+	   flip_21_detected_i2c=0;
+           flip_12_detected_i2c=0;
+           flip_20_detected_i2c=0;
+           flip_02_detected_i2c=0;
+	   reset_and_assign_command_result_integers_i2c();
+	   execute_i2c();
 	}//if
-        if ( flip_20_detected & flip_02_detected ){
-           shiftleft_insertendbit(0);
-           flip_21_detected=0;
-           flip_12_detected=0;
-           flip_20_detected=0;
-           flip_02_detected=0;
-	   reset_and_assign_command_result_integers();
-	   execute();
+        if ( flip_20_detected_i2c & flip_02_detected_i2c ){
+           shiftleft_insertendbit_i2c(0);
+           flip_21_detected_i2c=0;
+           flip_12_detected_i2c=0;
+           flip_20_detected_i2c=0;
+           flip_02_detected_i2c=0;
+	   reset_and_assign_command_result_integers_i2c();
+	   execute_i2c();
 	}//if
-        previous = raw_input
+        previous_i2c = raw_input_i2c;
+	//######## END I2C ############
+	//######## RS485 ##############
+	raw_input_i2c = read_binary_input_i2c();
+	if ( (previous_rs485==2) & (raw_input_rs485==1) ){  flip_21_detected_rs485=1;  }
+        if ( (previous_rs485==1) & (raw_input_rs485==2) ){  flip_12_detected_rs485=1;  }
+        if ( (previous_rs485==2) & (raw_input_rs485==0) ){  flip_20_detected_rs485=1;  }
+        if ( (previous_rs485==0) & (raw_input_rs485==2) ){  flip_02_detected_rs485=1;  }
+        if ( flip_21_detected__rs485 & flip_12_detected_rs485 ){ 
+	   shiftleft_insertendbit_rs485(1);
+	   flip_21_detected_rs485=0;
+           flip_12_detected_rs485=0;
+           flip_20_detected_rs485=0;
+           flip_02_detected_rs485=0;
+	   reset_and_assign_command_result_integers_rs485();
+	   execute_rs485();
+	}//if
+        if ( flip_20_detected_rs485 & flip_02_detected_rs485 ){
+           shiftleft_insertendbit_rs485(0);
+           flip_21_detected_rs485=0;
+           flip_12_detected_rs485=0;
+           flip_20_detected_rs485=0;
+           flip_02_detected_rs485=0;
+	   reset_and_assign_command_result_integers_rs485();
+	   execute_rs485();
+	}//if
+        previous_rs485= raw_input_rs485;
+	//######## END RS485 ############
 }//while  
 //MAIN LOOP
-//#########################    MAIN EVENT   #################################
+//#########################    END MAIN EVENT   #################################
 
 return 0;
 }//main
