@@ -5,7 +5,9 @@
 //Dude, be cautious with your variables - public or global... _I are functions that read from input pins, _EN are raw integers(commands targeting output pins)
 
 int main(){//main
-
+	
+//############ DECLARATIONS ###########
+	
 //Boolean
 uint8_t HIGH   = 1;
 uint8_t LOW    = 0;
@@ -278,48 +280,98 @@ return 0;
 
 //#################################
 	
-//ack_response1
-int ack_response1(){
+//ack_response1_i2c
+int ack_response1_i2c(){
     for( int index=0;  index<=7; index++ ){
-    RESPONSEARRAY[index] = (int) ( ( (int) ( ACK>>(7-index) ) ) & 1 );   
+    RESPONSEARRAY_I2C[index] = (int) ( ( (int) ( ACK>>(7-index) ) ) & 1 );   
     }//for
 return 0;
-}//ack_response1
+}//ack_response1_i2c
 
+//################################
 
-//nack_response1
-int nack_response1(){
+//ack_response1_rs485
+int ack_response1_rs485(){
     for( int index=0;  index<=7; index++ ){
-    RESPONSEARRAY[index] = (int) ( ( (int) ( NACK>>(7-index) ) ) & 1 );
+    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( ACK>>(7-index) ) ) & 1 );   
     }//for
 return 0;
-}//nack_response1
+}//ack_response1_rs485
+	
+//################################
+	
+//nack_response1_i2c
+int nack_response1_i2c(){
+    for( int index=0;  index<=7; index++ ){
+    RESPONSEARRAY_I2C[index] = (int) ( ( (int) ( NACK>>(7-index) ) ) & 1 );
+    }//for
+return 0;
+}//nack_response1_i2c
    
+//###################################
 
-//my_response2
-int my_response2( int myvalue){
+//nack_response1_rs485
+int nack_response1_rs485(){
+    for( int index=0;  index<=7; index++ ){
+    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( NACK>>(7-index) ) ) & 1 );
+    }//for
+return 0;
+}//nack_response1_rs485
+	
+//###################################
+	
+//my_response2_i2c
+int my_response2_i2c( int myvalue){
     for( int index=8;  index<=15; index++ ){
-    RESPONSEARRAY[index] = (int) ( ( (int) ( myvalue>>(15-index) ) ) & 1 );
+    RESPONSEARRAY_I2C[index] = (int) ( ( (int) ( myvalue>>(15-index) ) ) & 1 );
     }//for
 return 0;
-}//my_response2
-   
+}//my_response2_i2c
 
-//capture_command    
-int captured_command(){
-    COMMAND_RESULT1 = 0;
+//#################################
+
+//my_response2_rs485
+int my_response2_rs485( int myvalue){
+    for( int index=8;  index<=15; index++ ){
+    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( myvalue>>(15-index) ) ) & 1 );
+    }//for
+return 0;
+}//my_response2_rs485
+	
+//#################################
+
+//capture_command_i2c    
+int captured_command_i2c(){
+    COMMAND_RESULT1_I2C = 0;
     for( int index=0;  index<=7;index++ ){
-	    if(  (COMMANDARRAY[ index ]==0) | (COMMANDARRAY[ index ]==1)  ){  COMMAND_RESULT1 = COMMAND_RESULT1 + ( COMMANDARRAY[ index ] * ( (int)( 1<<(7-index) ) ) );  } else { COMMANDRESULT1==INVALIDCOMMAND;}
+	    if(  (COMMANDARRAY_I2C[ index ]==0) | (COMMANDARRAY_I2C[ index ]==1)  ){  COMMAND_RESULT1_I2C = COMMAND_RESULT1_I2C + ( COMMANDARRAY_I2C[ index ] * ( (int)( 1<<(7-index) ) ) );  } else { COMMANDRESULT1_I2C==INVALIDCOMMAND;}
     }//for
-    COMMAND_RESULT2 = 0;
+    COMMAND_RESULT2_I2C = 0;
     for( int index=8;  index<=15;index++){
-	    if(  (COMMANDARRAY[ index ]==0) | (COMMANDARRAY[ index ]==1)  ){  COMMAND_RESULT2 = COMMAND_RESULT2 + ( COMMANDARRAY[ index ] * ( (int)(1<<(15-index) ) ) );  } else { COMMANDRESULT2==INVALIDCOMMAND;}
+	    if(  (COMMANDARRAY_I2C[ index ]==0) | (COMMANDARRAY_I2C[ index ]==1)  ){  COMMAND_RESULT2_I2C = COMMAND_RESULT2_I2C + ( COMMANDARRAY_I2C[ index ] * ( (int)(1<<(15-index) ) ) );  } else { COMMANDRESULT2_I2C==INVALIDCOMMAND;}
     }//for
     }//for
 return 0;
-}//captured_command
+}//captured_command_i2c 
 
-//###################
+//#############################
+
+//capture_command_rs485    
+int captured_command_rs485(){
+    COMMAND_RESULT1_RS485 = 0;
+    for( int index=0;  index<=7;index++ ){
+	    if(  (COMMANDARRAY_RS485[ index ]==0) | (COMMANDARRAY_RS485[ index ]==1)  ){  COMMAND_RESULT1_RS485 = COMMAND_RESULT1_RS485 + ( COMMANDARRAY_RS485[ index ] * ( (int)( 1<<(7-index) ) ) );  } else { COMMANDRESULT1_RS485==INVALIDCOMMAND;}
+    }//for
+    COMMAND_RESULT2_RS485 = 0;
+    for( int index=8;  index<=15;index++){
+	    if(  (COMMANDARRAY_RS485[ index ]==0) | (COMMANDARRAY_RS485[ index ]==1)  ){  COMMAND_RESULT2_RS485 = COMMAND_RESULT2_RS485 + ( COMMANDARRAY_RS485[ index ] * ( (int)(1<<(15-index) ) ) );  } else { COMMANDRESULT2_RS485==INVALIDCOMMAND;}
+    }//for
+    }//for
+return 0;
+}//captured_command_rs485
+
+
+//##########################
 
 //write_response_i2c
 int write_response_i2c( int firstbyte, int secondbyte){
@@ -527,9 +579,7 @@ int execute_rs485(){
 return 0;
 }//execute
 
-
-
-//##############
+//#####################################
 
 int reset_and_assign_command_result_integers_i2c(){
     COMMAND_RESULT1_I2C = 0;//refresh
@@ -538,7 +588,7 @@ int reset_and_assign_command_result_integers_i2c(){
 return 0;
 }//reset_and_assign_command_result_integers
 
-//###########
+//####################################
 
 int reset_and_assign_command_result_integers_rs485(){
     COMMAND_RESULT1_RS485 = 0;//refresh
