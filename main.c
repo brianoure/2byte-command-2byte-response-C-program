@@ -10,108 +10,108 @@ int main(){//main
 //############ DECLARATIONS ###########
 	
 //Boolean
-uint8_t HIGH   = 1; uint8_t TRUE = 1;
-uint8_t LOW    = 0; uint8_t FALSE= 1;
-uint8_t PAUSE  = 2;
-uint8_t END    = 3;
+uint8_t HIGH          = 1  ;  uint8_t TRUE = HIGH;
+uint8_t LOW           = 0  ;  uint8_t FALSE= LOW ;
+uint8_t PAUSE         = 2  ;
+uint8_t END           = 3  ;
 //TRANSMISSION AND RECEPTION (COMMUNICATION) SYMBOLS
-uint8_t PING      = 34 ;   //command
-uint8_t ACK       = 47 ;   uint8_t ACKNOWLEDGE    = ACK; //response
-uint8_t NACK      = 52 ;   uint8_t NOT_ACKNOWLEDGE= NACK;//response
-uint8_t SON       = 140;   uint8_t SWITCH_ON      = SON; //command
-uint8_t UHF       = 24 ;   //parameter
-uint8_t ADCS      = 162;   //parameter
-uint8_t GPS       = 75 ;   //parameter
-uint8_t SOF       = 218;   uint8_t SWITCH_OFF      = SOF;//command
-uint8_t SM        = 107;   uint8_t SET_MODE        = SM ;//command
-uint8_t GM        = 122;   uint8_t GET_MODE        = GM ;//command
-uint8_t GSC       = 94 ;   uint8_t GET_SYSTEM_CLOCK= GSC;//command
-uint8_t SSC       = 209;   uint8_t SET_SYSTEM_CLOCK= SSC;//command
-uint8_t GFP       = 134;   //command
-uint8_t SFP       = 90 ;   //command
-uint8_t FON       = 55 ;   uint8_t FUNCTION_ON     = FON;//command
-uint8_t TWELVEBUS = 100;   //telemetry parameter
-uint8_t FIVEBUS   = 150;   //telemetry parameter
-uint8_t THREEBUS  = 200;   //parameter
-uint8_t FOF       = 233;   uint8_t FUNCTION_OFF                = FOF  ;//command
-uint8_t GOSTM     = 157;   uint8_t GET_ONLINE_SYSTEM_TELEMETRY = GOSTM;//command
-uint8_t KEN       = 255;   uint8_t KILL_ENABLE                 = KEN  ;//command
-uint8_t KDIS      = 227;   uint8_t KILL_DISABLE                = KDIS ;//command
-uint8_t GD        = 15 ;   uint8_t GET_DATA  = GD;//command
-uint8_t PD        = 245;   uint8_t PUT_DATA  = PD;//command
-uint8_t RD        = 222;   uint8_t READ_DATA = RD;//command
-uint8_t WD        = 133;   uint8_t WRITE DATA= WD;//command
-uint8_t INITIALIZE    = 60 ; //mode parameter
-uint8_t DETUMBLE      = 71 ; //mode parameter
-uint8_t NORMAL        = 82 ; //mode parameter
-uint8_t COMMUNICATION = 93 ; //mode parameter
-uint8_t PAYLOAD       = 104; //mode parameter
-uint8_t IMAGE         = 115; //mode parameter
-uint8_t EMERGENCY     = 126; //mode parameter
-uint8_t CUSTOM        = 69 ; //mode parameter
-uint8_t PL5V_EN   = 230; uint8_t PAYLOAD_5V_ENABLE = PL5V_EN  ;//pin
-uint8_t ADCS5V_EN = 143; uint8_t ADCS_5V_ENABLE    = ADCS5V_EN;//pin
-uint8_t RS12V_EN  = 205; uint8_t RESERVED_12V_EN   = RS12V_EN ;//pin
-uint8_t XB12V_EN  = 139; uint8_t XBAND_12V_ENABLE  = XB12V_EN ;//pin
-uint8_t CCU5V_EN  = 155; uint8_t CENTRAL_COMMAND_UNIT_5V_ENABLE = CCU5V_EN ;//pin
-uint8_t RS3V3_EN  = 212; uint8_t RESERVED_3V_ENABLE             = RS3V3_EN ;//pin
-uint8_t PL_EN     = 172; uint8_t PAYLOAD_ENABLE  = PL_EN     ;//pin
-uint8_t ADCS_EN   = 143; uint8_t ADCS_ENABLE     = ADCS_EN   ;//pin
-uint8_t UHF_EN    = 189; uint8_t UHF_ENABLE      = UHF_EN    ;//pin
-uint8_t GPS_EN    = 57 ; uint8_t GPS_ENABLE      = GPS_EN    ;//pin
-uint8_t ADCS12V_EN= 199; uint8_t ADCS_12V_ENABLE = ADCS12V_EN;//pin
-uint8_t EPS_EN    = 97 ; uint8_t EPS_ENABLE      = EPS_EN    ;//funny
+uint8_t PING          = 34 ;   //command
+uint8_t ACK           = 47 ;   uint8_t ACKNOWLEDGE                   = ACK ;//response
+uint8_t NACK          = 52 ;   uint8_t NOT_ACKNOWLEDGE               = NACK;//response
+uint8_t SON           = 140;   uint8_t SWITCH_ON                     = SON ;//command
+uint8_t UHF           = 24 ;   //parameter
+uint8_t ADCS          = 162;   //parameter
+uint8_t GPS           = 75 ;   //parameter
+uint8_t SOF           = 218;   uint8_t SWITCH_OFF                    = SOF  ;//command
+uint8_t SM            = 107;   uint8_t SET_MODE                      = SM   ;//command
+uint8_t GM            = 122;   uint8_t GET_MODE                      = GM   ;//command
+uint8_t GSC           = 94 ;   uint8_t GET_SYSTEM_CLOCK              = GSC  ;//command
+uint8_t SSC           = 209;   uint8_t SET_SYSTEM_CLOCK              = SSC  ;//command
+uint8_t GFP           = 134;   //command
+uint8_t SFP           = 90 ;   //command
+uint8_t FON           = 55 ;   uint8_t FUNCTION_ON                   = FON  ;//command
+uint8_t TWELVEBUS     = 100;   //telemetry parameter
+uint8_t FIVEBUS       = 150;   //telemetry parameter
+uint8_t THREEBUS      = 200;   //parameter
+uint8_t FOF           = 233;   uint8_t FUNCTION_OFF                  = FOF  ;//command
+uint8_t GOSTM         = 157;   uint8_t GET_ONLINE_SYSTEM_TELEMETRY   = GOSTM;//command
+uint8_t KEN           = 255;   uint8_t KILL_ENABLE                   = KEN  ;//command
+uint8_t KDIS          = 227;   uint8_t KILL_DISABLE                  = KDIS ;//command
+uint8_t GD            = 15 ;   uint8_t GET_DATA                      = GD   ;//command
+uint8_t PD            = 245;   uint8_t PUT_DATA                      = PD   ;//command
+uint8_t RD            = 222;   uint8_t READ_DATA                     = RD   ;//command
+uint8_t WD            = 133;   uint8_t WRITE DATA                    = WD   ;//command
+uint8_t INITIALIZE    = 60 ;   //mode parameter
+uint8_t DETUMBLE      = 71 ;   //mode parameter
+uint8_t NORMAL        = 82 ;   //mode parameter
+uint8_t COMMUNICATION = 93 ;   //mode parameter
+uint8_t PAYLOAD       = 104;   //mode parameter
+uint8_t IMAGE         = 115;   //mode parameter
+uint8_t EMERGENCY     = 126;   //mode parameter
+uint8_t CUSTOM        = 69 ;   //mode parameter
+uint8_t PL5V_EN       = 230;   uint8_t PAYLOAD_5V_ENABLE              = PL5V_EN   ;//pin
+uint8_t ADCS5V_EN     = 143;   uint8_t ADCS_5V_ENABLE                 = ADCS5V_EN ;//pin
+uint8_t RS12V_EN      = 205;   uint8_t RESERVED_12V_EN                = RS12V_EN  ;//pin
+uint8_t XB12V_EN      = 139;   uint8_t XBAND_12V_ENABLE               = XB12V_EN  ;//pin
+uint8_t CCU5V_EN      = 155;   uint8_t CENTRAL_COMMAND_UNIT_5V_ENABLE = CCU5V_EN  ;//pin
+uint8_t RS3V3_EN      = 212;   uint8_t RESERVED_3V_ENABLE             = RS3V3_EN  ;//pin
+uint8_t PL_EN         = 172;   uint8_t PAYLOAD_ENABLE                 = PL_EN     ;//pin
+uint8_t ADCS_EN       = 143;   uint8_t ADCS_ENABLE                    = ADCS_EN   ;//pin
+uint8_t UHF_EN        = 189;   uint8_t UHF_ENABLE                     = UHF_EN    ;//pin
+uint8_t GPS_EN        = 57 ;   uint8_t GPS_ENABLE                     = GPS_EN    ;//pin
+uint8_t ADCS12V_EN    = 199;   uint8_t ADCS_12V_ENABLE                = ADCS12V_EN;//pin
+uint8_t EPS_EN        = 97 ;   uint8_t EPS_ENABLE                     = EPS_EN    ;//funny
 //BOOT0
-int SA1_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int SA2_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int SA3_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS4851_RX() {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS4851_DE() {return 0;}
-int RS4851_TX() {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}
-int RS4852_RX() {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS4852_DE() {return 0;}
-int RS4852_TX() {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}
-int SPI1_SS()   {return 0;}
-int SPI1_SCK()  {return 0;}
-int SPI1_MISO() {return 0;}
-int SPI1_MOSI() {return 0;}
-int SPI3_SS()   {return 0;}
-int SPI3_SCK()  {return 0;}
-int SPI3_MISO() {return 0;}
-int SPI3_MOSI() {return 0;}
-int I2C2_SCL()  {return 0;}
-int I2C2_SDA()  {return 0;}
-int SYNC_PULSE(){return 0;}
-int E_RST1()    {return 0;}
-int E_RST0()    {return 0;}
-int PWR_RST()   {return 0;}
-int OBC_FAULT()  {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU_FLT()    {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int OBC_I()      {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU_I()      {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS_FLT()   {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int UHF_I()      {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int UHF_FLT()    {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL_I()       {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL_FLT()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS_3V3_I()   {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS3V3_FLT()  {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int GPS_I()      {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int GPS_FLT()    {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS5V_I()   {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS5V_FLT() {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL5V_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL5V_FLT()   {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU5V_I()    {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU5V_FLT()  {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int XB12V_I()    {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int XB12V_FLT()  {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS12V_FLT(){/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS12V_I()  {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS12V_FLT()  {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS5V_FLT()   {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS5V_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int SA1_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int SA2_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int SA3_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS4851_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS4851_DE  () {return 0;}
+int RS4851_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}
+int RS4852_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS4852_DE  () {return 0;}
+int RS4852_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}
+int SPI1_SS    () {return 0;}
+int SPI1_SCK   () {return 0;}
+int SPI1_MISO  () {return 0;}
+int SPI1_MOSI  () {return 0;}
+int SPI3_SS    () {return 0;}
+int SPI3_SCK   () {return 0;}
+int SPI3_MISO  () {return 0;}
+int SPI3_MOSI  () {return 0;}
+int I2C2_SCL   () {return 0;}
+int I2C2_SDA   () {return 0;}
+int SYNC_PULSE () {return 0;}
+int E_RST1     () {return 0;}
+int E_RST0     () {return 0;}
+int PWR_RST    () {return 0;}
+int OBC_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int CCU_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int OBC_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int CCU_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int ADCS_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int ADCS_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int UHF_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int UHF_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int PL_I       () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int PL_FLT     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS_3V3_I   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS3V3_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int GPS_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int GPS_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int ADCS5V_I   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int ADCS5V_FLT () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int PL5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int PL5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int CCU5V_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int CCU5V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int XB12V_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int XB12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int ADCS12V_FLT() {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int ADCS12V_I  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 // other variables
 int RESPONSE_WAIT         = 10000;
 int CURRENTMODE           = 0;
@@ -120,13 +120,13 @@ int COMMAND_RESULT1_I2C   = 0;
 int COMMAND_RESULT2_I2C   = 0;
 int COMMAND_RESULT1_RS485 = 0;
 int COMMAND_RESULT2_RS485 = 0;
-int COMMANDARRAY_I2C     [16];
-int COMMANDARRAY_RS485   [16];
-int RESPONSEARRAY_I2C    [16];
-int RESPONSEARRAY_RS485  [16];
-int INVALIDCOMMAND       = 1008;
+int COMMANDARRAY_I2C      [16];
+int COMMANDARRAY_RS485    [16];
+int RESPONSEARRAY_I2C     [16];
+int RESPONSEARRAY_RS485   [16];
+int INVALIDCOMMAND        = 1008;
 
-//#####################################
+//####################################
 	
 //read_input
 int read_binary_input_i2c(){
@@ -146,7 +146,7 @@ int read_binary_input_i2c(){
 return result;
 }//read_input
 
-//#######################################
+//####################################
 
 //read_input
 int read_binary_input_rs485(){
@@ -166,7 +166,7 @@ int read_binary_input_rs485(){
 return result;
 }//read_input
 	
-//######################################   
+//####################################  
 
 //response_wait
 int response_wait(){
@@ -175,7 +175,7 @@ int response_wait(){
 return 0;
 }//response_wait
 
-//#####################################
+//####################################
 
 //shift all to left, insert new bit at end
 //command_leftShift_insertEnd_i2c
@@ -185,7 +185,7 @@ int command_leftShift_insertEnd_i2c(int insertionbit){
 return 0;  
 }//command_leftShift_insertEnd_i2c
 
-//#################################
+//####################################
 
 //shift all to left, insert new bit at end
 //command_leftShift_insertEnd_rs485
@@ -195,7 +195,7 @@ int command_leftShift_insertEnd_rs485(int insertionbit){
 return 0;  
 }//command_leftShift_insertEnd_rs485
 
-//#################################
+//###################################
 
 //transmit_bit_response_i2c
 int transmit_bit_response_i2c(int X){
@@ -220,7 +220,7 @@ int transmit_bit_response_i2c(int X){
 return 0;
 }//transmit_bit_response_i2c
 
-//######################################
+//#################################
 
 //transmit_bit_response_rs485
 int transmit_bit_response_rs485(int X){
@@ -245,7 +245,7 @@ int transmit_bit_response_rs485(int X){
 return 0;
 }//transmit_bit_response_rs485
 
-//######################################
+//#################################
 
 //send_response_i2c
 int send_response_i2c(){
@@ -261,7 +261,7 @@ int send_response_rs485(){
 return 0;
 }//send_response_rs485
 
-//##################################
+//################################
 	
 //reset_command_array_i2c
 int reset_command_array_i2c(){
@@ -323,7 +323,7 @@ int nack_response1_i2c(){
 return 0;
 }//nack_response1_i2c
    
-//###################################
+//##################################
 
 //nack_response1_rs485
 int nack_response1_rs485(){
@@ -333,7 +333,7 @@ int nack_response1_rs485(){
 return 0;
 }//nack_response1_rs485
 	
-//###################################
+//##################################
 	
 //my_response2_i2c
 int my_response2_i2c( int myvalue){
@@ -369,7 +369,7 @@ int captured_command_i2c(){
 return 0;
 }//captured_command_i2c 
 
-//#############################
+//################################
 
 //capture_command_rs485    
 int captured_command_rs485(){
@@ -386,7 +386,7 @@ return 0;
 }//captured_command_rs485
 
 
-//##########################
+//################################
 
 //write_response_i2c
 int write_response_i2c( int firstbyte, int secondbyte){
@@ -400,7 +400,7 @@ return 0;
 }//write_response_i2c
 
 
-//#######################
+//################################
 
 //write_response_rs485
 int write_response_rs485( int firstbyte, int secondbyte){
@@ -413,15 +413,15 @@ int write_response_rs485( int firstbyte, int secondbyte){
 return 0;
 }//write_response_rs485
 
-//#######################
+//#################################
 
 //execute
 int execute_i2c(){
     //PING
     if( (COMMAND_RESULT1_I2C==PING) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND)) ){
-	                       ack_response1_i2c();
-	                       send_response_i2c();
-	                       reset_response_array_i2c();
+	                     ack_response1_i2c();
+	                     send_response_i2c();
+	                     reset_response_array_i2c();
     }//ACK...........Fault reporting mechanisms?
     //SON
     if ( (COMMAND_RESULT1_I2C==SON) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND)) ){
@@ -436,7 +436,7 @@ int execute_i2c(){
                              if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1               ){nack_response1_i2c();}//NACK
+                             if(else_check==1                   ){nack_response1_i2c();}//NACK
                              send_response_i2c();
                              reset_response_array_i2c();
     }//SON
@@ -453,7 +453,7 @@ int execute_i2c(){
                              if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1               ){nack_response1_i2c();}//NACK
+                             if(else_check==1                   ){nack_response1_i2c();}//NACK
                              send_response_i2c();
                              reset_response_array_i2c();
     }//SOF
@@ -467,7 +467,7 @@ int execute_i2c(){
                              if(COMMAND_RESULT2_I2C==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_I2C==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_I2C==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1                  ){nack_response1_i2c();}//NACK
+                             if(else_check==1                      ){nack_response1_i2c();}//NACK
                              send_response_i2c();
                              reset_response_array_i2c();
     }//SM
@@ -481,13 +481,13 @@ int execute_i2c(){
     //GSC
     //GOSTM
     if (  (COMMAND_RESULT1_I2C==GOSTM)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND)) ){
-        int a = (int) (XB12V_I()  <<7); 
+        int a = (int) (XB12V_I  ()<<7); 
         int b = (int) (ADCS12V_I()<<6);
-        int c = (int) (RS5V_I()   <<5);
-        int d = (int) (RS3V3_I()  <<4);
-        int e = (int) (SA1_I()    <<3);
-        int f = (int) (SA2_I()    <<2);
-        int g = (int) (SA3_I()    <<1);
+        int c = (int) (RS5V_I   ()<<5);
+        int d = (int) (RS3V3_I  ()<<4);
+        int e = (int) (SA1_I    ()<<3);
+        int f = (int) (SA2_I    ()<<2);
+        int g = (int) (SA3_I    ()<<1);
         write_response_i2c(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
         //send_response();
         //reset_response_array();
@@ -503,7 +503,7 @@ int execute_i2c(){
 return 0;
 }//execute
 
-//##############
+//#################################
 
 
 //execute
@@ -527,7 +527,7 @@ int execute_rs485(){
                              if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1               ){nack_response1_rs485();}//NACK
+                             if(else_check==1                     ){nack_response1_rs485();}//NACK
                              send_response_rs485();
                              reset_response_array_rs485();
     }//SON
@@ -544,7 +544,7 @@ int execute_rs485(){
                              if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1               ){nack_response1_rs485();}//NACK
+                             if(else_check==1                     ){nack_response1_rs485();}//NACK
                              send_response_rs485();
                              reset_response_array_rs485();
     }//SOF
@@ -558,7 +558,7 @@ int execute_rs485(){
                              if(COMMAND_RESULT2_RS485==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_RS485==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_RS485==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1                  ){nack_response1_rs485();}//NACK
+                             if(else_check==1                        ){nack_response1_rs485();}//NACK
                              send_response_rs485();
                              reset_response_array_rs485();
     }//SM
