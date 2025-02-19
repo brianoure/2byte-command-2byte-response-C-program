@@ -15,21 +15,21 @@ uint8_t LOW    = 0; uint8_t FALSE= 1;
 uint8_t PAUSE  = 2;
 uint8_t END    = 3;
 //TRANSMISSION AND RECEPTION (COMMUNICATION) SYMBOLS
-uint8_t PING      = 34;    //command
-uint8_t ACK       = 47;    uint8_t ACKNOWLEDGE    = ACK; //response
-uint8_t NACK      = 52;    uint8_t NOT_ACKNOWLEDGE= NACK;//response
+uint8_t PING      = 34 ;   //command
+uint8_t ACK       = 47 ;   uint8_t ACKNOWLEDGE    = ACK; //response
+uint8_t NACK      = 52 ;   uint8_t NOT_ACKNOWLEDGE= NACK;//response
 uint8_t SON       = 140;   uint8_t SWITCH_ON      = SON; //command
-uint8_t UHF       = 24;    //parameter
+uint8_t UHF       = 24 ;   //parameter
 uint8_t ADCS      = 162;   //parameter
-uint8_t GPS       = 75;    //parameter
+uint8_t GPS       = 75 ;   //parameter
 uint8_t SOF       = 218;   uint8_t SWITCH_OFF      = SOF;//command
 uint8_t SM        = 107;   uint8_t SET_MODE        = SM ;//command
 uint8_t GM        = 122;   uint8_t GET_MODE        = GM ;//command
-uint8_t GSC       = 94;    uint8_t GET_SYSTEM_CLOCK= GSC;//command
+uint8_t GSC       = 94 ;   uint8_t GET_SYSTEM_CLOCK= GSC;//command
 uint8_t SSC       = 209;   uint8_t SET_SYSTEM_CLOCK= SSC;//command
 uint8_t GFP       = 134;   //command
-uint8_t SFP       = 90;    //command
-uint8_t FON       = 55;    uint8_t FUNCTION_ON     = FON;//command
+uint8_t SFP       = 90 ;   //command
+uint8_t FON       = 55 ;   uint8_t FUNCTION_ON     = FON;//command
 uint8_t TWELVEBUS = 100;   //telemetry parameter
 uint8_t FIVEBUS   = 150;   //telemetry parameter
 uint8_t THREEBUS  = 200;   //parameter
@@ -37,18 +37,18 @@ uint8_t FOF       = 233;   uint8_t FUNCTION_OFF                = FOF  ;//command
 uint8_t GOSTM     = 157;   uint8_t GET_ONLINE_SYSTEM_TELEMETRY = GOSTM;//command
 uint8_t KEN       = 255;   uint8_t KILL_ENABLE                 = KEN  ;//command
 uint8_t KDIS      = 227;   uint8_t KILL_DISABLE                = KDIS ;//command
-uint8_t GD        = 15;    uint8_t GET_DATA  = GD;//command
+uint8_t GD        = 15 ;   uint8_t GET_DATA  = GD;//command
 uint8_t PD        = 245;   uint8_t PUT_DATA  = PD;//command
 uint8_t RD        = 222;   uint8_t READ_DATA = RD;//command
 uint8_t WD        = 133;   uint8_t WRITE DATA= WD;//command
-uint8_t INITIALIZE    = 60; //mode parameter
-uint8_t DETUMBLE      = 71; //mode parameter
-uint8_t NORMAL        = 82; //mode parameter
-uint8_t COMMUNICATION = 93; //mode parameter
-uint8_t PAYLOAD       = 104;//mode parameter
-uint8_t IMAGE         = 115;//mode parameter
-uint8_t EMERGENCY     = 126;//mode parameter
-uint8_t CUSTOM        = 69 ;//mode parameter
+uint8_t INITIALIZE    = 60 ; //mode parameter
+uint8_t DETUMBLE      = 71 ; //mode parameter
+uint8_t NORMAL        = 82 ; //mode parameter
+uint8_t COMMUNICATION = 93 ; //mode parameter
+uint8_t PAYLOAD       = 104; //mode parameter
+uint8_t IMAGE         = 115; //mode parameter
+uint8_t EMERGENCY     = 126; //mode parameter
+uint8_t CUSTOM        = 69 ; //mode parameter
 uint8_t PL5V_EN   = 230; uint8_t PAYLOAD_5V_ENABLE = PL5V_EN  ;//pin
 uint8_t ADCS5V_EN = 143; uint8_t ADCS_5V_ENABLE    = ADCS5V_EN;//pin
 uint8_t RS12V_EN  = 205; uint8_t RESERVED_12V_EN   = RS12V_EN ;//pin
