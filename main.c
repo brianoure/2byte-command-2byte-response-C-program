@@ -66,25 +66,25 @@ int SA1_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int SA2_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int SA3_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int RS4851_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS4851_DE  () {return 0;}
+int RS4851_DE  () {return 0;} //in?
 int RS4851_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}
 int RS4852_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS4852_DE  () {return 0;}
+int RS4852_DE  () {return 0;} //in?
 int RS4852_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}
-int SPI1_SS    () {return 0;}
-int SPI1_SCK   () {return 0;}
-int SPI1_MISO  () {return 0;}
-int SPI1_MOSI  () {return 0;}
-int SPI3_SS    () {return 0;}
-int SPI3_SCK   () {return 0;}
-int SPI3_MISO  () {return 0;}
-int SPI3_MOSI  () {return 0;}
-int I2C2_SCL   () {return 0;}
-int I2C2_SDA   () {return 0;}
-int SYNC_PULSE () {return 0;}
-int E_RST1     () {return 0;}
-int E_RST0     () {return 0;}
-int PWR_RST    () {return 0;}
+int SPI1_SS    () {return 0;} //who's the master, who's the slave and what's the message
+int SPI1_SCK   () {return 0;} //who's the master, who's the slave and what's the message
+int SPI1_MISO  () {return 0;} //who's the master, who's the slave and what's the message
+int SPI1_MOSI  () {return 0;} //who's the master, who's the slave and what's the message
+int SPI3_SS    () {return 0;} //who's the master, who's the slave and what's the message
+int SPI3_SCK   () {return 0;} //who's the master, who's the slave and what's the message
+int SPI3_MISO  () {return 0;} //who's the master, who's the slave and what's the message
+int SPI3_MOSI  () {return 0;} //who's the master, who's the slave and what's the message
+int I2C2_SCL   () {return 0;} //who's the master, who's the slave and what's the message
+int I2C2_SDA   () {return 0;} //who's the master, who's the slave and what's the message
+int SYNC_PULSE () {return 0;} //in or out...are we clock source or clock drain?
+int E_RST1     () {return 0;} //?
+int E_RST0     () {return 0;} //?
+int PWR_RST    () {return 0;} //?
 int OBC_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int CCU_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int OBC_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
