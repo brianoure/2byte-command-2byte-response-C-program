@@ -3,63 +3,64 @@
 //rs485 data when A and !A
 //i2c data when clock high
 //Dude, be cautious with your variables - public or global... _I are functions that read from input pins, _EN are raw integers(commands targeting output pins)
+//Whoa! the EPS microntroller is actually  sampling the inputs in every while loop instance, so we have to check for changes in input states to determine if we have a 1 or a 0 
 
 int main(){//main
 	
 //############ DECLARATIONS ###########
 	
 //Boolean
-uint8_t HIGH   = 1;
-uint8_t LOW    = 0;
+uint8_t HIGH   = 1; uint8_t TRUE = 1;
+uint8_t LOW    = 0; uint8_t FALSE= 1;
 uint8_t PAUSE  = 2;
 uint8_t END    = 3;
 //TRANSMISSION AND RECEPTION (COMMUNICATION) SYMBOLS
-uint8_t PING      = 34;//command
-uint8_t ACK       = 47;//response
-uint8_t NACK      = 52;//response
-uint8_t SON       = 140;//command
-uint8_t UHF       = 24;//parameter
-uint8_t ADCS      = 162;//parameter
-uint8_t GPS       = 75;//parameter
-uint8_t SOF       = 218;//command
-uint8_t SM        = 107;//command
-uint8_t GM        = 122;//command
-uint8_t GSC       = 94;//command
-uint8_t SSC       = 209;//command
-uint8_t GFP       = 134;//command
-uint8_t SFP       = 90;//command
-uint8_t FON       = 55;//command
-uint8_t TWELVEBUS = 100;//telemetry parameter
-uint8_t FIVEBUS   = 150;//telemetry parameter
-uint8_t THREEBUS  = 200;//parameter
-uint8_t FOF       = 233;//command
-uint8_t GOSTM     = 157;//command
-uint8_t KEN       = 255;//command
-uint8_t KDIS      = 227;//command
-uint8_t GD        = 15;//command
-uint8_t PD        = 245;//command
-uint8_t RD        = 222;//command
-uint8_t WD        = 133;//command
-uint8_t INITIALIZE    = 60;//mode parameter
-uint8_t DETUMBLE      = 71;//mode parameter
-uint8_t NORMAL        = 82;//mode parameter
-uint8_t COMMUNICATION = 93;//mode parameter
+uint8_t PING      = 34;    //command
+uint8_t ACK       = 47;    uint8_t ACKNOWLEDGE    = ACK; //response
+uint8_t NACK      = 52;    uint8_t NOT_ACKNOWLEDGE= NACK;//response
+uint8_t SON       = 140;   uint8_t SWITCH_ON      = SON; //command
+uint8_t UHF       = 24;    //parameter
+uint8_t ADCS      = 162;   //parameter
+uint8_t GPS       = 75;    //parameter
+uint8_t SOF       = 218;   uint8_t SWITCH_OFF      = SOF;//command
+uint8_t SM        = 107;   uint8_t SET_MODE        = SM ;//command
+uint8_t GM        = 122;   uint8_t GET_MODE        = GM ;//command
+uint8_t GSC       = 94;    uint8_t GET_SYSTEM_CLOCK= GSC;//command
+uint8_t SSC       = 209;   uint8_t SET_SYSTEM_CLOCK= SSC;//command
+uint8_t GFP       = 134;   //command
+uint8_t SFP       = 90;    //command
+uint8_t FON       = 55;    uint8_t FUNCTION_ON     = FON;//command
+uint8_t TWELVEBUS = 100;   //telemetry parameter
+uint8_t FIVEBUS   = 150;   //telemetry parameter
+uint8_t THREEBUS  = 200;   //parameter
+uint8_t FOF       = 233;   uint8_t FUNCTION_OFF                = FOF  ;//command
+uint8_t GOSTM     = 157;   uint8_t GET_ONLINE_SYSTEM_TELEMETRY = GOSTM;//command
+uint8_t KEN       = 255;   uint8_t KILL_ENABLE                 = KEN  ;//command
+uint8_t KDIS      = 227;   uint8_t KILL_DISABLE                = KDIS ;//command
+uint8_t GD        = 15;    uint8_t GET_DATA  = GD;//command
+uint8_t PD        = 245;   uint8_t PUT_DATA  = PD;//command
+uint8_t RD        = 222;   uint8_t READ_DATA = RD;//command
+uint8_t WD        = 133;   uint8_t WRITE DATA= WD;//command
+uint8_t INITIALIZE    = 60; //mode parameter
+uint8_t DETUMBLE      = 71; //mode parameter
+uint8_t NORMAL        = 82; //mode parameter
+uint8_t COMMUNICATION = 93; //mode parameter
 uint8_t PAYLOAD       = 104;//mode parameter
 uint8_t IMAGE         = 115;//mode parameter
 uint8_t EMERGENCY     = 126;//mode parameter
-uint8_t CUSTOM        = 69;//mode parameter
-uint8_t PL5V_EN   = 230;//pin
-uint8_t ADCS5V_EN = 143;//pin
-uint8_t RS12V_EN  = 205;//pin
-uint8_t XB12V_EN  = 139;//pin
-uint8_t CCU5V_EN  = 155;//pin
-uint8_t RS3V3_EN  = 212;//pin
-uint8_t PL_EN     = 172;//pin
-uint8_t ADCS_EN   = 143;//pin
-uint8_t UHF_EN    = 189;//pin
-uint8_t GPS_EN    = 57;//pin
-uint8_t ADCS12V_EN= 199;//pin
-uint8_t EPS_EN    =  97;//funny
+uint8_t CUSTOM        = 69 ;//mode parameter
+uint8_t PL5V_EN   = 230; uint8_t PAYLOAD_5V_ENABLE = PL5V_EN  ;//pin
+uint8_t ADCS5V_EN = 143; uint8_t ADCS_5V_ENABLE    = ADCS5V_EN;//pin
+uint8_t RS12V_EN  = 205; uint8_t RESERVED_12V_EN   = RS12V_EN ;//pin
+uint8_t XB12V_EN  = 139; uint8_t XBAND_12V_ENABLE  = XB12V_EN ;//pin
+uint8_t CCU5V_EN  = 155; uint8_t CENTRAL_COMMAND_UNIT_5V_ENABLE = CCU5V_EN ;//pin
+uint8_t RS3V3_EN  = 212; uint8_t RESERVED_3V_ENABLE             = RS3V3_EN ;//pin
+uint8_t PL_EN     = 172; uint8_t PAYLOAD_ENABLE  = PL_EN     ;//pin
+uint8_t ADCS_EN   = 143; uint8_t ADCS_ENABLE     = ADCS_EN   ;//pin
+uint8_t UHF_EN    = 189; uint8_t UHF_ENABLE      = UHF_EN    ;//pin
+uint8_t GPS_EN    = 57 ; uint8_t GPS_ENABLE      = GPS_EN    ;//pin
+uint8_t ADCS12V_EN= 199; uint8_t ADCS_12V_ENABLE = ADCS12V_EN;//pin
+uint8_t EPS_EN    = 97 ; uint8_t EPS_ENABLE      = EPS_EN    ;//funny
 //BOOT0
 int SA1_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int SA2_I()     {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
@@ -129,6 +130,12 @@ int INVALIDCOMMAND       = 1008;
 	
 //read_input
 int read_binary_input_i2c(){
+    //TRUTH TABLE
+    //PC10 PA15 Y(TX) ...................CAUTION
+    //0    0    3(end)
+    //0    1    2(pause)
+    //1    0    0
+    //1    1    1
     int result=0;
 	   //i2c in....input binary value is the pin value when the clock is high...int this case pin B15 is the clock and D10 is the signal
 	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=3;}//end00
@@ -143,6 +150,12 @@ return result;
 
 //read_input
 int read_binary_input_rs485(){
+    //TRUTH TABLE
+    //PC10 PA15 Y(TX) ...................CAUTION
+    //0    0    3(end)
+    //0    1    2(pause)
+    //1    0    0
+    //1    1    1
     int result=0;
 	   //rs485 in......input binary value is when  two lines are exctly opposite/complementing each other...you just have to agree which set represents the ONE and which set represents the ZERO
 	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=3;}//end00
@@ -186,6 +199,7 @@ return 0;
 
 //transmit_bit_response_i2c
 int transmit_bit_response_i2c(int X){
+    //TRUTH TABLE
     //PC10 PA15 Y(TX) ...................CAUTION
     //0    0    3(end)
     //0    1    2(pause)
@@ -210,6 +224,7 @@ return 0;
 
 //transmit_bit_response_rs485
 int transmit_bit_response_rs485(int X){
+    //TRUTH TABLE
     //PC10 PA15 Y(TX).....................CAUTION
     //0    0    3(end)
     //0    1    1
