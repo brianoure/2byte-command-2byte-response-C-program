@@ -283,7 +283,7 @@ return 0;
 //#################################
 
 //reset_response_array_i2c
-int reset_response_array_rs485(){
+int reset_response_array_i2c(){
     for( int index=0;  index<=15; index++ ){  RESPONSEARRAY_I2C[index] = 0;  }//for
 return 0;
 }//reset_response_array_i2c
