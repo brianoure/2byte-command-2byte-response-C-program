@@ -130,7 +130,7 @@ int INVALIDCOMMAND        = 1008;
 	
 //read_input
 int read_binary_input_i2c(){
-    //TRUTH TABLE
+    //TRUTH TABLE I2C
     //PC10 PA15 Y(TX) ...................CAUTION
     //0    0    3(end)
     //0    1    2(pause)
@@ -150,7 +150,7 @@ return result;
 
 //read_input
 int read_binary_input_rs485(){
-    //TRUTH TABLE
+    //TRUTH TABLE RS485
     //PC10 PA15 Y(TX) ...................CAUTION
     //0    0    3(end)
     //0    1    2(pause)
@@ -429,48 +429,48 @@ int execute_i2c(){
     //SON
     if ( (COMMAND_RESULT1_I2C==SON) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND)) ){
                              int else_check=1;
-                             if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1                   ){nack_response1_i2c();}//NACK
+                             if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(else_check==1                   ){write_response_i2c(NACK,0);}//NACK
                              send_response_i2c();
                              reset_response_array_i2c();
     }//SON
     //SOF  
     if ( (COMMAND_RESULT1_I2C==SOF)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){
                              int else_check=1;
-                             if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1                   ){nack_response1_i2c();}//NACK
+                             if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(else_check==1                   ){write_response_i2c(NACK,0);}//NACK
                              send_response_i2c();
                              reset_response_array_i2c();
     }//SOF
     //SM
     if (  (COMMAND_RESULT1_I2C==SM)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){
                              int else_check=1;
-                             if(COMMAND_RESULT2_I2C==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;ack_response1_i2c();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1                      ){nack_response1_i2c();}//NACK
+                             if(COMMAND_RESULT2_I2C==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(else_check==1                      ){write_response_i2c(NACK,0);}//NACK
                              send_response_i2c();
                              reset_response_array_i2c();
     }//SM
@@ -520,34 +520,34 @@ int execute_rs485(){
     //SON
     if ( (COMMAND_RESULT1_RS485==SON) & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND)) ){
                              int else_check=1;
-                             if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1                     ){nack_response1_rs485();}//NACK
+                             if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(else_check==1                     ){write_response_rs485(NACK,0);}//NACK
                              send_response_rs485();
                              reset_response_array_rs485();
     }//SON
     //SOF  
     if ( (COMMAND_RESULT1_RS485==SOF)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){
                              int else_check=1;
-                             if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1                     ){nack_response1_rs485();}//NACK
+                             if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(else_check==1                     ){write_response_rs485(NACK,0);}//NACK
                              send_response_rs485();
                              reset_response_array_rs485();
     }//SOF
@@ -561,7 +561,7 @@ int execute_rs485(){
                              if(COMMAND_RESULT2_RS485==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_RS485==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
                              if(COMMAND_RESULT2_RS485==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(else_check==1                        ){nack_response1_rs485();}//NACK
+                             if(else_check==1                        ){write_response_rs485(NACK,0);}//NACK
                              send_response_rs485();
                              reset_response_array_rs485();
     }//SM
