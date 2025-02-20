@@ -419,7 +419,7 @@ return 0;
 int execute_i2c(){
     //PING
     if( (COMMAND_RESULT1_I2C==PING) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND)) ){
-	                     ack_response1_i2c();
+	                     write_response_i2c(ACK,ZERO);
 	                     send_response_i2c();
 	                     reset_response_array_i2c();
     }//ACK...........Fault reporting mechanisms?
