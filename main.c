@@ -298,16 +298,6 @@ return 0;
 
 //#################################
 	
-//nack_response1_rs485
-int nack_response1_rs485(){
-    for( int index=0;  index<=7; index++ ){
-    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( NACK>>(7-index) ) ) & 1 );
-    }//for
-return 0;
-}//nack_response1_rs485
-	
-//##################################
-	
 //my_response2_i2c
 int my_response2_i2c( int myvalue){
     for( int index=8;  index<=15; index++ ){
