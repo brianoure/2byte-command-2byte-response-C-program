@@ -572,13 +572,13 @@ int execute_rs485(){
     //GSC
     //GOSTM
     if (  (COMMAND_RESULT1_RS485==GOSTM)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND)) ){
-        int a = (int) (XB12V_I()  <<7); 
+        int a = (int) (XB12V_I  ()<<7); 
         int b = (int) (ADCS12V_I()<<6);
-        int c = (int) (RS5V_I()   <<5);
-        int d = (int) (RS3V3_I()  <<4);
-        int e = (int) (SA1_I()    <<3);
-        int f = (int) (SA2_I()    <<2);
-        int g = (int) (SA3_I()    <<1);
+        int c = (int) (RS5V_I   ()<<5);
+        int d = (int) (RS3V3_I  ()<<4);
+        int e = (int) (SA1_I    ()<<3);
+        int f = (int) (SA2_I    ()<<2);
+        int g = (int) (SA3_I    ()<<1);
         write_response_rs485(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
         //send_response();
         //reset_response_array();
