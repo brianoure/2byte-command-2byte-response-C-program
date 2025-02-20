@@ -619,12 +619,14 @@ return 0;
 
 
 //########################   MAIN EVENT  ###########################################
+int raw_input_i2c;
 int previous_i2c;
 int flip_21_detected_i2c=0;//change from 2(PAUSE) to 1(HIGH)
 int flip_12_detected_i2c=0;//change from 1(HIGH) to 2(PAUSE)
 int flip_20_detected_i2c=0;//change from 2(PAUSE) to 1(HIGH)
 int flip_02_detected_i2c=0;//change from 0(LOW) to 2(PAUSE)
 //##
+int raw_input_rs485;
 int previous_rs485;
 int flip_21_detected_rs485=0;//change from 2(PAUSE) to 1(HIGH)
 int flip_12_detected_rs485=0;//change from 1(HIGH) to 2(PAUSE)
@@ -640,7 +642,7 @@ while(1){//while
         if ( (previous_i2c==2) & (raw_input_i2c==0) ){  flip_20_detected_i2c=1;  }
         if ( (previous_i2c==0) & (raw_input_i2c==2) ){  flip_02_detected_i2c=1;  }
         if ( flip_21_detected_i2c & flip_12_detected_i2c ){ 
-	   shiftleft_insertendbit_i2c(1);
+	   command_leftShift_insertEnd_i2c(1);
 	   flip_21_detected_i2c=0;
            flip_12_detected_i2c=0;
            flip_20_detected_i2c=0;
@@ -649,7 +651,7 @@ while(1){//while
 	   execute_i2c();
 	}//if
         if ( flip_20_detected_i2c & flip_02_detected_i2c ){
-           shiftleft_insertendbit_i2c(0);
+           command_leftShift_insertEnd_i2c(0);
            flip_21_detected_i2c=0;
            flip_12_detected_i2c=0;
            flip_20_detected_i2c=0;
@@ -666,7 +668,7 @@ while(1){//while
         if ( (previous_rs485==2) & (raw_input_rs485==0) ){  flip_20_detected_rs485=1;  }
         if ( (previous_rs485==0) & (raw_input_rs485==2) ){  flip_02_detected_rs485=1;  }
         if ( flip_21_detected__rs485 & flip_12_detected_rs485 ){ 
-	   shiftleft_insertendbit_rs485(1);
+	   command_leftShift_insertEnd_rs485(1);
 	   flip_21_detected_rs485=0;
            flip_12_detected_rs485=0;
            flip_20_detected_rs485=0;
@@ -675,7 +677,7 @@ while(1){//while
 	   execute_rs485();
 	}//if
         if ( flip_20_detected_rs485 & flip_02_detected_rs485 ){
-           shiftleft_insertendbit_rs485(0);
+           command_leftShift_insertEnd_rs485(0);
            flip_21_detected_rs485=0;
            flip_12_detected_rs485=0;
            flip_20_detected_rs485=0;
