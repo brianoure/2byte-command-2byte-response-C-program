@@ -665,7 +665,7 @@ while(1){//while
         previous_i2c = raw_input_i2c;
 	//######## END I2C ############
 	//######## RS485 ##############
-	raw_input_i2c = read_binary_input_i2c();
+	raw_input_rs485 = read_binary_input_rs485();
 	if ( (previous_rs485==2) & (raw_input_rs485==1) ){  flip_21_detected_rs485=1;  }
         if ( (previous_rs485==1) & (raw_input_rs485==2) ){  flip_12_detected_rs485=1;  }
         if ( (previous_rs485==2) & (raw_input_rs485==0) ){  flip_20_detected_rs485=1;  }
