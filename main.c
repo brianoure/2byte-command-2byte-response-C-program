@@ -233,6 +233,9 @@ int transmit_bit_response_rs485(int X){
     //0    1    1
     //1    0    0
     //1    1    2(pause)
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);//0
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
+    response_wait();//keep pins in pause state
     if(X==1){/*transmit ONE*/
             HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET);//1
             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);//1
