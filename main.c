@@ -670,7 +670,7 @@ while(1){//while
         if ( (previous_rs485==1) & (raw_input_rs485==2) ){  flip_12_detected_rs485=1;  }
         if ( (previous_rs485==2) & (raw_input_rs485==0) ){  flip_20_detected_rs485=1;  }
         if ( (previous_rs485==0) & (raw_input_rs485==2) ){  flip_02_detected_rs485=1;  }
-        if ( flip_21_detected__rs485 & flip_12_detected_rs485 ){ 
+        if ( flip_21_detected_rs485 & flip_12_detected_rs485 ){ 
 	   command_leftShift_insertEnd_rs485(1);
 	   flip_21_detected_rs485=0;
            flip_12_detected_rs485=0;
