@@ -298,36 +298,6 @@ return 0;
 
 //#################################
 	
-//ack_response1_i2c
-int ack_response1_i2c(){
-    for( int index=0;  index<=7; index++ ){
-    RESPONSEARRAY_I2C[index] = (int) ( ( (int) ( ACK>>(7-index) ) ) & 1 );   
-    }//for
-return 0;
-}//ack_response1_i2c
-
-//################################
-
-//ack_response1_rs485
-int ack_response1_rs485(){
-    for( int index=0;  index<=7; index++ ){
-    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( ACK>>(7-index) ) ) & 1 );   
-    }//for
-return 0;
-}//ack_response1_rs485
-	
-//################################
-	
-//nack_response1_i2c
-int nack_response1_i2c(){
-    for( int index=0;  index<=7; index++ ){
-    RESPONSEARRAY_I2C[index] = (int) ( ( (int) ( NACK>>(7-index) ) ) & 1 );
-    }//for
-return 0;
-}//nack_response1_i2c
-   
-//##################################
-
 //nack_response1_rs485
 int nack_response1_rs485(){
     for( int index=0;  index<=7; index++ ){
@@ -346,16 +316,6 @@ int my_response2_i2c( int myvalue){
 return 0;
 }//my_response2_i2c
 
-//#################################
-
-//my_response2_rs485
-int my_response2_rs485( int myvalue){
-    for( int index=8;  index<=15; index++ ){
-    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( myvalue>>(15-index) ) ) & 1 );
-    }//for
-return 0;
-}//my_response2_rs485
-	
 //#################################
 
 //capture_command_i2c    
@@ -401,7 +361,6 @@ int write_response_i2c( int firstbyte, int secondbyte){
     }//for
 return 0;
 }//write_response_i2c
-
 
 //################################
 
