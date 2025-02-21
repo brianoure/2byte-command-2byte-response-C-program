@@ -424,16 +424,11 @@ int execute_i2c(){
     if (  (COMMAND_RESULT1_I2C==GSC  )  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,CURRENTSYSTEMCLOCK);send_response_i2c();reset_response_array_i2c(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
     if (  (COMMAND_RESULT1_I2C==SSC  )  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response_i2c();reset_response_array_i2c(); }//ACK
     if (  (COMMAND_RESULT1_I2C==GOSTM)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){
-        int a = (int) (XB12V_I  ()<<7); 
-        int b = (int) (ADCS12V_I()<<6);
-        int c = (int) (RS5V_I   ()<<5);
-        int d = (int) (RS3V3_I  ()<<4);
-        int e = (int) (SA1_I    ()<<3);
-        int f = (int) (SA2_I    ()<<2);
-        int g = (int) (SA3_I    ()<<1);
+        int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
+        int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
         write_response_i2c(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
-        //send_response();
-        //reset_response_array();
+        send_response_i2c();
+        reset_response_array_i2c();
     }//ACK GOSTM
     if ( (COMMAND_RESULT1_I2C==KEN ) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,KEN ); send_response_i2c();reset_response_array_i2c(); }//ACK ...........shutting down all activity received from GCS or OBC//KEN
     if ( (COMMAND_RESULT1_I2C==KDIS) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,KDIS); send_response_i2c();reset_response_array_i2c(); }//ACK //KDIS
@@ -443,13 +438,12 @@ return 0;
 
 //#################################
 
-
 //execute
 int execute_rs485(){
     if( (COMMAND_RESULT1_RS485==PING) & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND)) ){
-	                       ack_response1_rs485();
-	                       send_response_rs485();
-	                       reset_response_array_rs485();
+	                     ack_response1_rs485();
+	                     send_response_rs485();
+	                     reset_response_array_rs485();
     }//ACK...........Fault reporting mechanisms?
     if ( (COMMAND_RESULT1_RS485==SON) & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND)) ){
                              int else_check=1;
@@ -500,16 +494,11 @@ int execute_rs485(){
     if (  (COMMAND_RESULT1_RS485==GSC  )  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK);send_response_rs485();reset_response_array_rs485(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
     if (  (COMMAND_RESULT1_RS485==SSC  )  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response_rs485();reset_response_array_rs485(); }//ACK
     if (  (COMMAND_RESULT1_RS485==GOSTM)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){
-        int a = (int) (XB12V_I  ()<<7); 
-        int b = (int) (ADCS12V_I()<<6);
-        int c = (int) (RS5V_I   ()<<5);
-        int d = (int) (RS3V3_I  ()<<4);
-        int e = (int) (SA1_I    ()<<3);
-        int f = (int) (SA2_I    ()<<2);
-        int g = (int) (SA3_I    ()<<1);
+        int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
+        int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
         write_response_rs485(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
-        //send_response();
-        //reset_response_array();
+        send_response_rs485();
+        reset_response_array_rs485();
     }//ACK //GOSTM
     if ( (COMMAND_RESULT1_RS485==KEN )  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,KEN ); send_response_rs485();reset_response_array_rs485(); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
     if ( (COMMAND_RESULT1_RS485==KDIS)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,KDIS); send_response_rs485();reset_response_array_rs485(); }//ACK //KDIS
@@ -527,7 +516,6 @@ return 0;
 }//reset_and_assign_command_result_integers
 
 //####################################
-
 int reset_and_assign_command_result_integers_rs485(){
     COMMAND_RESULT1_RS485 = 0;//refresh
     COMMAND_RESULT2_RS485 = 0;//refresh
