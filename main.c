@@ -372,13 +372,11 @@ return 0;
 
 //execute
 int execute_i2c(){
-    //PING
     if( (COMMAND_RESULT1_I2C==PING) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND)) ){
 	                     write_response_i2c(ACK,ZERO);
 	                     send_response_i2c();
 	                     reset_response_array_i2c();
     }//ACK...........Fault reporting mechanisms?
-    //SON
     if ( (COMMAND_RESULT1_I2C==SON) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND)) ){
                              int else_check=1;
                              if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -394,8 +392,7 @@ int execute_i2c(){
                              if(else_check==1                   ){write_response_i2c(NACK,0);}//NACK
                              send_response_i2c();
                              reset_response_array_i2c();
-    }//SON
-    //SOF  
+    }//SON  
     if ( (COMMAND_RESULT1_I2C==SOF)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){
                              int else_check=1;
                              if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -412,7 +409,6 @@ int execute_i2c(){
                              send_response_i2c();
                              reset_response_array_i2c();
     }//SOF
-    //SM
     if (  (COMMAND_RESULT1_I2C==SM)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){
                              int else_check=1;
                              if(COMMAND_RESULT2_I2C==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -426,16 +422,10 @@ int execute_i2c(){
                              send_response_i2c();
                              reset_response_array_i2c();
     }//SM
-    //GM
-    if (  (COMMAND_RESULT1_I2C==GM )  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,CURRENTMODE       );send_response_i2c();reset_response_array_i2c(); }//ACK
-    //GM
-    //GSC
-    if (  (COMMAND_RESULT1_I2C==GSC)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,CURRENTSYSTEMCLOCK);send_response_i2c();reset_response_array_i2c(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    //SSC
-    if (  (COMMAND_RESULT1_I2C==SSC)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response_i2c();reset_response_array_i2c(); }//ACK
-    //GSC
-    //GOSTM
-    if (  (COMMAND_RESULT1_I2C==GOSTM)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND)) ){
+    if (  (COMMAND_RESULT1_I2C==GM   )  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,CURRENTMODE       );send_response_i2c();reset_response_array_i2c(); }//ACK
+    if (  (COMMAND_RESULT1_I2C==GSC  )  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,CURRENTSYSTEMCLOCK);send_response_i2c();reset_response_array_i2c(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if (  (COMMAND_RESULT1_I2C==SSC  )  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response_i2c();reset_response_array_i2c(); }//ACK
+    if (  (COMMAND_RESULT1_I2C==GOSTM)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){
         int a = (int) (XB12V_I  ()<<7); 
         int b = (int) (ADCS12V_I()<<6);
         int c = (int) (RS5V_I   ()<<5);
@@ -446,14 +436,9 @@ int execute_i2c(){
         write_response_i2c(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
         //send_response();
         //reset_response_array();
-    }//ACK
-    //GOSTM
-    //KEN
-    if ( (COMMAND_RESULT1_I2C==KEN )   & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,KEN ); send_response_i2c();reset_response_array_i2c(); }//ACK ...........shutting down all activity received from GCS or OBC
-    //KEN
-    //KDIS
-    if (  (COMMAND_RESULT1_I2C==KDIS)  & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,KDIS); send_response_i2c();reset_response_array_i2c(); }//ACK
-    //KDIS
+    }//ACK GOSTM
+    if ( (COMMAND_RESULT1_I2C==KEN ) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,KEN ); send_response_i2c();reset_response_array_i2c(); }//ACK ...........shutting down all activity received from GCS or OBC//KEN
+    if ( (COMMAND_RESULT1_I2C==KDIS) & (!(COMMAND_RESULT1_I2C==INVALIDCOMMAND))  ){ write_response_i2c(ACK,KDIS); send_response_i2c();reset_response_array_i2c(); }//ACK //KDIS
     //YOU CAN ALSO ADD LOGIC
 return 0;
 }//execute
@@ -463,13 +448,11 @@ return 0;
 
 //execute
 int execute_rs485(){
-    //PING
     if( (COMMAND_RESULT1_RS485==PING) & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND)) ){
 	                       ack_response1_rs485();
 	                       send_response_rs485();
 	                       reset_response_array_rs485();
     }//ACK...........Fault reporting mechanisms?
-    //SON
     if ( (COMMAND_RESULT1_RS485==SON) & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND)) ){
                              int else_check=1;
                              if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -486,7 +469,6 @@ int execute_rs485(){
                              send_response_rs485();
                              reset_response_array_rs485();
     }//SON
-    //SOF  
     if ( (COMMAND_RESULT1_RS485==SOF)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){
                              int else_check=1;
                              if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -503,7 +485,6 @@ int execute_rs485(){
                              send_response_rs485();
                              reset_response_array_rs485();
     }//SOF
-    //SM
     if (  (COMMAND_RESULT1_RS485==SM)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){
                              int else_check=1;
                              if(COMMAND_RESULT2_RS485==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;ack_response1_rs485();/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
@@ -517,16 +498,10 @@ int execute_rs485(){
                              send_response_rs485();
                              reset_response_array_rs485();
     }//SM
-    //GM
-    if (  (COMMAND_RESULT1_RS485==GM )  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,CURRENTMODE       );send_response_rs485();reset_response_array_rs485(); }//ACK
-    //GM
-    //GSC
-    if (  (COMMAND_RESULT1_RS485==GSC)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK);send_response_rs485();reset_response_array_rs485(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    //SSC
-    if (  (COMMAND_RESULT1_RS485==SSC)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response_rs485();reset_response_array_rs485(); }//ACK
-    //GSC
-    //GOSTM
-    if (  (COMMAND_RESULT1_RS485==GOSTM)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND)) ){
+    if (  (COMMAND_RESULT1_RS485==GM   )  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,CURRENTMODE       );send_response_rs485();reset_response_array_rs485(); }//ACK //GM
+    if (  (COMMAND_RESULT1_RS485==GSC  )  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK);send_response_rs485();reset_response_array_rs485(); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if (  (COMMAND_RESULT1_RS485==SSC  )  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2;send_response_rs485();reset_response_array_rs485(); }//ACK
+    if (  (COMMAND_RESULT1_RS485==GOSTM)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){
         int a = (int) (XB12V_I  ()<<7); 
         int b = (int) (ADCS12V_I()<<6);
         int c = (int) (RS5V_I   ()<<5);
@@ -537,14 +512,9 @@ int execute_rs485(){
         write_response_rs485(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
         //send_response();
         //reset_response_array();
-    }//ACK
-    //GOSTM
-    //KEN
-    if ( (COMMAND_RESULT1_RS485==KEN )   & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,KEN ); send_response_rs485();reset_response_array_rs485(); }//ACK ...........shutting down all activity received from GCS or OBC
-    //KEN
-    //KDIS
-    if (  (COMMAND_RESULT1_RS485==KDIS)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,KDIS); send_response_rs485();reset_response_array_rs485(); }//ACK
-    //KDIS
+    }//ACK //GOSTM
+    if ( (COMMAND_RESULT1_RS485==KEN )  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,KEN ); send_response_rs485();reset_response_array_rs485(); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
+    if ( (COMMAND_RESULT1_RS485==KDIS)  & (!(COMMAND_RESULT1_RS485==INVALIDCOMMAND))  ){ write_response_rs485(ACK,KDIS); send_response_rs485();reset_response_array_rs485(); }//ACK //KDIS
     //YOU CAN ALSO ADD LOGIC
 return 0;
 }//execute
