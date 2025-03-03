@@ -56,7 +56,7 @@ uint8_t XB12V_EN      = 139;   uint8_t XBAND_12V_ENABLE               = XB12V_EN
 uint8_t CCU5V_EN      = 155;   uint8_t CENTRAL_COMMAND_UNIT_5V_ENABLE = CCU5V_EN  ;//pin
 uint8_t RS3V3_EN      = 212;   uint8_t RESERVED_3V_ENABLE             = RS3V3_EN  ;//pin
 uint8_t PL_EN         = 172;   uint8_t PAYLOAD_ENABLE                 = PL_EN     ;//pin
-uint8_t ADCS_EN       = 137;   uint8_t ADCS_ENABLE                    = ADCS_EN   ;//pin
+uint8_t ADCS_EN       = 144;   uint8_t ADCS_ENABLE                    = ADCS_EN   ;//pin
 uint8_t UHF_EN        = 189;   uint8_t UHF_ENABLE                     = UHF_EN    ;//pin
 uint8_t GPS_EN        = 57 ;   uint8_t GPS_ENABLE                     = GPS_EN    ;//pin
 uint8_t ADCS12V_EN    = 199;   uint8_t ADCS_12V_ENABLE                = ADCS12V_EN;//pin
