@@ -306,16 +306,6 @@ return 0;
 }//reset_response_array_rs485
 
 //#################################
-	
-//my_response2_i2c
-int my_response2_i2c( int myvalue){
-    for( int index=8;  index<=15; index++ ){
-    RESPONSEARRAY_I2C[index] = (int) ( ( (int) ( myvalue>>(15-index) ) ) & 1 );
-    }//for
-return 0;
-}//my_response2_i2c
-
-//#################################
 
 //capture_command_i2c    
 int captured_command_i2c(){
