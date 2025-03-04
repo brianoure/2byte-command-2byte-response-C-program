@@ -40,7 +40,7 @@ uint8_t KDIS          = 227;   uint8_t KILL_DISABLE                  = KDIS ;//c
 uint8_t GD            = 15 ;   uint8_t GET_DATA                      = GD   ;//command
 uint8_t PD            = 245;   uint8_t PUT_DATA                      = PD   ;//command
 uint8_t RD            = 222;   uint8_t READ_DATA                     = RD   ;//command
-uint8_t WD            = 133;   uint8_t WRITE DATA                    = WD   ;//command
+uint8_t WD            = 133;   uint8_t WRITE_DATA                    = WD   ;//command
 uint8_t INITIALIZE    = 60 ;   //mode parameter
 uint8_t DETUMBLE      = 71 ;   //mode parameter
 uint8_t NORMAL        = 82 ;   //mode parameter
@@ -416,9 +416,9 @@ int execute_i2c(){
     if (  COMMAND_RESULT1_I2C==GSC   ){ write_response_i2c(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
     if (  COMMAND_RESULT1_I2C==SSC   ){ write_response_i2c(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2; }//ACK
     if (  COMMAND_RESULT1_I2C==GOSTM ){
-        int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
-        int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
-        write_response_i2c(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
+                             int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
+                             int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
+                             write_response_i2c(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
     }//ACK GOSTM
     if ( COMMAND_RESULT1_I2C==KEN   ){ write_response_i2c(ACK,KEN );  }//ACK ...........shutting down all activity received from GCS or OBC//KEN
     if ( COMMAND_RESULT1_I2C==KDIS  ){ write_response_i2c(ACK,KDIS);  }//ACK //KDIS
@@ -476,9 +476,9 @@ int execute_rs485(){
     if (  COMMAND_RESULT1_RS485==GSC   ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
     if (  COMMAND_RESULT1_RS485==SSC   ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2; }//ACK
     if (  COMMAND_RESULT1_RS485==GOSTM ){
-        int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
-        int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
-        write_response_rs485(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
+                             int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
+                             int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
+                             write_response_rs485(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
     }//ACK //GOSTM
     if ( COMMAND_RESULT1_RS485==KEN   ){ write_response_rs485(ACK,KEN ); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
     if ( COMMAND_RESULT1_RS485==KDIS  ){ write_response_rs485(ACK,KDIS); }//ACK //KDIS
