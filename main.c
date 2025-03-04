@@ -120,10 +120,10 @@ int COMMAND_RESULT1_I2C   = 0;
 int COMMAND_RESULT2_I2C   = 0;
 int COMMAND_RESULT1_RS485 = 0;
 int COMMAND_RESULT2_RS485 = 0;
-int COMMANDARRAY_I2C      [16];
-int COMMANDARRAY_RS485    [16];
-int RESPONSEARRAY_I2C     [16];
-int RESPONSEARRAY_RS485   [16];
+int COMMANDARRAY_I2C     [16];
+int COMMANDARRAY_RS485   [16];
+int RESPONSEARRAY_I2C    [16];
+int RESPONSEARRAY_RS485  [16];
 
 //####################################
 	
@@ -254,7 +254,7 @@ return 0;
 
 //send_response_i2c
 int send_response_i2c(){
-    for( int index=0;  index<=15; index++ ){  transmit_bit_response_i2c(  RESPONSEARRAY_I2C[index]  );  }//for
+    for( int index=0;  index<=15; index++ ){  transmit_bit_response_i2c  (  RESPONSEARRAY_I2C  [index]  );  }//for
 return 0;
 }//send_response_i2c
 
@@ -270,7 +270,7 @@ return 0;
 	
 //reset_command_array_i2c
 int reset_command_array_i2c(){
-    for( int index=0; index<=15;  index++ ){  COMMANDARRAY_I2C[index] = 0;  }//for
+    for( int index=0; index<=15;  index++ ){  COMMANDARRAY_I2C  [index] = 0;  }//for
 return 0;
 }//reset_command_array_i2c
 
@@ -286,7 +286,7 @@ return 0;
 
 //reset_response_array_i2c
 int reset_response_array_i2c(){
-    for( int index=0;  index<=15; index++ ){  RESPONSEARRAY_I2C[index] = 0;  }//for
+    for( int index=0;  index<=15; index++ ){  RESPONSEARRAY_I2C  [index] = 0;  }//for
 return 0;
 }//reset_response_array_i2c
 	
@@ -300,16 +300,6 @@ return 0;
 
 //#################################
 	
-//my_response2_i2c
-int my_response2_i2c( int myvalue){
-    for( int index=8;  index<=15; index++ ){
-    RESPONSEARRAY_I2C[index] = (int) ( ( (int) ( myvalue>>(15-index) ) ) & 1 );
-    }//for
-return 0;
-}//my_response2_i2c
-
-//#################################
-
 //capture_command_i2c    
 int captured_command_i2c(){
     COMMAND_RESULT1_I2C = 0;
