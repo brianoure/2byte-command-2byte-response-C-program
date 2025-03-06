@@ -1,5 +1,5 @@
 //Prferrable to use preamble
-//uint8_t, uint16_t, uint32_t or chars can be used to replace the int types- but int is universal and type size is not an issue
+//int, uint16_t, uint32_t or chars can be used to replace the int types- but int is universal and type size is not an issue
 //rs485 data when A and !A
 //i2c data when clock high
 //Dude, be cautious with your variables - public or global... _I are functions that read from input pins, _EN are raw integers(commands targeting output pins)
@@ -10,57 +10,57 @@ int main(){//main
 //############ DECLARATIONS ###########
 	
 //Boolean
-uint8_t HIGH          = 1  ;  uint8_t TRUE = HIGH;
-uint8_t LOW           = 0  ;  uint8_t FALSE= LOW ;
-uint8_t PAUSE         = 2  ;
-uint8_t END           = 3  ;
+int HIGH          = 1  ;  int TRUE = HIGH; int ONE  = HIGH;
+int LOW           = 0  ;  int FALSE= LOW ; int ZERO = LOW ;
+int PAUSE         = 2  ;
+int END           = 3  ;
 //TRANSMISSION AND RECEPTION (COMMUNICATION) SYMBOLS
-uint8_t PING          = 34 ;   //command
-uint8_t ACK           = 47 ;   uint8_t ACKNOWLEDGE                   = ACK ;//response
-uint8_t NACK          = 52 ;   uint8_t NOT_ACKNOWLEDGE               = NACK;//response
-uint8_t SON           = 140;   uint8_t SWITCH_ON                     = SON ;//command
-uint8_t UHF           = 24 ;   //parameter
-uint8_t ADCS          = 162;   //parameter
-uint8_t GPS           = 75 ;   //parameter
-uint8_t SOF           = 218;   uint8_t SWITCH_OFF                    = SOF  ;//command
-uint8_t SM            = 107;   uint8_t SET_MODE                      = SM   ;//command
-uint8_t GM            = 122;   uint8_t GET_MODE                      = GM   ;//command
-uint8_t GSC           = 94 ;   uint8_t GET_SYSTEM_CLOCK              = GSC  ;//command
-uint8_t SSC           = 209;   uint8_t SET_SYSTEM_CLOCK              = SSC  ;//command
-uint8_t GFP           = 134;   //command
-uint8_t SFP           = 90 ;   //command
-uint8_t FON           = 55 ;   uint8_t FUNCTION_ON                   = FON  ;//command
-uint8_t TWELVEBUS     = 100;   //telemetry parameter
-uint8_t FIVEBUS       = 150;   //telemetry parameter
-uint8_t THREEBUS      = 200;   //parameter
-uint8_t FOF           = 233;   uint8_t FUNCTION_OFF                  = FOF  ;//command
-uint8_t GOSTM         = 157;   uint8_t GET_ONLINE_SYSTEM_TELEMETRY   = GOSTM;//command
-uint8_t KEN           = 255;   uint8_t KILL_ENABLE                   = KEN  ;//command
-uint8_t KDIS          = 227;   uint8_t KILL_DISABLE                  = KDIS ;//command
-uint8_t GD            = 15 ;   uint8_t GET_DATA                      = GD   ;//command
-uint8_t PD            = 245;   uint8_t PUT_DATA                      = PD   ;//command
-uint8_t RD            = 222;   uint8_t READ_DATA                     = RD   ;//command
-uint8_t WD            = 133;   uint8_t WRITE_DATA                    = WD   ;//command
-uint8_t INITIALIZE    = 60 ;   //mode parameter
-uint8_t DETUMBLE      = 71 ;   //mode parameter
-uint8_t NORMAL        = 82 ;   //mode parameter
-uint8_t COMMUNICATION = 93 ;   //mode parameter
-uint8_t PAYLOAD       = 104;   //mode parameter
-uint8_t IMAGE         = 115;   //mode parameter
-uint8_t EMERGENCY     = 126;   //mode parameter
-uint8_t CUSTOM        = 69 ;   //mode parameter
-uint8_t PL5V_EN       = 230;   uint8_t PAYLOAD_5V_ENABLE              = PL5V_EN   ;//pin
-uint8_t ADCS5V_EN     = 143;   uint8_t ADCS_5V_ENABLE                 = ADCS5V_EN ;//pin
-uint8_t RS12V_EN      = 205;   uint8_t RESERVED_12V_EN                = RS12V_EN  ;//pin
-uint8_t XB12V_EN      = 139;   uint8_t XBAND_12V_ENABLE               = XB12V_EN  ;//pin
-uint8_t CCU5V_EN      = 155;   uint8_t CENTRAL_COMMAND_UNIT_5V_ENABLE = CCU5V_EN  ;//pin
-uint8_t RS3V3_EN      = 212;   uint8_t RESERVED_3V_ENABLE             = RS3V3_EN  ;//pin
-uint8_t PL_EN         = 172;   uint8_t PAYLOAD_ENABLE                 = PL_EN     ;//pin
-uint8_t ADCS_EN       = 144;   uint8_t ADCS_ENABLE                    = ADCS_EN   ;//pin
-uint8_t UHF_EN        = 189;   uint8_t UHF_ENABLE                     = UHF_EN    ;//pin
-uint8_t GPS_EN        = 57 ;   uint8_t GPS_ENABLE                     = GPS_EN    ;//pin
-uint8_t ADCS12V_EN    = 199;   uint8_t ADCS_12V_ENABLE                = ADCS12V_EN;//pin
-uint8_t EPS_EN        = 97 ;   uint8_t EPS_ENABLE                     = EPS_EN    ;//funny
+int PING          = 34 ;   //command
+int ACK           = 47 ;   int ACKNOWLEDGE                   = ACK ;//response
+int NACK          = 52 ;   int NOT_ACKNOWLEDGE               = NACK;//response
+int SON           = 140;   int SWITCH_ON                     = SON ;//command
+int UHF           = 24 ;   //parameter
+int ADCS          = 162;   //parameter
+int GPS           = 75 ;   //parameter
+int SOF           = 218;   int SWITCH_OFF                    = SOF  ;//command
+int SM            = 107;   int SET_MODE                      = SM   ;//command
+int GM            = 122;   int GET_MODE                      = GM   ;//command
+int GSC           = 94 ;   int GET_SYSTEM_CLOCK              = GSC  ;//command
+int SSC           = 209;   int SET_SYSTEM_CLOCK              = SSC  ;//command
+int GFP           = 134;   //command
+int SFP           = 90 ;   //command
+int FON           = 55 ;   int FUNCTION_ON                   = FON  ;//command
+int TWELVEBUS     = 100;   //telemetry parameter
+int FIVEBUS       = 150;   //telemetry parameter
+int THREEBUS      = 200;   //parameter
+int FOF           = 233;   int FUNCTION_OFF                  = FOF  ;//command
+int GOSTM         = 157;   int GET_ONLINE_SYSTEM_TELEMETRY   = GOSTM;//command
+int KEN           = 255;   int KILL_ENABLE                   = KEN  ;//command
+int KDIS          = 227;   int KILL_DISABLE                  = KDIS ;//command
+int GD            = 15 ;   int GET_DATA                      = GD   ;//command
+int PD            = 245;   int PUT_DATA                      = PD   ;//command
+int RD            = 222;   int READ_DATA                     = RD   ;//command
+int WD            = 133;   int WRITE_DATA                    = WD   ;//command
+int INITIALIZE    = 60 ;   //mode parameter
+int DETUMBLE      = 71 ;   //mode parameter
+int NORMAL        = 82 ;   //mode parameter
+int COMMUNICATION = 93 ;   //mode parameter
+int PAYLOAD       = 104;   //mode parameter
+int IMAGE         = 115;   //mode parameter
+int EMERGENCY     = 126;   //mode parameter
+int CUSTOM        = 69 ;   //mode parameter
+int PL5V_EN       = 230;   int PAYLOAD_5V_ENABLE              = PL5V_EN   ;//pin
+int ADCS5V_EN     = 143;   int ADCS_5V_ENABLE                 = ADCS5V_EN ;//pin
+int RS12V_EN      = 205;   int RESERVED_12V_EN                = RS12V_EN  ;//pin
+int XB12V_EN      = 139;   int XBAND_12V_ENABLE               = XB12V_EN  ;//pin
+int CCU5V_EN      = 155;   int CENTRAL_COMMAND_UNIT_5V_ENABLE = CCU5V_EN  ;//pin
+int RS3V3_EN      = 212;   int RESERVED_3V_ENABLE             = RS3V3_EN  ;//pin
+int PL_EN         = 172;   int PAYLOAD_ENABLE                 = PL_EN     ;//pin
+int ADCS_EN       = 144;   int ADCS_ENABLE                    = ADCS_EN   ;//pin
+int UHF_EN        = 189;   int UHF_ENABLE                     = UHF_EN    ;//pin
+int GPS_EN        = 57 ;   int GPS_ENABLE                     = GPS_EN    ;//pin
+int ADCS12V_EN    = 199;   int ADCS_12V_ENABLE                = ADCS12V_EN;//pin
+int EPS_EN        = 97 ;   int EPS_ENABLE                     = EPS_EN    ;//funny
 //BOOT0
 int SA1_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int SA2_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
@@ -95,7 +95,7 @@ int UHF_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int UHF_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int PL_I       () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int PL_FLT     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS_3V3_I   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS3V3_I   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int RS3V3_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int GPS_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int GPS_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
@@ -113,7 +113,7 @@ int RS12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int RS5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int RS5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 // other variables
-int RESPONSE_WAIT         = 10000;
+int RESPONSE_WAIT         = 10000;//response_wait()
 int CURRENTMODE           = 0;
 int CURRENTSYSTEMCLOCK    = 0;
 int COMMAND_RESULT1_I2C   = 0;
@@ -225,7 +225,7 @@ int transmit_bit_response_i2c(int X){
     //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);//0
     //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
     //response_wait();//keep pins in pause state
-    */framework customizable
+
 return 0;
 }//transmit_bit_response_i2c
 
@@ -244,10 +244,10 @@ int transmit_bit_response_rs485(int X){
     //response_wait();//keep pins in pause state
     //if(X==1){/*transmit ONE*/
     //        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET);//1
-    //        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);//1
-    }//if
+    //         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);//1
+    //}//if
     //if(X==0){/*transmit ZERO*/
-    //        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET  );//1
+    //         HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET  );//1
     //        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);//0
     //}//if
     //response_wait();//keep pins in X state
@@ -370,55 +370,53 @@ return 0;
 
 //execute
 int execute_i2c(){
-    if( COMMAND_RESULT1_I2C==PING  ){
-	                     write_response_i2c(ACK,ZERO);
-    }//ACK...........Fault reporting mechanisms?
-    if ( COMMAND_RESULT1_I2C==SON  ){
+    if ( COMMAND_RESULT1_I2C==PING  ){  write_response_i2c(ACK,ZERO);  }//ACK...........Fault reporting mechanisms?
+    if ( COMMAND_RESULT1_I2C==SON   ){
                              int else_check=1;
-                             if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
                              if(else_check==1                   ){write_response_i2c(NACK,0);}//NACK
     }//SON  
     if ( COMMAND_RESULT1_I2C==SOF  ){
                              int else_check=1;
-                             if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
                              if(else_check==1                   ){write_response_i2c(NACK,0);}//NACK
     }//SOF
     if ( COMMAND_RESULT1_I2C==SM  ){
                              int else_check=1;
-                             if(COMMAND_RESULT2_I2C==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_I2C==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_i2c(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_I2C==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;write_response_i2c(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_I2C==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_i2c(ACK,0);     }//ACK.... do action
                              if(else_check==1                      ){write_response_i2c(NACK,0);}//NACK
     }//SM
     if (  COMMAND_RESULT1_I2C==GM    ){ write_response_i2c(ACK,CURRENTMODE       ); }//ACK
     if (  COMMAND_RESULT1_I2C==GSC   ){ write_response_i2c(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    if (  COMMAND_RESULT1_I2C==SSC   ){ write_response_i2c(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2; }//ACK
+    if (  COMMAND_RESULT1_I2C==SSC   ){ write_response_i2c(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2_I2C; }//ACK
     if (  COMMAND_RESULT1_I2C==GOSTM ){
-                             int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
-                             int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
-                             write_response_i2c(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
+                             int a = ((int) (XB12V_I  ()<<7));  int b = ((int) (ADCS12V_I()<<6)); int c = ((int) (RS5V_I   ()<<5));  int d = ((int) (RS3V3_I  ()<<4));
+                             int e = ((int) (SA1_I    ()<<3));  int f = ((int) (SA2_I    ()<<2)); int g = ((int) (SA3_I    ()<<1));
+                             write_response_i2c(  ACK, ((int) (a | b | c | d | e | f | g |  1) )  );
     }//ACK GOSTM
     if ( COMMAND_RESULT1_I2C==KEN   ){ write_response_i2c(ACK,KEN );  }//ACK ...........shutting down all activity received from GCS or OBC//KEN
     if ( COMMAND_RESULT1_I2C==KDIS  ){ write_response_i2c(ACK,KDIS);  }//ACK //KDIS
@@ -430,51 +428,49 @@ return 0;
 
 //execute
 int execute_rs485(){
-    if(  COMMAND_RESULT1_RS485==PING ){
-	                     write_response_rs485(ACK,0);
-    }//ACK...........Fault reporting mechanisms?
+    if(  COMMAND_RESULT1_RS485==PING ){ write_response_rs485(ACK,0); }//ACK...........Fault reporting mechanisms?
     if ( COMMAND_RESULT1_RS485==SON ){
                              int else_check=1;
-                             if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
                              if(else_check==1                     ){write_response_rs485(NACK,0);}//NACK
     }//SON
     if ( COMMAND_RESULT1_RS485==SOF ){
                              int else_check=1;
-                             if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
                              if(else_check==1                     ){write_response_rs485(NACK,0);}//NACK
     }//SOF
     if (  COMMAND_RESULT1_RS485==SM ){
                              int else_check=1;
-                             if(COMMAND_RESULT2_RS485==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
-                             if(COMMAND_RESULT2_RS485==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_rs485(ACK,0);/*HAL_GPIO_WritePin( LEDgn_GPIO_Port, LEDgn_Pin, GPIO_PIN_SET);*/}//ACK
+                             if(COMMAND_RESULT2_RS485==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;write_response_rs485(ACK,0);     }//ACK.... do action
+                             if(COMMAND_RESULT2_RS485==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_rs485(ACK,0);     }//ACK.... do action
                              if(else_check==1                        ){write_response_rs485(NACK,0);}//NACK
     }//SM
     if (  COMMAND_RESULT1_RS485==GM    ){ write_response_rs485(ACK,CURRENTMODE       ); }//ACK //GM
     if (  COMMAND_RESULT1_RS485==GSC   ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    if (  COMMAND_RESULT1_RS485==SSC   ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2; }//ACK
+    if (  COMMAND_RESULT1_RS485==SSC   ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2_RS485; }//ACK
     if (  COMMAND_RESULT1_RS485==GOSTM ){
                              int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
                              int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
@@ -499,7 +495,7 @@ return 0;
 int reset_and_assign_command_result_integers_rs485(){
     COMMAND_RESULT1_RS485 = 0;//refresh
     COMMAND_RESULT2_RS485 = 0;//refresh
-    captured_command__rs485();//extract command(command_result1) and the parameter(command_result2)
+    captured_command_rs485();//extract command(command_result1) and the parameter(command_result2)
 return 0;
 }//reset_and_assign_command_result_integers
 
