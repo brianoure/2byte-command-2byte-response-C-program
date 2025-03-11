@@ -64,107 +64,70 @@ int GPS_EN        = 57 ;   int GPS_ENABLE                     = GPS_EN    ;//pin
 int ADCS12V_EN    = 199;   int ADCS_12V_ENABLE                = ADCS12V_EN;//pin
 int EPS_EN        = 97 ;   int EPS_ENABLE                     = EPS_EN    ;//funny
 //BOOT0
-int SA1_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int SA2_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int SA3_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS4851_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS4851_DE  () {return 0;} //in?
-int RS4851_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}
-int RS4852_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS4852_DE  () {return 0;} //in?
-int RS4852_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}
-int SPI1_SS    () {return 0;} //who's the master, who's the slave and what's the message
-int SPI1_SCK   () {return 0;} //who's the master, who's the slave and what's the message
-int SPI1_MISO  () {return 0;} //who's the master, who's the slave and what's the message
-int SPI1_MOSI  () {return 0;} //who's the master, who's the slave and what's the message
-int SPI3_SS    () {return 0;} //who's the master, who's the slave and what's the message
-int SPI3_SCK   () {return 0;} //who's the master, who's the slave and what's the message
-int SPI3_MISO  () {return 0;} //who's the master, who's the slave and what's the message
-int SPI3_MOSI  () {return 0;} //who's the master, who's the slave and what's the message
-int I2C2_SCL   () {return 0;} //who's the master, who's the slave and what's the message
-int I2C2_SDA   () {return 0;} //who's the master, who's the slave and what's the message
-int SYNC_PULSE () {return 0;} //in or out...are we clock source or clock drain?
-int E_RST1     () {return 0;} //?
-int E_RST0     () {return 0;} //?
-int PWR_RST    () {return 0;} //?
-int OBC_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int OBC_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int UHF_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int UHF_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int UHF_EN     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL_I       () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL_FLT     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL_EN      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS3V3_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS3V3_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS3V3_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int GPS_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int GPS_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int GPS_EN     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS5V_I   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS5V_FLT () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS5V_EN  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL5V_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU5V_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU5V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU5V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int XB12V_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int XB12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int XB12V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS12V_FLT() {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS12V_I  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS12_EN  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//
-int RS12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS12V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS5V_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int HEATER1    () {return 0;}//op
+int HEATER2    () {return 0;}//op
+int ALERT2     () {return 0;}//ip
+int BOOT       () {return 0;}//op
+int BOOT2      () {return 0;}//op
+int I2C1_SCL   () {return 0;} //out to balancing1
+int I2C1_SDA   () {return 0;} //in from balancing1
+int I2C2_SCL   () {return 0;} //out to balancing2
+int I2C2_SDA   () {return 0;} //in from balancing2
+int I2C3_SCL   () {return 0;} //clock in from EPS/MCU
+int I2C3_SDA   () {return 0;} //out to EPS/MCU
+int RS4852_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in from MCU/EPS
+int RS4852_DE  () {return 0;} //in from EPS/MCU
+int RS4852_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}//out to EPS/MCU
 // other variables
-int RESPONSE_WAIT         = 10000;//response_wait()
-int CURRENTMODE           = 0;
-int CURRENTSYSTEMCLOCK    = 0;
-int COMMAND_RESULT1_I2C   = 0;
-int COMMAND_RESULT2_I2C   = 0;
-int COMMAND_RESULT1_RS485 = 0;
-int COMMAND_RESULT2_RS485 = 0;
-int COMMANDARRAY_I2C      [16];
-int COMMANDARRAY_RS485    [16];
-int RESPONSEARRAY_I2C     [16];
-int RESPONSEARRAY_RS485   [16];
-
+int RESPONSE_WAIT          = 10000;//response_wait()
+int CURRENTMODE            = 0;
+int CURRENTSYSTEMCLOCK     = 0;
+int COMMAND_RESULT1_I2C1   = 0;
+int COMMAND_RESULT2_I2C1   = 0;
+int COMMANDARRAY_I2C1     [16];
+int RESPONSEARRAY_I2C1    [16];
+int COMMAND_RESULT1_I2C2   = 0;
+int COMMAND_RESULT2_I2C2   = 0;
+int COMMANDARRAY_I2C2     [16];
+int RESPONSEARRAY_I2C2    [16];
+int COMMAND_RESULT1_I2C3   = 0;
+int COMMAND_RESULT2_I2C3   = 0;
+int COMMANDARRAY_I2C3     [16];
+int RESPONSEARRAY_I2C3    [16];
+int COMMAND_RESULT1_RS4852 = 0;
+int COMMAND_RESULT2_RS4852 = 0;
+int COMMANDARRAY_RS4852   [16];
+int RESPONSEARRAY_RS4852  [16];
 //####################################
 	
 //read_input
-int read_binary_input_i2c(){
-    //TRUTH TABLE I2C
-    //PC10 PA15 Y(TX) ...................CAUTION
-    //0    0    3(end)
-    //0    1    2(pause)
-    //1    0    0
-    //1    1    1
-    int result=0;
-     /*framework customizable
-	   //i2c in....input binary value is the pin value when the clock is high...int this case pin B15 is the clock and D10 is the signal
-	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=3;}//end00
-	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=2;}//pause01
-	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=0;}//zero10
-	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=1;}//one 11
-	   //i2c in
-    framework customizable*/
-return result;
+int read_binary_input_i2c1(){//BAL 1
+//send clk1
+//read data1
+return 0;//return data1
 }//read_input
 
 //####################################
 
 //read_input
-int read_binary_input_rs485(){
+int read_binary_input_i2c2(){//BAL 2
+//send clk2
+//read data2
+return 0;//return data2
+}//read_input
+
+//####################################
+
+//read_input
+int read_binary_input_i2c3(){//temp sensors
+//send clk3
+//read data3
+return 0;//return data3
+}//read_input
+	
+//###################################
+//read_input
+int read_binary_input_rs4852(){//from EPS main controller (MCU)
     //TRUTH TABLE RS485
     //PC10 PA15 Y(TX) ...................CAUTION
     //0    0    3(end)
