@@ -1,6 +1,6 @@
 //Preamble?
 //uint8_t, uint16_t, uint32_t or chars can be used to replace the int types- but int is universal and type size is not an issue
-//rs485 data when A and !A
+//rs4852 data when A and !A
 //i2c data when clock high
 //Dude, be cautious with your variables - public or global... _I are functions that read from input pins, _EN are raw integers(commands targeting output pins)
 //Whoa! the EPS microntroller is actually  sampling the inputs in every while loop instance, so we have to check for changes in input states to determine if we have a 1 or a 0 
@@ -79,10 +79,13 @@ int temperature_sensor_leftShift_insertEnd_i2c3(){//Temp cct
 }//temperature_sensor_leftShift_insertEnd_i2c3
 	
 //###################################
-
+int read_binary_input_i2c1(){}
+//###################################
+int read_binary_input_i2c1(){}
+//###################################
 //read_input
 int read_binary_input_rs4852(){//from EPS main controller (MCU)
-    //TRUTH TABLE RS485
+    //TRUTH TABLE RS4852
     //PC10 PA15 Y(TX) ...................CAUTION
     //0    0    3(end)
     //0    1    2(pause)
@@ -90,12 +93,12 @@ int read_binary_input_rs4852(){//from EPS main controller (MCU)
     //1    1    1
     int result=0;
      /*framework customizable
-	   //rs485 in......input binary value is when  two lines are exctly opposite/complementing each other...you just have to agree which set represents the ONE and which set represents the ZERO
+	   //rs4852 in......input binary value is when  two lines are exctly opposite/complementing each other...you just have to agree which set represents the ONE and which set represents the ZERO
 	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=3;}//end00
 	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=1;}//one01
 	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=0;}//zero10
 	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=2;}//pause11
-	   //rs485 in
+	   //rs4852 in
     framework customizable */
 return result;
 }//read_input
@@ -112,55 +115,55 @@ return 0;
 //####################################
 
 //shift all to left, insert new bit at end
-//command_leftShift_insertEnd_rs485
-int get_command_and_parameter_after_leftShift_insertEnd_rs485(int insertionbit){
-    COMMAND_PARAM_RS485 = COMMAND_PARAM_RS485 << 1;
-    COMMAND_PARAM_RS485 = COMMAND_PARAM_RS485 & ( 65534 | insertionbit );
-return COMMAND_PARAM_RS485;  
-}//command_leftShift_insertEnd_rs485
+//command_leftShift_insertEnd_rs4852
+int get_command_and_parameter_after_leftShift_insertEnd_rs4852(int insertionbit){
+    COMMAND_PARAM_RS4852 = COMMAND_PARAM_RS4852 << 1;
+    COMMAND_PARAM_RS4852 = COMMAND_PARAM_RS4852 & ( 65534 | insertionbit );
+return COMMAND_PARAM_RS4852;  
+}//command_leftShift_insertEnd_rs4852
 
 //###################################
 
-//write_response_rs485
-int write_response_rs485( int firstbyte, int secondbyte){
-    int RESPONSEARRAY_RS485[16];
-    int transmit_bit_response_rs485(int X){
-        //HOW TO SEND RS485 BIT
+//write_response_rs4852
+int write_response_rs4852( int firstbyte, int secondbyte){
+    int RESPONSEARRAY_RS4852[16];
+    int transmit_bit_response_rs4852(int X){
+        //HOW TO SEND RS4852 BIT
         return 0;
-    }//transmit_bit_response_rs485
+    }//transmit_bit_response_rs4852
     //
     for( int index=0;  index<=7 ;index++ ){
-        RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
+        RESPONSEARRAY_RS4852[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
     }//for
     //
     for( int index=8;  index<=15;index++ ){
-        RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
+        RESPONSEARRAY_RS4852[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
     }//for
     //
     for( int index=0;  index<=15; index++ ){  
-	transmit_bit_response_rs485(  RESPONSEARRAY_RS485[index]  );  }//for
+	transmit_bit_response_rs4852(  RESPONSEARRAY_RS4852[index]  );  }//for
         return 0;
     return 0;
-}//write_response_rs485
+}//write_response_rs4852
 
 //#################################
 
 //execute
-int execute_rs485( int command_parameter){
+int execute_rs4852( int command_parameter){
     int command  = ((int)(  command_parameter>>8       ));
     int parameter= ((int)(  command_parameter&255      ));
-    if ( command==PING ) { write_response_rs485(ACK,0); }//ACK...........Fault reporting mechanisms?
+    if ( command==PING ) { write_response_rs4852(ACK,0); }//ACK...........Fault reporting mechanisms?
     if ( command==SWITCH_ON  ) {
                          int else_check=1;
-                         if(parameter==HEATER1 ){else_check=0;write_response_rs485(ACKNOWLEDGE,0);    }//ACK.... do action
-                         if(parameter==HEATER2 ){else_check=0;write_response_rs485(ACKNOWLEDGE,0);    }//ACK.... do action
-                         if(else_check==1      ){write_response_rs485(NOT_ACKNOWLEDGE,0);}//NACK
+                         if(parameter==HEATER1 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0);    }//ACK.... do action
+                         if(parameter==HEATER2 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0);    }//ACK.... do action
+                         if(else_check==1      ){write_response_rs4852(NOT_ACKNOWLEDGE,0);}//NACK
     }//
     if ( command==SWITCH_OFF )  {
                          int else_check=1;
-                         if(parameter==HEATER1 ){else_check=0;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==HEATER2 ){else_check=0;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(else_check==1      ){write_response_rs485(NOT_ACKNOWLEDGE,0);}//NACK
+                         if(parameter==HEATER1 ){else_check=0;write_response_rs4852(ACK,0);     }//ACK.... do action
+                         if(parameter==HEATER2 ){else_check=0;write_response_rs4852(ACK,0);     }//ACK.... do action
+                         if(else_check==1      ){write_response_rs4852(NOT_ACKNOWLEDGE,0);}//NACK
     }//
 return 0;
 }//execute
@@ -190,12 +193,12 @@ int flip_12_detected_i2c3=0;//change from 1(HIGH) to 2(PAUSE)
 int flip_20_detected_i2c3=0;//change from 2(PAUSE) to 1(HIGH)
 int flip_02_detected_i2c3=0;//change from 0(LOW) to 2(PAUSE)
 //##
-int raw_input_rs485;
-int previous_rs485;
-int flip_21_detected_rs485=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_12_detected_rs485=0;//change from 1(HIGH) to 2(PAUSE)
-int flip_20_detected_rs485=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_02_detected_rs485=0;//change from 0(LOW) to 2(PAUSE)
+int raw_input_rs4852;
+int previous_rs4852;
+int flip_21_detected_rs4852=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_12_detected_rs4852=0;//change from 1(HIGH) to 2(PAUSE)
+int flip_20_detected_rs4852=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_02_detected_rs4852=0;//change from 0(LOW) to 2(PAUSE)
 //##
 //MAIN LOOP
 while(1){//while
@@ -247,22 +250,22 @@ while(1){//while
 	}//if
         previous_i2c3 = raw_input_i2c3;
 	//######## END I2C3 #########
-	//######## RS485 ############
-	raw_input_rs485 = read_binary_input_rs485();
-	if ( (previous_rs485==2) & (raw_input_rs485==1) ){  flip_21_detected_rs485=1;  }
-        if ( (previous_rs485==1) & (raw_input_rs485==2) ){  flip_12_detected_rs485=1;  }
-        if ( (previous_rs485==2) & (raw_input_rs485==0) ){  flip_20_detected_rs485=1;  }
-        if ( (previous_rs485==0) & (raw_input_rs485==2) ){  flip_02_detected_rs485=1;  }
-        if ( flip_21_detected_rs485 & flip_12_detected_rs485 ){ 
-	   flip_21_detected_rs485=0; flip_12_detected_rs485=0;flip_20_detected_rs485=0; flip_02_detected_rs485=0;
-	   execute_rs485( get_command_and_parameter_after_leftShift_insertEnd_rs485(1) );
+	//######## RS4852 ############
+	raw_input_rs4852 = read_binary_input_rs4852();
+	if ( (previous_rs4852==2) & (raw_input_rs4852==1) ){  flip_21_detected_rs4852=1;  }
+        if ( (previous_rs4852==1) & (raw_input_rs4852==2) ){  flip_12_detected_rs4852=1;  }
+        if ( (previous_rs4852==2) & (raw_input_rs4852==0) ){  flip_20_detected_rs4852=1;  }
+        if ( (previous_rs4852==0) & (raw_input_rs4852==2) ){  flip_02_detected_rs4852=1;  }
+        if ( flip_21_detected_rs4852 & flip_12_detected_rs4852 ){ 
+	   flip_21_detected_rs4852=0; flip_12_detected_rs4852=0;flip_20_detected_rs4852=0; flip_02_detected_rs4852=0;
+	   execute_rs4852( get_command_and_parameter_after_leftShift_insertEnd_rs4852(1) );
 	}//if
-        if ( flip_20_detected_rs485 & flip_02_detected_rs485 ){
-           flip_21_detected_rs485=0;flip_12_detected_rs485=0;flip_20_detected_rs485=0;flip_02_detected_rs485=0;
-	   execute_rs485( get_command_and_parameter_after_leftShift_insertEnd_rs485(0) );
+        if ( flip_20_detected_rs4852 & flip_02_detected_rs4852 ){
+           flip_21_detected_rs4852=0;flip_12_detected_rs4852=0;flip_20_detected_rs4852=0;flip_02_detected_rs4852=0;
+	   execute_rs4852( get_command_and_parameter_after_leftShift_insertEnd_rs4852(0) );
 	}//if
-        previous_rs485= raw_input_rs485;
-	//######## END RS485 ##########
+        previous_rs4852= raw_input_rs4852;
+	//######## END RS4852 ##########
 }//while  
 //MAIN LOOP
 //#########################    END MAIN EVENT   #################################
