@@ -11,20 +11,20 @@ int main(){//main
 struct channel_input  {int input1 ;int input2 ;};
 struct channel_output {int output1;int output2;};
 //Boolean
-int HIGH          = 1  ;  int TRUE = HIGH; int ONE  = HIGH;
-int LOW           = 0  ;  int FALSE= LOW ; int ZERO = LOW ;
-int PAUSE         = 2  ;
-int END           = 3  ;
+int HIGH   = 1  ;  int TRUE = HIGH; int ONE  = HIGH;
+int LOW    = 0  ;  int FALSE= LOW ; int ZERO = LOW ;
+int PAUSE  = 2  ;
+int END    = 3  ;
 //Commands
-int PING               = 34 ;
-int SWITCH_ON          = 223;
-int HEATER1  = 235;
-int HEATER2  = 218;
-int SWITCH_OFF         = 147
-int HEATER1 = 194;
-int HEATER2 = 103;
-int GET     = 178;
-int RESET   = 255;
+int PING           = 34 ;
+int SWITCH_ON      = 223;
+int HEATER1        = 235;
+int HEATER2        = 218;
+int SWITCH_OFF     = 147;
+int HEATER1        = 194;
+int HEATER2        = 103;
+int GET            = 178;
+int RESET          = 255;
 int CELL_VOLTAGE1  = 131;
 int CELL_VOLTAGE2  = 132;
 int CELL_VOLTAGE3  = 133;
@@ -40,49 +40,59 @@ int TEMPERATURE_BALANCING2 = 162;
 //Responses
 int ACKNOWLEDGE        = 47;//response
 int NOT_ACKNOWLEDGE    = 52;//response
-//BOOT0
-int write_HEATER1   () {return 0;}//op
-int write_HEATER2   () {return 0;}//op
-int read_ALERT2     () {return 0;}//ip
-int write_BOOT      () {return 0;}//op
-int write_BOOT2     () {return 0;}//op
-int write_I2C1_SCL  () {return 0;} //out to balancing1
-int read_I2C1_SDA   () {return 0;} //in from balancing1
-int write_I2C2_SCL  () {return 0;} //out to balancing2
-int read_I2C2_SDA   () {return 0;} //in from balancing2
-int write_I2C3_SCL  () {return 0;} //clock in from EPS/MCU
-int read_I2C3_SDA   () {return 0;} //out to EPS/MCU
-int read_RS4852_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in from MCU/EPS
-int read_RS4852_DE  () {return 0;} //in from EPS/MCU determines whether MCU is in tx or rx mode for rs485
-int write_RS4852_TX () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}//out to EPS/MCU ............?????????????????!!!!!!!
+//HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET)
+//HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )
+int write_HEATER1   (int x) {return 0;}//op
+int write_HEATER2   (int x) {return 0;}//op
+int read_ALERT2     (     ) {return 0;}//ip
+int write_BOOT      (int x) {return 0;}//op
+int write_BOOT2     (int x) {return 0;}//op
+int write_I2C1_SCL  (int x) {return 0;} //out to balancing1
+int read_I2C1_SDA   (     ) {return 0;} //in from balancing1
+int write_I2C2_SCL  (int x) {return 0;} //out to balancing2
+int read_I2C2_SDA   (     ) {return 0;} //in from balancing2
+int write_I2C3_SCL  (int x) {return 0;} //clock in from EPS/MCU
+int read_I2C3_SDA   (     ) {return 0;} //out to EPS/MCU
+int read_RS4852_RX  (     ) {return 0;}//in from MCU/EPS
+int read_RS4852_DE  (     ) {return 0;} //in from EPS/MCU determines whether MCU is in tx or rx mode for rs485
+int write_RS4852_TX (int x) {return 0;}//out to EPS/MCU ............?????????????????!!!!!!!
 // other variables
 int RESPONSE_WAIT = 10000;//response_wait()
 struct channel_output RESPONSE_RS485;
+	
+//###################################
+	
+int read_binary_input_i2c1(){return 0;}
 
-//####################################
+//###################################
 
-int balancing1_telemetry_leftShift_insertEnd_i2c1(){
+int read_binary_input_i2c2(){return 0;}
+
+//###################################
+
+int read_binary_input_i2c3(){return 0;}
+
+//###################################
+
+int get_balancing1_telemetry_leftShift_insertEnd_i2c1(){
     return 0;
 }//balancing1_telemetry_leftShift_insertEnd_i2c1
 
 //####################################
 	
-int balancing2_telemetry_leftShift_insertEnd_i2c2(){
+int get_balancing2_telemetry_leftShift_insertEnd_i2c2(){
     return 0;
 }//balancing2_telemetry_leftShift_insertEnd_i2c2
 
 //###################################
 
-int temperature_sensor_leftShift_insertEnd_i2c3(){//Temp cct
+int get_temperature_sensor_leftShift_insertEnd_i2c3(){//Temp cct
     //get the temperature from specific sensor
     return 0;
 }//temperature_sensor_leftShift_insertEnd_i2c3
 	
 //###################################
-int read_binary_input_i2c1(){}
-//###################################
-int read_binary_input_i2c1(){}
-//###################################
+	
 //read_input
 int read_binary_input_rs4852(){//from EPS main controller (MCU)
     //TRUTH TABLE RS4852
