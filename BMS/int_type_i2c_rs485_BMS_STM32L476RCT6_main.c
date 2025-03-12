@@ -24,6 +24,7 @@ int SWITCH_OFF         = 147
 int HEATER1 = 194;
 int HEATER2 = 103;
 int GET     = 178;
+int RESET   = 255;
 int CELL_VOLTAGE1  = 131;
 int CELL_VOLTAGE2  = 132;
 int CELL_VOLTAGE3  = 133;
@@ -113,8 +114,8 @@ return 0;
 //shift all to left, insert new bit at end
 //command_leftShift_insertEnd_rs485
 int get_command_and_parameter_after_leftShift_insertEnd_rs485(int insertionbit){
-    COMMAND_PARAM_RS485 = COMMAND_PARAM_RS485 & 65534;
-    COMMAND_PARAM_RS485 = COMMAND_PARAM_RS485 | insertionbit;
+    COMMAND_PARAM_RS485 = COMMAND_PARAM_RS485 << 1;
+    COMMAND_PARAM_RS485 = COMMAND_PARAM_RS485 & ( 65534 | insertionbit );
 return COMMAND_PARAM_RS485;  
 }//command_leftShift_insertEnd_rs485
 
@@ -146,12 +147,12 @@ int write_response_rs485( int firstbyte, int secondbyte){
 
 //execute
 int execute_rs485( int command_parameter){
-    int command  = ((int)( (command_parameter&(255<<8))>>8  ));
-    int parameter= ((int)(  command_parameter&255           ));
+    int command  = ((int)(  command_parameter>>8       ));
+    int parameter= ((int)(  command_parameter&255      ));
     if ( command==PING ) { write_response_rs485(ACK,0); }//ACK...........Fault reporting mechanisms?
     if ( command==SWITCH_ON  ) {
                          int else_check=1;
-                         if(parameter==HEATER1 ){else_check=0;write_response_rs485(ACKNOWLEDGE,0)     }//ACK.... do action
+                         if(parameter==HEATER1 ){else_check=0;write_response_rs485(ACKNOWLEDGE,0);    }//ACK.... do action
                          if(parameter==HEATER2 ){else_check=0;write_response_rs485(ACKNOWLEDGE,0);    }//ACK.... do action
                          if(else_check==1      ){write_response_rs485(NOT_ACKNOWLEDGE,0);}//NACK
     }//
