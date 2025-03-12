@@ -1,4 +1,4 @@
-//Prferrable to use preamble
+//Preamble?
 //uint8_t, uint16_t, uint32_t or chars can be used to replace the int types- but int is universal and type size is not an issue
 //rs485 data when A and !A
 //i2c data when clock high
@@ -54,6 +54,8 @@ int COMMANDARRAY_I2C3     [16];
 
 int COMMAND_RESULT1_RS4852 = 0;
 int COMMAND_RESULT2_RS4852 = 0;
+
+int COMMAND_PARAM_RS4852   = 0;
 
 //####################################
 	
@@ -116,107 +118,58 @@ return 0;
 
 //shift all to left, insert new bit at end
 //command_leftShift_insertEnd_rs485
-int command_leftShift_insertEnd_rs485(int insertionbit){
-    for( int index=0;  index<=14; index++ ){  COMMANDARRAY_RS485[index] = COMMANDARRAY_RS485[index+1];   }//for
-    COMMANDARRAY_RS485[15] = insertionbit;
-return 0;  
+int get_command_and_parameter_after_leftShift_insertEnd_rs485(int insertionbit){
+    COMMAND_PARAM_RS485 = COMMAND_PARAM_RS485 & 65534;
+    COMMAND_PARAM_RS485 = COMMAND_PARAM_RS485 | insertionbit;
+return COMMAND_PARAM_RS485;  
 }//command_leftShift_insertEnd_rs485
 
 //###################################
 
-//send_response_i2c
-int send_response_i2c(){
-    int transmit_bit_response_i2c(int X){
-    // HOW TO SEND I2C BIT
-    return 0;
-    }//transmit_bit_response_i2c
-    for( int index=0;  index<=15; index++ ){  transmit_bit_response_i2c(  RESPONSEARRAY_I2C[index]  );  }//for
-return 0;
-}//send_response_i2c
-
-//##################################
-
-//send_response_rs485
-int send_response_rs485(){
-    int transmit_bit_response_rs485(int X){
-    //HOW TO SEND RS485 BIT
-    return 0;
-    }//transmit_bit_response_rs485
-    for( int index=0;  index<=15; index++ ){  transmit_bit_response_rs485(  RESPONSEARRAY_RS485[index]  );  }//for
-return 0;
-}//send_response_rs485
-
-//################################
-
-//reset_command_array_rs485
-int reset_command_array_rs485(){
-    for( int index=0; index<=15;  index++ ){  COMMANDARRAY_RS485[index] = 0;  }//for
-return 0;
-}//reset_command_array_rs485
-
-//#################################
-
-//reset_response_array_i2c
-int reset_response_array_i2c(){
-    for( int index=0;  index<=15; index++ ){  RESPONSEARRAY_I2C[index] = 0;  }//for
-return 0;
-}//reset_response_array_i2c
-	
-//#################################
-
-//reset_response_array_rs485
-int reset_response_array_rs485(){
-    for( int index=0;  index<=15; index++ ){  RESPONSEARRAY_RS485[index] = 0;  }//for
-return 0;
-}//reset_response_array_rs485
-
-//#################################
-
-//capture_command_rs485    
-int captured_command_rs485(){
-    COMMAND_RESULT1_RS485 = 0;
-    for( int index=0;  index<=7;index++ ){
-       COMMAND_RESULT1_RS485 = COMMAND_RESULT1_RS485 + ( COMMANDARRAY_RS485[ index ] * ( (int)( 1<<(7-index) ) ) ); 
-    }//for
-    COMMAND_RESULT2_RS485 = 0;
-    for( int index=8;  index<=15;index++){
-       COMMAND_RESULT2_RS485 = COMMAND_RESULT2_RS485 + ( COMMANDARRAY_RS485[ index ] * ( (int)(1<<(15-index) ) ) ); 
-    }//for
-return 0;
-}//captured_command_rs485
-
-
-//################################
-
 //write_response_rs485
 int write_response_rs485( int firstbyte, int secondbyte){
-    for( int index=0;  index<=7;index++ ){
-    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
+    int RESPONSEARRAY_RS485[15];
+    int transmit_bit_response_rs485(int X){
+        //HOW TO SEND RS485 BIT
+        return 0;
+    }//transmit_bit_response_rs485
+    //
+    int send_response_rs485(){
+        for( int index=0;  index<=15; index++ ){  
+	transmit_bit_response_rs485(  RESPONSEARRAY_RS485[index]  );  }//for
+        return 0;
+    }//send_response_rs485
+    //
+    for( int index=0;  index<=7 ;index++ ){
+        RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
     }//for
+    //
     for( int index=8;  index<=15;index++ ){
-    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
+        RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
     }//for
+    //
     send_response_rs485();
-    reset_response_array_rs485();
-return 0;
+    return 0;
 }//write_response_rs485
 
 //#################################
 
 //execute
-int execute_rs485(){
-    if(  COMMAND_RESULT1_RS485==PING ){ write_response_rs485(ACK,0); }//ACK...........Fault reporting mechanisms?
-    if ( COMMAND_RESULT1_RS485==SON ) {
-                             int else_check=1;
-                             if(COMMAND_RESULT2_RS485==HEATER1    ){else_check=0;write_response_rs485(ACK,0)     }//ACK.... do action
-                             if(COMMAND_RESULT2_RS485==HEATER2    ){else_check=0;write_response_rs485(ACK,0);    }//ACK.... do action
-                             if(else_check==1                     ){write_response_rs485(NACK,0);}//NACK
+int execute_rs485( int command_parameter){
+    int command  = ((int)( (command_parameter&(255<<8))>>8  ));
+    int parameter= ((int)(  command_parameter&255           ));
+    if(  command==PING ){ write_response_rs485(ACK,0); }//ACK...........Fault reporting mechanisms?
+    if ( command==SON  ) {
+                         int else_check=1;
+                         if(parameter==HEATER1 ){else_check=0;write_response_rs485(ACK,0)     }//ACK.... do action
+                         if(parameter==HEATER2 ){else_check=0;write_response_rs485(ACK,0);    }//ACK.... do action
+                         if(else_check==1      ){write_response_rs485(NACK,0);}//NACK
     }//SON
-    if ( COMMAND_RESULT1_RS485==SOF ){
-                             int else_check=1;
-                             if(COMMAND_RESULT2_RS485==HEATER1    ){else_check=0;write_response_rs485(ACK,0);     }//ACK.... do action
-                             if(COMMAND_RESULT2_RS485==HEATER2    ){else_check=0;write_response_rs485(ACK,0);     }//ACK.... do action
-                             if(else_check==1                     ){write_response_rs485(NACK,0);}//NACK
+    if ( command==SOF )  {
+                         int else_check=1;
+                         if(parameter==HEATER1 ){else_check=0;write_response_rs485(ACK,0);     }//ACK.... do action
+                         if(parameter==HEATER2 ){else_check=0;write_response_rs485(ACK,0);     }//ACK.... do action
+                         if(else_check==1      ){write_response_rs485(NACK,0);}//NACK
     }//SOF
     //YOU CAN ALSO ADD LOGIC
 return 0;
@@ -224,16 +177,20 @@ return 0;
 
 //#####################################
 
-int reset_and_assign_command_result_integers_rs485(){
-    COMMAND_RESULT1_RS485 = 0;//refresh
-    COMMAND_RESULT2_RS485 = 0;//refresh
-    captured_command_rs485();//extract command(command_result1) and the parameter(command_result2)
-return 0;
+int get_16_bit_command_integer(int cmd, int param){
+    int COMMAND_RESULT1_RS485 = 0;//refresh
+    int COMMAND_RESULT2_RS485 = 0;//refresh 
+    for( int index=0;  index<=7 ;index++ ){
+       COMMAND_RESULT1_RS485 = COMMAND_RESULT1_RS485 + ( ((int)(cmd  &(1<<index))) * ( (int)( 1<<( 7-index) ) ) ); 
+    }//for
+    for( int index=8;  index<=15;index++ ){
+       COMMAND_RESULT2_RS485 = COMMAND_RESULT2_RS485 + ( ((int)(param&(1<<index))) * ( (int)( 1<<(15-index) ) ) ); 
+    }//for
+    return ( (int) ( (COMMAND_RESULT1_RS485<<8) | COMMAND_RESULT2_RS485 ) );
+    return ( (int) ( (cmd<<8) | param ) );
 }//reset_and_assign_command_result_integers
 
 //################################################################### END OF DECLARATIONS ################################################
-
-
 
 
 
@@ -287,22 +244,20 @@ while(1){//while
         if ( (previous_rs485==2) & (raw_input_rs485==0) ){  flip_20_detected_rs485=1;  }
         if ( (previous_rs485==0) & (raw_input_rs485==2) ){  flip_02_detected_rs485=1;  }
         if ( flip_21_detected_rs485 & flip_12_detected_rs485 ){ 
-	   command_leftShift_insertEnd_rs485(1);
 	   flip_21_detected_rs485=0;
            flip_12_detected_rs485=0;
            flip_20_detected_rs485=0;
            flip_02_detected_rs485=0;
-	   reset_and_assign_command_result_integers_rs485();
-	   execute_rs485();
+	   int cmd_param_rs485 = get_command_and_parameter_after_leftShift_insertEnd_rs485(1);
+	   execute_rs485(cmd_param_rs485);
 	}//if
         if ( flip_20_detected_rs485 & flip_02_detected_rs485 ){
-           command_leftShift_insertEnd_rs485(0);
            flip_21_detected_rs485=0;
            flip_12_detected_rs485=0;
            flip_20_detected_rs485=0;
            flip_02_detected_rs485=0;
-	   reset_and_assign_command_result_integers_rs485();
-	   execute_rs485();
+	   int cmd_param_rs485 = get_command_and_parameter_after_leftShift_insertEnd_rs485(0);
+	   execute_rs485(cmd_param_rs485);
 	}//if
         previous_rs485= raw_input_rs485;
 	//######## END RS485 ############
