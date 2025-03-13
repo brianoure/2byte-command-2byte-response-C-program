@@ -48,13 +48,13 @@ int read_ALERT2     (     ) {return 0;}//ip
 int write_BOOT      (int x) {return 0;}//op
 int write_BOOT2     (int x) {return 0;}//op
 int write_I2C1_SCL  (int x) {return 0;} //out to balancing1
-int read_I2C1_SDA   (     ) {return 0;} //in from balancing1
+int read_I2C1_SDA   (     ) {return 0;} //in from balancing1 (IS THIS I2C REALLY HALF DUPLEX????!!!!)
 int write_I2C2_SCL  (int x) {return 0;} //out to balancing2
 int read_I2C2_SDA   (     ) {return 0;} //in from balancing2
 int write_I2C3_SCL  (int x) {return 0;} //clock in from EPS/MCU
 int read_I2C3_SDA   (     ) {return 0;} //out to EPS/MCU
 int read_RS4852_RX  (     ) {return 0;}//in from MCU/EPS
-int read_RS4852_DE  (     ) {return 0;} //in from EPS/MCU determines whether MCU is in tx or rx mode for rs485
+int write_RS4852_DE (     ) {return 0;} //out to EPS/MCU since rs485 needs a pair to transmit
 int write_RS4852_TX (int x) {return 0;}//out to EPS/MCU ............?????????????????!!!!!!!
 // other variables
 int RESPONSE_WAIT = 10000;//response_wait()
@@ -153,7 +153,7 @@ int write_response_rs4852( int firstbyte, int secondbyte){
     for( int index=0;  index<=15; index++ ){  
 	transmit_bit_response_rs4852(  RESPONSEARRAY_RS4852[index]  );  }//for
         return 0;
-    return 0;
+return 0;
 }//write_response_rs4852
 
 //#################################
@@ -162,18 +162,18 @@ int write_response_rs4852( int firstbyte, int secondbyte){
 int execute_rs4852( int command_parameter){
     int command  = ((int)(  command_parameter>>8       ));
     int parameter= ((int)(  command_parameter&255      ));
-    if ( command==PING ) { write_response_rs4852(ACK,0); }//ACK...........Fault reporting mechanisms?
+    if ( command==PING       ) {                              write_response_rs4852(ACKNOWLEDGE,0);     }//ACK...........Fault reporting mechanisms?
     if ( command==SWITCH_ON  ) {
                          int else_check=1;
-                         if(parameter==HEATER1 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0);    }//ACK.... do action
-                         if(parameter==HEATER2 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0);    }//ACK.... do action
-                         if(else_check==1      ){write_response_rs4852(NOT_ACKNOWLEDGE,0);}//NACK
+                         if(parameter==HEATER1 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0);     }//ACK.... do action
+                         if(parameter==HEATER2 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0);     }//ACK.... do action
+                         if(else_check==1      ){             write_response_rs4852(NOT_ACKNOWLEDGE,0); }//NACK
     }//
     if ( command==SWITCH_OFF )  {
                          int else_check=1;
-                         if(parameter==HEATER1 ){else_check=0;write_response_rs4852(ACK,0);     }//ACK.... do action
-                         if(parameter==HEATER2 ){else_check=0;write_response_rs4852(ACK,0);     }//ACK.... do action
-                         if(else_check==1      ){write_response_rs4852(NOT_ACKNOWLEDGE,0);}//NACK
+                         if(parameter==HEATER1 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+                         if(parameter==HEATER2 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+                         if(else_check==1      ){             write_response_rs4852(NOT_ACKNOWLEDGE,0);   }//NACK
     }//
 return 0;
 }//execute
@@ -267,7 +267,7 @@ while(1){//while
         if ( (previous_rs4852==2) & (raw_input_rs4852==0) ){  flip_20_detected_rs4852=1;  }
         if ( (previous_rs4852==0) & (raw_input_rs4852==2) ){  flip_02_detected_rs4852=1;  }
         if ( flip_21_detected_rs4852 & flip_12_detected_rs4852 ){ 
-	   flip_21_detected_rs4852=0; flip_12_detected_rs4852=0;flip_20_detected_rs4852=0; flip_02_detected_rs4852=0;
+	   flip_21_detected_rs4852=0; flip_12_detected_rs4852=0;flip_20_detected_rs4852=0;flip_02_detected_rs4852=0;
 	   execute_rs4852( get_command_and_parameter_after_leftShift_insertEnd_rs4852(1) );
 	}//if
         if ( flip_20_detected_rs4852 & flip_02_detected_rs4852 ){
