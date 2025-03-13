@@ -61,18 +61,6 @@ int RESPONSE_WAIT = 10000;//response_wait()
 struct channel_output RESPONSE_RS485;
 	
 //###################################
-	
-int read_binary_input_i2c1(){return 0;}
-
-//###################################
-
-int read_binary_input_i2c2(){return 0;}
-
-//###################################
-
-int read_binary_input_i2c3(){return 0;}
-
-//###################################
 
 int get_balancing1_telemetry_leftShift_insertEnd_i2c1(){
     return 0;
@@ -151,8 +139,9 @@ int write_response_rs4852( int firstbyte, int secondbyte){
     }//for
     //
     for( int index=0;  index<=15; index++ ){  
-	transmit_bit_response_rs4852(  RESPONSEARRAY_RS4852[index]  );  }//for
-        return 0;
+	transmit_bit_response_rs4852(  RESPONSEARRAY_RS4852[index]  );  
+    }//for
+//return to IDLE HAL blaah blaah blaah
 return 0;
 }//write_response_rs4852
 
@@ -174,35 +163,26 @@ int execute_rs4852( int command_parameter){
                          if(parameter==HEATER1 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
                          if(parameter==HEATER2 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
                          if(else_check==1      ){             write_response_rs4852(NOT_ACKNOWLEDGE,0);   }//NACK
+    if ( command==GET    )  {
+                         int else_check=1;
+                         if(parameter==CELL_VOLTAGE1 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+                         if(parameter==CELL_VOLTAGE2 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+	                 if(parameter==CELL_VOLTAGE3 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+	                 if(parameter==CELL_VOLTAGE4 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+	                 if(parameter==CELL_VOLTAGE5 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+	                 if(parameter==CELL_VOLTAGE6 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+	                 if(parameter==CELL_VOLTAGE7 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+	                 if(parameter==CELL_VOLTAGE8 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+	                 if(parameter==CELL_VOLTAGE9 ){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+	                 if(parameter==CELL_VOLTAGE10){else_check=0;write_response_rs4852(ACKNOWLEDGE,0    );   }//ACK.... do action
+                         if(else_check==1      ){                   write_response_rs4852(NOT_ACKNOWLEDGE,0);   }//NACK
     }//
 return 0;
 }//execute
 
 //################################################################## END OF DECLARATIONS ###############################################
 
-
 //########################   MAIN EVENT  ###########################################
-int raw_input_i2c1;
-int previous_i2c1;
-int flip_21_detected_i2c1=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_12_detected_i2c1=0;//change from 1(HIGH) to 2(PAUSE)
-int flip_20_detected_i2c1=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_02_detected_i2c1=0;//change from 0(LOW) to 2(PAUSE)
-//##
-int raw_input_i2c2;
-int previous_i2c2;
-int flip_21_detected_i2c2=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_12_detected_i2c2=0;//change from 1(HIGH) to 2(PAUSE)
-int flip_20_detected_i2c2=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_02_detected_i2c2=0;//change from 0(LOW) to 2(PAUSE)
-//##
-int raw_input_i2c3;
-int previous_i2c3;
-int flip_21_detected_i2c3=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_12_detected_i2c3=0;//change from 1(HIGH) to 2(PAUSE)
-int flip_20_detected_i2c3=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_02_detected_i2c3=0;//change from 0(LOW) to 2(PAUSE)
-//##
 int raw_input_rs4852;
 int previous_rs4852;
 int flip_21_detected_rs4852=0;//change from 2(PAUSE) to 1(HIGH)
@@ -212,6 +192,49 @@ int flip_02_detected_rs4852=0;//change from 0(LOW) to 2(PAUSE)
 //##
 //MAIN LOOP
 while(1){//while
+	//######## RS4852 ############
+	raw_input_rs4852 = read_binary_input_rs4852();
+	if ( (previous_rs4852==2) & (raw_input_rs4852==1) ){  flip_21_detected_rs4852=1;  }
+        if ( (previous_rs4852==1) & (raw_input_rs4852==2) ){  flip_12_detected_rs4852=1;  }
+        if ( (previous_rs4852==2) & (raw_input_rs4852==0) ){  flip_20_detected_rs4852=1;  }
+        if ( (previous_rs4852==0) & (raw_input_rs4852==2) ){  flip_02_detected_rs4852=1;  }
+        if ( flip_21_detected_rs4852 & flip_12_detected_rs4852 ){ 
+	   flip_21_detected_rs4852=0; flip_12_detected_rs4852=0;flip_20_detected_rs4852=0;flip_02_detected_rs4852=0;
+	   execute_rs4852( get_command_and_parameter_after_leftShift_insertEnd_rs4852(1) );
+	}//if
+        if ( flip_20_detected_rs4852 & flip_02_detected_rs4852 ){
+           flip_21_detected_rs4852=0;flip_12_detected_rs4852=0;flip_20_detected_rs4852=0;flip_02_detected_rs4852=0;
+	   execute_rs4852( get_command_and_parameter_after_leftShift_insertEnd_rs4852(0) );
+	}//if
+        previous_rs4852= raw_input_rs4852;
+	//######## END RS4852 ##########
+}//while  
+//MAIN LOOP
+//#########################    END MAIN EVENT   #################################
+
+return 0;
+}//main
+
+//#######################################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* GARBAGE DISPOSAL
+1...............
+
 	//######## I2C1 ##########
 	raw_input_i2c1 = read_binary_input_i2c1();
 	if ( (previous_i2c1==2) & (raw_input_i2c1==1) ){  flip_21_detected_i2c1=1;  }
@@ -260,25 +283,44 @@ while(1){//while
 	}//if
         previous_i2c3 = raw_input_i2c3;
 	//######## END I2C3 #########
-	//######## RS4852 ############
-	raw_input_rs4852 = read_binary_input_rs4852();
-	if ( (previous_rs4852==2) & (raw_input_rs4852==1) ){  flip_21_detected_rs4852=1;  }
-        if ( (previous_rs4852==1) & (raw_input_rs4852==2) ){  flip_12_detected_rs4852=1;  }
-        if ( (previous_rs4852==2) & (raw_input_rs4852==0) ){  flip_20_detected_rs4852=1;  }
-        if ( (previous_rs4852==0) & (raw_input_rs4852==2) ){  flip_02_detected_rs4852=1;  }
-        if ( flip_21_detected_rs4852 & flip_12_detected_rs4852 ){ 
-	   flip_21_detected_rs4852=0; flip_12_detected_rs4852=0;flip_20_detected_rs4852=0;flip_02_detected_rs4852=0;
-	   execute_rs4852( get_command_and_parameter_after_leftShift_insertEnd_rs4852(1) );
-	}//if
-        if ( flip_20_detected_rs4852 & flip_02_detected_rs4852 ){
-           flip_21_detected_rs4852=0;flip_12_detected_rs4852=0;flip_20_detected_rs4852=0;flip_02_detected_rs4852=0;
-	   execute_rs4852( get_command_and_parameter_after_leftShift_insertEnd_rs4852(0) );
-	}//if
-        previous_rs4852= raw_input_rs4852;
-	//######## END RS4852 ##########
-}//while  
-//MAIN LOOP
-//#########################    END MAIN EVENT   #################################
 
-return 0;
-}//main
+ 2.....................................
+int raw_input_i2c1;
+int previous_i2c1;
+int flip_21_detected_i2c1=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_12_detected_i2c1=0;//change from 1(HIGH) to 2(PAUSE)
+int flip_20_detected_i2c1=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_02_detected_i2c1=0;//change from 0(LOW) to 2(PAUSE)
+//##
+int raw_input_i2c2;
+int previous_i2c2;
+int flip_21_detected_i2c2=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_12_detected_i2c2=0;//change from 1(HIGH) to 2(PAUSE)
+int flip_20_detected_i2c2=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_02_detected_i2c2=0;//change from 0(LOW) to 2(PAUSE)
+//##
+int raw_input_i2c3;
+int previous_i2c3;
+int flip_21_detected_i2c3=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_12_detected_i2c3=0;//change from 1(HIGH) to 2(PAUSE)
+int flip_20_detected_i2c3=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_02_detected_i2c3=0;//change from 0(LOW) to 2(PAUSE)
+//##
+
+
+
+3................................
+	
+int read_binary_input_i2c1(){return 0;}
+
+//###################################
+
+int read_binary_input_i2c2(){return 0;}
+
+//###################################
+
+int read_binary_input_i2c3(){return 0;}
+
+//##################################
+
+*/
