@@ -130,12 +130,9 @@ int write_RS5V_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int RESPONSE_WAIT         = 10000;//response_wait()
 int CURRENTMODE           = 0;
 int CURRENTSYSTEMCLOCK    = 0;
-int COMMAND_RESULT1_I2C   = 0;
-int COMMAND_RESULT2_I2C   = 0;
-int COMMAND_RESULT1_RS485 = 0;
-int COMMAND_RESULT2_RS485 = 0;
 int COMMANDARRAY_I2C      [16];
 int COMMAND_PARAMETER_RS485 = 0;
+int COMMAND_PARAMETER_I2C   = 0;
 
 //####################################
 	
@@ -247,42 +244,36 @@ return 0;
 }//write_response_i2c
 
 //################################
-
+//TRUTH TABLE
+//PC10 PA15 Y(TX).....................CAUTION
+//0    0    3(end)
+//0    1    1
+//1    0    0
+//1    1    2(pause)
 //write_response_rs485
 int write_response_rs485( int firstbyte, int secondbyte){
-    int RESPONSEARRAY_RS485[16];
     int transmit_bit_response_rs485(int X){
-    //TRUTH TABLE
-    //PC10 PA15 Y(TX).....................CAUTION
-    //0    0    3(end)
-    //0    1    1
-    //1    0    0
-    //1    1    2(pause)
-    //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);//0
-    //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
-    //response_wait();//keep pins in pause state
-    //if(X==1){/*transmit ONE*/
-    //        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET);//1
-    //         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);//1
-    //}//if
-    //if(X==0){/*transmit ZERO*/
-    //         HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET  );//1
-    //        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);//0
-    //}//if
+        //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);//0
+        //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
+        //response_wait();//keep pins in pause state
+    if(X==1){
+            //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET);//1
+            //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);//1
+    }//if
+    if(X==0){
+            //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET  );//1
+            //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);//0
+    }//if
     //response_wait();//keep pins in X state
     //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);//0
     //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
     //response_wait();//keep pins in pause state
-    return 0;
+        return 0;
     }//transmit_bit_response_rs485
-    for( int index=0;  index<=7;index++ ){
-    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
-    }//for
-    for( int index=8;  index<=15;index++ ){
-    RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
-    }//for
-    //send_response_rs485
-    for( int index=0;  index<=15; index++ ){  transmit_bit_response_rs485(  RESPONSEARRAY_RS485[index]  );  }//for
+    int RESPONSEARRAY_RS485[16];
+    for( int index=0; index<=7 ; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); }//for
+    for( int index=8; index<=15; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); }//for
+    for( int index=0; index<=15; index++ ){ transmit_bit_response_rs485(  RESPONSEARRAY_RS485[index]  );                     }//for
 return 0;
 }//write_response_rs485
 
@@ -334,7 +325,7 @@ int execute_i2c(int cp){
     }//SM
     if (  command==GM    ){ write_response_i2c(ACK,CURRENTMODE       ); }//ACK
     if (  command==GSC   ){ write_response_i2c(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    if (  command==SSC   ){ write_response_i2c(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2_I2C; }//ACK
+    if (  command==SSC   ){ write_response_i2c(ACK, 0  );CURRENTSYSTEMCLOCK=parameter; }//ACK
     if (  command==GOSTM ){
                              int a = ((int) (XB12V_I  ()<<7));  int b = ((int) (ADCS12V_I()<<6)); int c = ((int) (RS5V_I   ()<<5));  int d = ((int) (RS3V3_I  ()<<4));
                              int e = ((int) (SA1_I    ()<<3));  int f = ((int) (SA2_I    ()<<2)); int g = ((int) (SA3_I    ()<<1));
@@ -394,7 +385,7 @@ int execute_rs485( int cp ){
     }//SM
     if (  command==GM    ){ write_response_rs485(ACK,CURRENTMODE       ); }//ACK //GM
     if (  command==GSC   ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    if (  command==SSC   ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=COMMAND_RESULT2_RS485; }//ACK
+    if (  command==SSC   ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=parameter; }//ACK
     if (  command==GOSTM ){
                              int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
                              int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
