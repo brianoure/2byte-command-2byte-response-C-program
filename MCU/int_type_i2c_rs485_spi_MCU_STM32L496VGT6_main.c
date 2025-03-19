@@ -192,8 +192,8 @@ return 0;
 //shift all to left, insert new bit at end
 //get_command_parameter_after_leftShift_insertEnd_i2c
 int get_command_parameter_after_leftShift_insertEnd_i2c(int insertionbit){
-    COMMAND_PARAMETER_RS485 = (COMMAND_PARAMETER_RS485<<1) & (65534|insertionbit);
-    return COMMAND_PARAMETER_RS485;
+    COMMAND_PARAMETER_I2C = (COMMAND_PARAMETER_I2C<<1) & (65534|insertionbit);
+    return COMMAND_PARAMETER_I2C;
 }//get_command_parameter_after_leftShift_insertEnd_i2c
 
 //####################################
