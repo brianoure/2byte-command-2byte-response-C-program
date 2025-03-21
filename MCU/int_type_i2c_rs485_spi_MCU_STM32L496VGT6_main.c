@@ -84,46 +84,46 @@ int SPI3_MOSI  () {return 0;} //who's the master, who's the slave and what's the
 int I2C2_SCL   () {return 0;} // ccu/obc master, unidirectional
 int I2C2_SDA   () {return 0;} // ccu/obc master, unidirectional
 int SYNC_PULSE () {return 0;} // clock drain
-int E_RST1     () {return 0;} //?
-int E_RST0     () {return 0;} //?
+int E_RST1     () {return 0;} //reset (high then low) to switch 3V3 CCU off then back on 
+int E_RST0     () {return 0;} //reset (high then low) to switch 3V3 OBC off then back on 
 int PWR_RST    () {return 0;} //?
-int OBC_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int OBC_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
+int CCU_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int OBC_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int CCU_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int ADCS_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int ADCS_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
+int ADCS_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int UHF_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int UHF_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int UHF_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int UHF_EN     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int PL_I       () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL_FLT     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int PL_FLT     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int PL_EN      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int RS3V3_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS3V3_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS3V3_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int RS3V3_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int GPS_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int GPS_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int GPS_EN     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int ADCS5V_I   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS5V_FLT () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int ADCS5V_FLT () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int ADCS5V_EN  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int PL5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int PL5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int PL5V_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int CCU5V_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU5V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int CCU5V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int CCU5V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int XB12V_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int XB12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int XB12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int XB12V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS12V_FLT() {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int ADCS12V_FLT() {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int ADCS12V_I  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS12_EN  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//
-int RS12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int ADCS12_EN  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int RS12V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
+int RS5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int RS5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int RS5V_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 // other variables
