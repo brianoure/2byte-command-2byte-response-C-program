@@ -89,43 +89,43 @@ int SYNC_PULSE () {return 0;} // clock drain                                ....
 // Not used in microcontroller int PWR_RST    () {return 0;} //?
 int OBC_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault       ...........PD2
 int CCU_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault       ...........PD9
-int OBC_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int ADCS_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable
-int UHF_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int UHF_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int UHF_EN     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL_I       () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL_FLT     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int PL_EN      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS3V3_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS3V3_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int RS3V3_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable
-int GPS_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int GPS_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int GPS_EN     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable
-int ADCS5V_I   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS5V_FLT () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int ADCS5V_EN  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable
-int PL5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int PL5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int PL5V_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable
-int CCU5V_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int CCU5V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int CCU5V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable
-int XB12V_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int XB12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int XB12V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable
-int ADCS12V_FLT() {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int ADCS12V_I  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int ADCS12_EN  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable
-int RS12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int RS12V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable
-int RS5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
-int RS5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS5V_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable
+int OBC_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //...........PB1
+int CCU_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //...........PA5
+int ADCS_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //...........PA7
+int ADCS_FAULT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault ...........PD0
+int ADCS_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable ..........PA12
+int UHF_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//                      .......................PB0
+int UHF_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault ...............PB4
+int UHF_EN     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //        ................PD7
+int PL_I       () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//         ................PC4
+int PL_FLT     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault ...............PD14
+int PL_EN      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //             ...............PD13
+int RS3V3_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//               ................PA6
+int RS3V3_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault    ...............PD8
+int RS3V3_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable     ................PB15
+int GPS_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //             ........................PC3
+int GPS_FLT    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault        .............PB5
+int GPS_EN     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable       .............PB6
+int ADCS5V_I   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                .................PC2
+int ADCS5V_FLT () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault ...............PB9
+int ADCS5V_EN  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable     ...............PE4
+int PL5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//                    ....................PC1
+int PL5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault .............PE0
+int PL5V_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable     .............PE3
+int CCU5V_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                   ......................PA4
+int CCU5V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault         ......PE11
+int CCU5V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable ....PE10
+int XB12V_I    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //        ................PA3
+int XB12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault               .........PE9
+int XB12V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable  .........PE8
+int ADCS12V_FLT() {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault ..............PB7
+int ADCS12V_I  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //     .................PC5
+int ADCS12_EN  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable ..........PB8
+int RS12V_FLT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault ................PE7
+int RS12V_EN   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable ...........PB2
+int RS5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault .....................PE1
+int RS5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} // .....................PC0
+int RS5V_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable ..............PE2
 // other variables
 int RESPONSE_WAIT         = 10000;//response_wait()
 int CURRENTMODE           = 0;
