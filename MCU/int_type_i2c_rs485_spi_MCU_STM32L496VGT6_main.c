@@ -130,12 +130,41 @@ int RS5V_FLT   () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if re
 int RS5V_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                                           ..............................PC0
 int RS5V_EN    () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable       ..............PE2
 // other variables
-int RESPONSE_WAIT         = 10000;//response_wait()
-int CURRENTMODE           = 0;
-int CURRENTSYSTEMCLOCK    = 0;
-int COMMANDARRAY_I2C      [16];
+int RESPONSE_WAIT           = 10000;//response_wait()
+int CURRENTMODE             = 0;
+int CURRENTSYSTEMCLOCK      = 0;
+int COMMANDARRAY_I2C       [16];
 int COMMAND_PARAMETER_RS485 = 0;
 int COMMAND_PARAMETER_I2C   = 0;
+
+//####################################
+
+int RS4851_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                          .............................................. PD6
+int RS4851_DE  () {return 0;} //in?                                                                  .............................................. PD4
+int RS4851_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}//            .............................................. PD5
+int RS4852_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in V                       .............................................. PB11
+int RS4852_DE  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in !V                      .............................................. PD12
+int RS4852_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}//            .............................................. PB10
+
+int send_bit_rs485  (int bit){
+if(bit){RS4851_TX(); RS4852_TX(); RS4851_DE(1); RS4852_DE(1);}
+else   {RS4851_TX(); RS4852_TX(); RS4851_DE(1); RS4852_DE(1);}
+return 0;
+}//
+
+int send_pause_rs485(){
+RS4851_TX(); RS4852_TX(); RS4851_DE(1); RS4852_DE(1);
+for(int i=0;i<1000;i++){}
+return 0;
+}//
+
+int receive_rs485(){
+int result;
+if( RS4851_RX() & RS4852_RX() & RS4851_DE(0) & RS4852_DE(0) ){result=;}
+if( RS4851_RX() & RS4852_RX() & RS4851_DE(0) & RS4852_DE(0) ){result=;}
+if( RS4851_RX() & RS4852_RX() & RS4851_DE(0) & RS4852_DE(0) ){result=;}
+return result;
+}//
 
 //####################################
 	
