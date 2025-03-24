@@ -64,30 +64,30 @@ int GPS_EN        = 57 ;   int GPS_ENABLE                     = GPS_EN    ;//pin
 int ADCS12V_EN    = 199;   int ADCS_12V_ENABLE                = ADCS12V_EN;//pin
 int EPS_EN        = 97 ;   int EPS_ENABLE                     = EPS_EN    ;//funny
 //BOOT0
-int SA1_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //current reading from SA1
-int SA2_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //current reading from SA2
-int SA3_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //current reading from SA3
-int RS4851_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
-int RS4851_DE  () {return 0;} //in?
-int RS4851_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}
-int RS4852_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in V
-int RS4852_DE  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in !V 
-int RS4852_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}
-int SPI1_SS    () {return 0;} //who's the master, who's the slave and what's the message
-int SPI1_SCK   () {return 0;} //who's the master, who's the slave and what's the message
-int SPI1_MISO  () {return 0;} //who's the master, who's the slave and what's the message
-int SPI1_MOSI  () {return 0;} //who's the master, who's the slave and what's the message
-int SPI3_SS    () {return 0;} //who's the master, who's the slave and what's the message
-int SPI3_SCK   () {return 0;} //who's the master, who's the slave and what's the message
-int SPI3_MISO  () {return 0;} //who's the master, who's the slave and what's the message
-int SPI3_MOSI  () {return 0;} //who's the master, who's the slave and what's the message
-int I2C2_SCL   () {return 0;} // ccu/obc master, unidirectional
-int I2C2_SDA   () {return 0;} // ccu/obc master, unidirectional
-int SYNC_PULSE () {return 0;} // clock drain
-int E_RST1     () {return 0;} //reset (high then low) to switch 3V3 CCU off then back on 
-int E_RST0     () {return 0;} //reset (high then low) to switch 3V3 OBC off then back on 
-int PWR_RST    () {return 0;} //?
-int OBC_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
+int SA1_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //current reading from SA1  ........... PA0
+int SA2_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //current reading from SA2  ........... PA1
+int SA3_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //current reading from SA3  ........... PA2
+int RS4851_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                          ........... PD6
+int RS4851_DE  () {return 0;} //in?                                                                  ........... PD4
+int RS4851_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}//            ........... PD5
+int RS4852_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in V                       ........... PB11
+int RS4852_DE  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in !V                      ...........PD12
+int RS4852_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}//            ...........PB10
+int SPI1_SS    () {return 0;} //who's the master, who's the slave and what's the message             ...........PE12
+int SPI1_SCK   () {return 0;} //who's the master, who's the slave and what's the message             ...........PE13
+int SPI1_MISO  () {return 0;} //who's the master, who's the slave and what's the message             ...........PE14
+int SPI1_MOSI  () {return 0;} //who's the master, who's the slave and what's the message             ...........PE15
+int SPI3_SS    () {return 0;} //who's the master, who's the slave and what's the message             ...........PA15
+int SPI3_SCK   () {return 0;} //who's the master, who's the slave and what's the message             ...........PC10
+int SPI3_MISO  () {return 0;} //who's the master, who's the slave and what's the message             ...........PC11
+int SPI3_MOSI  () {return 0;} //who's the master, who's the slave and what's the message             ...........PC12
+int I2C2_SCL   () {return 0;} // ccu/obc master, unidirectional             ...........PB13
+int I2C2_SDA   () {return 0;} // ccu/obc master, unidirectional             ...........PB14
+int SYNC_PULSE () {return 0;} // clock drain                                ...........PD1
+// Not used in microcontroller int E_RST1     () {return 0;} //reset (high then low) to switch 3V3 CCU off then back on 
+// Not used in microcontroller int E_RST0     () {return 0;} //reset (high then low) to switch 3V3 OBC off then back on 
+// Not used in microcontroller int PWR_RST    () {return 0;} //?
+int OBC_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault       ...........PD2
 int CCU_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
 int OBC_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int CCU_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
