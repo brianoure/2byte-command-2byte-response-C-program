@@ -88,7 +88,7 @@ int SYNC_PULSE () {return 0;} // clock drain                                ....
 // Not used in microcontroller int E_RST0     () {return 0;} //reset (high then low) to switch 3V3 OBC off then back on 
 // Not used in microcontroller int PWR_RST    () {return 0;} //?
 int OBC_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault       ...........PD2
-int CCU_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault
+int CCU_FAULT  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault       ...........PD9
 int OBC_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int CCU_I      () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
 int ADCS_I     () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}
