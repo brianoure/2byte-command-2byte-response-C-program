@@ -73,19 +73,19 @@ int  RS4851_RX  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_6        
 void RS4851_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_4 , value );} //                          .............................................. PD4
 void RS4851_TX  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_5 , value );} //                          .............................................. PD5
 int  RS4852_RX  ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_11        );}//in V                       .............................................. PB11
-void RS4852_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_12        );}//in !V                      .............................................. PD12
+void RS4852_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_12, value );}//in !V                      .............................................. PD12
 void RS4852_TX  (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_10, value );}//                           .............................................. PB10
-int  SPI1_SS    ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PE12
-int  SPI1_SCK   ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PE13
-int  SPI1_MISO  ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PE14
-int  SPI1_MOSI  ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PE15
-int  SPI3_SS    ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PA15
-int  SPI3_SCK   ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PC10
-int  SPI3_MISO  ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PC11
-int  SPI3_MOSI  ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PC12
+int  SPI1_SS    ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_12        );} //who's the master, who's the slave and what's the message             .............................................. PE12
+int  SPI1_SCK   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_13        );} //who's the master, who's the slave and what's the message             .............................................. PE13
+void SPI1_MISO  (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_14, value );} //who's the master, who's the slave and what's the message             .............................................. PE14
+int  SPI1_MOSI  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_15        );} //who's the master, who's the slave and what's the message             .............................................. PE15
+int  SPI3_SS    ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_15        );} //who's the master, who's the slave and what's the message             .............................................. PA15
+int  SPI3_SCK   ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_10        );} //who's the master, who's the slave and what's the message             .............................................. PC10
+void SPI3_MISO  (int value) {       HAL_GPIO_WritePin( GPIOC, GPIO_PIN_11, value );} //who's the master, who's the slave and what's the message             .............................................. PC11
+int  SPI3_MOSI  ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_12        );} //who's the master, who's the slave and what's the message             .............................................. PC12
 int  I2C2_SCL   ()          {                                             return 0;} // ccu/obc master, unidirectional                                      .............................................. PB13
 int  I2C2_SDA   ()          {                                             return 0;} // ccu/obc master, unidirectional                                      .............................................. PB14
-int  SYNC_PULSE ()          {                                             return 0;} // clock drain                                                         .............................................. PD1
+int  SYNC_PULSE ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_12        );} // clock drain                                                         .............................................. PD1
 int  OBC_FAULT  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_2         );} //if read LOW then fault, else no fault    ............................... PD2
 int  CCU_FAULT  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_9         );} //if read LOW then fault, else no fault    ............................... PD9
 int  OBC_I      ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_1         );} //     ....................................................................PB1
