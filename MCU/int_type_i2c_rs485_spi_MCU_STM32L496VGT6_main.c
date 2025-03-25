@@ -72,20 +72,20 @@ int  SA3_I      ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_2        
 int  RS4851_RX  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_6         );} //                          .............................................. PD6
 void RS4851_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_4 , value );} //                          .............................................. PD4
 void RS4851_TX  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_5 , value );} //                          .............................................. PD5
-int  RS4852_RX  ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_11        );}//in V                       .............................................. PB11
-void RS4852_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_12, value );}//in !V                      .............................................. PD12
-void RS4852_TX  (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_10, value );}//                           .............................................. PB10
-int  SPI1_SS    ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_12        );} //who's the master, who's the slave and what's the message             .............................................. PE12
-int  SPI1_SCK   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_13        );} //who's the master, who's the slave and what's the message             .............................................. PE13
-void SPI1_MISO  (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_14, value );} //who's the master, who's the slave and what's the message             .............................................. PE14
-int  SPI1_MOSI  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_15        );} //who's the master, who's the slave and what's the message             .............................................. PE15
-int  SPI3_SS    ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_15        );} //who's the master, who's the slave and what's the message             .............................................. PA15
-int  SPI3_SCK   ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_10        );} //who's the master, who's the slave and what's the message             .............................................. PC10
-void SPI3_MISO  (int value) {       HAL_GPIO_WritePin( GPIOC, GPIO_PIN_11, value );} //who's the master, who's the slave and what's the message             .............................................. PC11
-int  SPI3_MOSI  ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_12        );} //who's the master, who's the slave and what's the message             .............................................. PC12
-int  I2C2_SCL   ()          {                                             return 0;} // ccu/obc master, unidirectional                                      .............................................. PB13
-int  I2C2_SDA   ()          {                                             return 0;} // ccu/obc master, unidirectional                                      .............................................. PB14
-int  SYNC_PULSE ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_12        );} // clock drain                                                         .............................................. PD1
+int  RS4852_RX  ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_11        );} //                          .............................................. PB11
+void RS4852_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_12, value );} //                          .............................................. PD12
+void RS4852_TX  (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_10, value );} //                          .............................................. PB10
+int  SPI1_SS    ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_12        );} //                          .............................................. PE12
+int  SPI1_SCK   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_13        );} //                          .............................................. PE13
+void SPI1_MISO  (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_14, value );} //                          .............................................. PE14
+int  SPI1_MOSI  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_15        );} //                          .............................................. PE15
+int  SPI3_SS    ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_15        );} //                          .............................................. PA15
+int  SPI3_SCK   ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_10        );} //                          .............................................. PC10
+void SPI3_MISO  (int value) {       HAL_GPIO_WritePin( GPIOC, GPIO_PIN_11, value );} //                          .............................................. PC11
+int  SPI3_MOSI  ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_12        );} //                          .............................................. PC12
+int  I2C2_SCL   ()          {                                             return 0;} // ccu/obc master, unidirectional  ....................................... PB13
+int  I2C2_SDA   ()          {                                             return 0;} // ccu/obc master, unidirectional  ....................................... PB14
+int  SYNC_PULSE ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_12        );} // clock drain                     ....................................... PD1
 int  OBC_FAULT  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_2         );} //if read LOW then fault, else no fault    ............................... PD2
 int  CCU_FAULT  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_9         );} //if read LOW then fault, else no fault    ............................... PD9
 int  OBC_I      ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_1         );} //     ....................................................................PB1
@@ -93,13 +93,13 @@ int  CCU_I      ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_5        
 int  ADCS_I     ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_7         );} //     ....................................................................PA7
 int  ADCS_FAULT ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_0         );} //if read LOW then fault, else no fault                ....................PD0
 void ADCS_EN    (int value) {       HAL_GPIO_WritePin( GPIOA, GPIO_PIN_12, value );} //if write HIGH then enable, if write LOW then disable ....................PA12
-int  UHF_I      ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_0         );}//                                                ..........................PB0
+int  UHF_I      ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_0         );} //                                               ..........................PB0
 int  UHF_FLT    ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_4         );} //if read LOW then fault, else no fault              ......................PB4
 void UHF_EN     (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_7 , value );} //        .................................................................PD7
-int  PL_I       ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_4         );}//         .................................................................PC4
+int  PL_I       ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_4         );} //        .................................................................PC4
 int  PL_FLT     ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_14        );} //if read LOW then fault, else no fault  ..................................PD14
 void PL_EN      (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_13, value );} //                                       ..................................PD13
-int  RS3V3_I    ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_6         );}//                                        ..................................PA6
+int  RS3V3_I    ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_6         );} //                                       ..................................PA6
 int  RS3V3_FLT  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_8         );} //if read LOW then fault, else no fault  ..................................PD8
 void RS3V3_EN   (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_15        );} //if write HIGH then enable, if write LOW then disable     ................PB15
 int  GPS_I      ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_3         );} //                                                 ........................PC3
@@ -108,7 +108,7 @@ void GPS_EN     (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_6,  value
 int  ADCS5V_I   ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_2         );} //                                                        .................PC2
 int  ADCS5V_FLT ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_9         );} //if read LOW then fault, else no fault                     ...............PB9
 void ADCS5V_EN  (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_4,  value );} //if write HIGH then enable, if write LOW then disable      ...............PE4
-int  PL5V_I     ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_1         );}//                                                      ....................PC1
+int  PL5V_I     ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_1         );} //                                                     ....................PC1
 int  PL5V_FLT   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_0         );} //if read LOW then fault, else no fault                       .............PE0
 void PL5V_EN    (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_3,  value );} //if write HIGH then enable, if write LOW then disable        .............PE3
 int  CCU5V_I    ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_4         );} //                                                   ......................PA4
@@ -129,31 +129,18 @@ void RS5V_EN    (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_2 , value
 int RESPONSE_WAIT           = 10000;//response_wait()
 int CURRENTMODE             = 0;
 int CURRENTSYSTEMCLOCK      = 0;
-int COMMANDARRAY_I2C       [16];
 int COMMAND_PARAMETER_RS485 = 0;
-int COMMAND_PARAMETER_I2C   = 0;
 
 //####################################
 
-int send_bit_rs485  (int bit){
-if(bit){RS4851_TX(1); RS4852_TX(0); }
-else   {RS4851_TX(0); RS4852_TX(1); }
-RS4851_DE(1); 
-RS4852_DE(1);
-for(int i=0;i<1000;i++){}
+//response_wait
+int response_wait(){
+    for( int count=0;  count<=RESPONSE_WAIT ;count++ ){ }//do nothing
+    //HAL delay could work too
 return 0;
-}//
-
-//#####################################
+}//response_wait
 	
-int send_pause_rs485(){
-RS4851_TX(1); RS4852_TX(1);
-RS4851_DE(1); RS4852_DE(1);
-for(int i=0;i<1000;i++){}
-return 0;
-}//
-
-//###################################
+//################# RS485 METHODS ###################
 	
 int receive_rs485(){
 int result;
@@ -168,68 +155,6 @@ return result;
 
 //####################################
 	
-//read_input
-int read_binary_input_i2c(){
-    //TRUTH TABLE I2C
-    //PC10 PA15 Y(TX) ...................CAUTION
-    //0    0    3(end)
-    //0    1    2(pause)
-    //1    0    0
-    //1    1    1
-    int result=0;
-     /*framework customizable
-	   //i2c in....input binary value is the pin value when the clock is high...int this case pin B15 is the clock and D10 is the signal
-	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=3;}//end00
-	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=2;}//pause01
-	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=0;}//zero10
-	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=1;}//one 11
-	   //i2c in
-    framework customizable*/
-return result;
-}//read_input
-
-//####################################
-
-//read_input
-int read_binary_input_rs485(){
-    //TRUTH TABLE RS485
-    //PC10 PA15 Y(TX) ...................CAUTION
-    //0    0    3(end)
-    //0    1    2(pause)
-    //1    0    0
-    //1    1    1
-    int result=0;
-     /*framework customizable
-	   //rs485 in......input binary value is when  two lines are exctly opposite/complementing each other...you just have to agree which set represents the ONE and which set represents the ZERO
-	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=3;}//end00
-	   if( (!HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )) &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=1;}//one01
-	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  & (!HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )) ){result=0;}//zero10
-	   if(   HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 )  &   HAL_GPIO_ReadPin( GPIOD, GPIO_PIN_10 )  ){result=2;}//pause11
-	   //rs485 in
-    framework customizable */
-return result;
-}//read_input
-	
-//####################################  
-
-//response_wait
-int response_wait(){
-    for( int count=0;  count<=RESPONSE_WAIT ;count++ ){ }//do nothing
-    //HAL delay could work too
-return 0;
-}//response_wait
-
-//####################################
-
-//shift all to left, insert new bit at end
-//get_command_parameter_after_leftShift_insertEnd_i2c
-int get_command_parameter_after_leftShift_insertEnd_i2c(int insertionbit){
-    COMMAND_PARAMETER_I2C = (COMMAND_PARAMETER_I2C<<1) & (65534|insertionbit);
-    return COMMAND_PARAMETER_I2C;
-}//get_command_parameter_after_leftShift_insertEnd_i2c
-
-//####################################
-
 //get_command_parameter_after_leftShift_insertEnd_rs485
 int get_command_parameter_after_leftShift_insertEnd_rs485(int insertionbit){
     COMMAND_PARAMETER_RS485 = (COMMAND_PARAMETER_RS485<<1) & (65534|insertionbit);
@@ -238,136 +163,29 @@ int get_command_parameter_after_leftShift_insertEnd_rs485(int insertionbit){
 
 //###################################
 	
-//write_response_i2c
-int write_response_i2c( int firstbyte, int secondbyte){
-    int RESPONSEARRAY_I2C[16];
-    int transmit_bit_response_i2c(int X){
-    //TRUTH TABLE
-    //PC10 PA15 Y(TX).....................CAUTION
-    //0    0    3(end)
-    //0    1    1
-    //1    0    0
-    //1    1    2(pause)
-    //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);//0
-    //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
-    //response_wait();//keep pins in pause state
-    //if(X==1){/*transmit ONE*/
-    //        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET);//1
-    //         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);//1
-    //}//if
-    //if(X==0){/*transmit ZERO*/
-    //         HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET  );//1
-    //        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);//0
-    //}//if
-    //response_wait();//keep pins in X state
-    //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);//0
-    //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
-    //response_wait();//keep pins in pause state
-    return 0;
-    }//transmit_bit_response_i2c
-    for( int index=0;  index<=7;index++ ){
-    RESPONSEARRAY_I2C[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); // & 1 eliminates all preceding bits  
-    }//for
-    for( int index=8;  index<=15;index++ ){
-    RESPONSEARRAY_I2C[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); // & 1 eliminates all preceding bits 
-    }//for
-    for( int index=0;  index<=15; index++ ){  transmit_bit_response_i2c(  RESPONSEARRAY_RS485[index]  );  }//for
-return 0;
-}//write_response_i2c
-
-//################################
 //TRUTH TABLE
-//PC10 PA15 Y(TX).....................CAUTION
-//0    0    3(end)
-//0    1    1
-//1    0    0
-//1    1    2(pause)
+//RS4851_TX RS4852_TX   Y
+//0         0           3(end)
+//0         1           0
+//1         0           1
+//1         1           2(pause)
 //write_response_rs485
 int write_response_rs485( int firstbyte, int secondbyte){
-    int transmit_bit_response_rs485(int X){
-        //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);//0
-        //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
-        //response_wait();//keep pins in pause state
-    if(X==1){
-            //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET);//1
-            //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);//1
-    }//if
-    if(X==0){
-            //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET  );//1
-            //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);//0
-    }//if
-    //response_wait();//keep pins in X state
-    //HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);//0
-    //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET  );//1
-    //response_wait();//keep pins in pause state
-        return 0;
-    }//transmit_bit_response_rs485
+    void send_bit_rs485  (int bit){
+         if(bit){ RS4851_TX(1); RS4852_TX(0); } else { RS4851_TX(0); RS4852_TX(1); }
+         RS4851_DE(1); RS4852_DE(1);
+         for(int i=0;i<1000;i++){}//for
+	 RS4851_TX(1); RS4852_TX(1);
+         RS4851_DE(1); RS4852_DE(1);
+         for(int i=0;i<1000;i++){}//for
+    return 0;
+    }//send_bit_rs485
     int RESPONSEARRAY_RS485[16];
     for( int index=0; index<=7 ; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); }//for
     for( int index=8; index<=15; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); }//for
-    for( int index=0; index<=15; index++ ){ transmit_bit_response_rs485(  RESPONSEARRAY_RS485[index]  );                     }//for
+    for( int index=0; index<=15; index++ ){ send_bit_rs485(  RESPONSEARRAY_RS485[index]  );                                  }//for
 return 0;
 }//write_response_rs485
-
-//#################################
-
-//execute
-int execute_i2c(int cp){
-    int command  = (cp>>8) & 255;
-    int parameter=  cp & 255;
-    if ( command==PING  ){  write_response_i2c(ACK,ZERO);  }//ACK...........Fault reporting mechanisms?
-    if ( command==SON   ){
-                             int else_check=1;
-                             if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(else_check==1                   ){write_response_i2c(NACK,0);}//NACK
-    }//SON  
-    if ( command==SOF  ){
-                             int else_check=1;
-                             if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(else_check==1                   ){write_response_i2c(NACK,0);}//NACK
-    }//SOF
-    if ( command==SM  ){
-                             int else_check=1;
-                             if(parameter==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(parameter==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_i2c(ACK,0);     }//ACK.... do action
-                             if(else_check==1                      ){write_response_i2c(NACK,0);}//NACK
-    }//SM
-    if (  command==GM    ){ write_response_i2c(ACK,CURRENTMODE       ); }//ACK
-    if (  command==GSC   ){ write_response_i2c(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    if (  command==SSC   ){ write_response_i2c(ACK, 0  );CURRENTSYSTEMCLOCK=parameter; }//ACK
-    if (  command==GOSTM ){
-                             int a = ((int) (XB12V_I  ()<<7));  int b = ((int) (ADCS12V_I()<<6)); int c = ((int) (RS5V_I   ()<<5));  int d = ((int) (RS3V3_I  ()<<4));
-                             int e = ((int) (SA1_I    ()<<3));  int f = ((int) (SA2_I    ()<<2)); int g = ((int) (SA3_I    ()<<1));
-                             write_response_i2c(  ACK, ((int) (a | b | c | d | e | f | g |  1) )  );
-    }//ACK GOSTM
-    if ( command==KEN   ){ write_response_i2c(ACK,KEN );  }//ACK ...........shutting down all activity received from GCS or OBC//KEN
-    if ( command==KDIS  ){ write_response_i2c(ACK,KDIS);  }//ACK //KDIS
-    //YOU CAN ALSO ADD LOGIC
-return 0;
-}//execute
 
 //#################################
 
@@ -428,6 +246,118 @@ int execute_rs485( int cp ){
     //YOU CAN ALSO ADD LOGIC
 return 0;
 }//execute
+	
+//################# END RS485 METHODS ###################
+
+//################# SPI1 METHODS ################### brianoure
+	
+int receive_rs485(){
+int result;
+RS4851_DE(0);
+RS4852_DE(0);
+if( RS4851_RX(1) & RS4852_RX(0)  ){result=1;}//1
+if( RS4851_RX(0) & RS4852_RX(1)  ){result=0;}//0
+if( RS4851_RX(0) & RS4852_RX(0)  ){result=2;}//end
+if( RS4851_RX(1) & RS4852_RX(1)  ){result=3;}//pause
+return result;
+}//
+
+//####################################
+	
+//get_command_parameter_after_leftShift_insertEnd_rs485
+int get_command_parameter_after_leftShift_insertEnd_rs485(int insertionbit){
+    COMMAND_PARAMETER_RS485 = (COMMAND_PARAMETER_RS485<<1) & (65534|insertionbit);
+    return COMMAND_PARAMETER_RS485;
+}//get_command_parameter_after_leftShift_insertEnd_rs485
+
+//###################################
+	
+//TRUTH TABLE
+//RS4851_TX RS4852_TX   Y
+//0         0           3(end)
+//0         1           0
+//1         0           1
+//1         1           2(pause)
+//write_response_rs485
+int write_response_rs485( int firstbyte, int secondbyte){
+    void send_bit_rs485  (int bit){
+         if(bit){ RS4851_TX(1); RS4852_TX(0); } else { RS4851_TX(0); RS4852_TX(1); }
+         RS4851_DE(1); RS4852_DE(1);
+         for(int i=0;i<1000;i++){}//for
+	 RS4851_TX(1); RS4852_TX(1);
+         RS4851_DE(1); RS4852_DE(1);
+         for(int i=0;i<1000;i++){}//for
+    return 0;
+    }//send_bit_rs485
+    int RESPONSEARRAY_RS485[16];
+    for( int index=0; index<=7 ; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); }//for
+    for( int index=8; index<=15; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); }//for
+    for( int index=0; index<=15; index++ ){ send_bit_rs485(  RESPONSEARRAY_RS485[index]  );                                  }//for
+return 0;
+}//write_response_rs485
+
+//#################################
+
+//execute
+int execute_rs485( int cp ){
+    int command  = (cp>>8) & 255;
+    int parameter=  cp & 255;
+    if(  command==PING ){ write_response_rs485(ACK,0); }//ACK...........Fault reporting mechanisms?
+    if ( command==SON ){
+                        int else_check=1;
+                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(else_check==1         ){write_response_rs485(NACK,0);}//NACK
+    }//SON
+    if ( command==SOF ){
+                        int else_check=1;
+                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
+                        if(else_check==1                     ){write_response_rs485(NACK,0);}//NACK
+    }//SOF
+    if (  command==SM  ){
+                         int else_check=1;
+                         if(parameter==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_rs485(ACK,0);     }//ACK.... do action
+                         if(parameter==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_rs485(ACK,0);     }//ACK.... do action
+                         if(parameter==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;write_response_rs485(ACK,0);     }//ACK.... do action
+                         if(parameter==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_rs485(ACK,0);     }//ACK.... do action
+                         if(parameter==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_rs485(ACK,0);     }//ACK.... do action
+                         if(parameter==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;write_response_rs485(ACK,0);     }//ACK.... do action
+                         if(parameter==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_rs485(ACK,0);     }//ACK.... do action
+                         if(else_check==1                        ){write_response_rs485(NACK,0);}//NACK
+    }//SM
+    if (  command==GM    ){ write_response_rs485(ACK,CURRENTMODE       ); }//ACK //GM
+    if (  command==GSC   ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if (  command==SSC   ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=parameter; }//ACK
+    if (  command==GOSTM ){
+                             int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
+                             int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
+                             write_response_rs485(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
+    }//ACK //GOSTM
+    if ( command==KEN   ){ write_response_rs485(ACK,KEN ); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
+    if ( command==KDIS  ){ write_response_rs485(ACK,KDIS); }//ACK //KDIS
+    //YOU CAN ALSO ADD LOGIC
+return 0;
+}//execute
+	
+//################# END SPI1 METHODS ###################
+
 
 //################################################################### END OF DECLARATIONS ################################################
 
@@ -466,7 +396,7 @@ while(1){//while
         previous_i2c = raw_input_i2c;
 	//######## END I2C ############
 	//######## RS485 ##############
-	raw_input_rs485 = read_binary_input_rs485();
+	raw_input_rs485 = receive_rs485();
 	if ( (previous_rs485==2) & (raw_input_rs485==1) ){  flip_21_detected_rs485=1;  }
         if ( (previous_rs485==1) & (raw_input_rs485==2) ){  flip_12_detected_rs485=1;  }
         if ( (previous_rs485==2) & (raw_input_rs485==0) ){  flip_20_detected_rs485=1;  }
