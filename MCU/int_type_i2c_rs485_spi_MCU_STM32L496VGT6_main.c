@@ -65,70 +65,66 @@ int ADCS12V_EN    = 199;   int ADCS_12V_ENABLE                = ADCS12V_EN;//pin
 int EPS_EN        = 97 ;   int EPS_ENABLE                     = EPS_EN    ;//funny
 
 //############## PINS ##################
-	
-//BOOT0
-// Not used in microcontroller int E_RST1     () {return 0;} //reset (high then low) to switch 3V3 CCU off then back on 
-// Not used in microcontroller int E_RST0     () {return 0;} //reset (high then low) to switch 3V3 OBC off then back on 
-// Not used in microcontroller int PWR_RST    () {return 0;} //?
-int SA1_I      ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //current reading from SA1  .............................................. PA0
-int SA2_I      ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //current reading from SA2  .............................................. PA1
-int SA3_I      ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //current reading from SA3  .............................................. PA2
-int RS4851_RX  ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                          .............................................. PD6
-int RS4851_DE  (int value) {return 0;} //in?                                                                  .............................................. PD4
-int RS4851_TX  (int value) {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}//            .............................................. PD5
-int RS4852_RX  ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in V                       .............................................. PB11
-int RS4852_DE  (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in !V                      .............................................. PD12
-int RS4852_TX  (int value) {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}//            .............................................. PB10
-int SPI1_SS    ()          {return 0;} //who's the master, who's the slave and what's the message             .............................................. PE12
-int SPI1_SCK   ()          {return 0;} //who's the master, who's the slave and what's the message             .............................................. PE13
-int SPI1_MISO  ()          {return 0;} //who's the master, who's the slave and what's the message             .............................................. PE14
-int SPI1_MOSI  ()          {return 0;} //who's the master, who's the slave and what's the message             .............................................. PE15
-int SPI3_SS    ()          {return 0;} //who's the master, who's the slave and what's the message             .............................................. PA15
-int SPI3_SCK   ()          {return 0;} //who's the master, who's the slave and what's the message             .............................................. PC10
-int SPI3_MISO  ()          {return 0;} //who's the master, who's the slave and what's the message             .............................................. PC11
-int SPI3_MOSI  ()          {return 0;} //who's the master, who's the slave and what's the message             .............................................. PC12
-int I2C2_SCL   ()          {return 0;} // ccu/obc master, unidirectional                                      .............................................. PB13
-int I2C2_SDA   ()          {return 0;} // ccu/obc master, unidirectional                                      .............................................. PB14
-int SYNC_PULSE ()          {return 0;} // clock drain                                                         .............................................. PD1
-int OBC_FAULT  ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault    ............................... PD2
-int CCU_FAULT  ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault    ............................... PD9
-int OBC_I      ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //     ....................................................................PB1
-int CCU_I      ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //     ....................................................................PA5
-int ADCS_I     ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //     ....................................................................PA7
-int ADCS_FAULT ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault                ....................PD0
-int ADCS_EN    (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable ....................PA12
-int UHF_I      ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//                                                ..........................PB0
-int UHF_FLT    ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault              ......................PB4
-int UHF_EN     (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //        .................................................................PD7
-int PL_I       ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//         .................................................................PC4
-int PL_FLT     ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault  ..................................PD14
-int PL_EN      (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                                       ..................................PD13
-int RS3V3_I    ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//                                        ..................................PA6
-int RS3V3_FLT  ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault  ..................................PD8
-int RS3V3_EN   (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable     ................PB15
-int GPS_I      ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                                                 ........................PC3
-int GPS_FLT    ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault                       .............PB5
-int GPS_EN     (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable        .............PB6
-int ADCS5V_I   ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                                                        .................PC2
-int ADCS5V_FLT ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault                     ...............PB9
-int ADCS5V_EN  (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable      ...............PE4
-int PL5V_I     ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//                                                      ....................PC1
-int PL5V_FLT   ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault                       .............PE0
-int PL5V_EN    (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable        .............PE3
-int CCU5V_I    ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                                                   ......................PA4
-int CCU5V_FLT  ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault         ...........................PE11
-int CCU5V_EN   (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable                 ....PE10
-int XB12V_I    ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                                      ...................................PA3
-int XB12V_FLT  ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault               .....................PE9
-int XB12V_EN   (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable          ...........PE8
-int ADCS12V_FLT()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault                      ..............PB7
-int ADCS12V_I  ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                                                  .......................PC5
-int ADCS12_EN  (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable           ..........PB8
-int RS12V_FLT  ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault                    ................PE7
-int RS12V_EN   (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable          ...........PB2
-int RS5V_FLT   ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if read LOW then fault, else no fault               .....................PE1
-int RS5V_I     ()          {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                                           ..............................PC0
-int RS5V_EN    (int value) {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //if write HIGH then enable, if write LOW then disable       ..............PE2
+
+int  SA1_I      ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_0         );} //current reading from SA1  .............................................. PA0
+int  SA2_I      ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_1         );} //current reading from SA2  .............................................. PA1
+int  SA3_I      ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_2         );} //current reading from SA3  .............................................. PA2
+int  RS4851_RX  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_6         );} //                          .............................................. PD6
+void RS4851_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_4 , value );} //                          .............................................. PD4
+void RS4851_TX  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_5 , value );} //                          .............................................. PD5
+int  RS4852_RX  ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_11        );}//in V                       .............................................. PB11
+void RS4852_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_12        );}//in !V                      .............................................. PD12
+void RS4852_TX  (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_10, value );}//                           .............................................. PB10
+int  SPI1_SS    ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PE12
+int  SPI1_SCK   ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PE13
+int  SPI1_MISO  ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PE14
+int  SPI1_MOSI  ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PE15
+int  SPI3_SS    ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PA15
+int  SPI3_SCK   ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PC10
+int  SPI3_MISO  ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PC11
+int  SPI3_MOSI  ()          {                                             return 0;} //who's the master, who's the slave and what's the message             .............................................. PC12
+int  I2C2_SCL   ()          {                                             return 0;} // ccu/obc master, unidirectional                                      .............................................. PB13
+int  I2C2_SDA   ()          {                                             return 0;} // ccu/obc master, unidirectional                                      .............................................. PB14
+int  SYNC_PULSE ()          {                                             return 0;} // clock drain                                                         .............................................. PD1
+int  OBC_FAULT  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_2         );} //if read LOW then fault, else no fault    ............................... PD2
+int  CCU_FAULT  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_9         );} //if read LOW then fault, else no fault    ............................... PD9
+int  OBC_I      ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_1         );} //     ....................................................................PB1
+int  CCU_I      ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_5         );} //     ....................................................................PA5
+int  ADCS_I     ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_7         );} //     ....................................................................PA7
+int  ADCS_FAULT ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_0         );} //if read LOW then fault, else no fault                ....................PD0
+void ADCS_EN    (int value) {       HAL_GPIO_WritePin( GPIOA, GPIO_PIN_12, value );} //if write HIGH then enable, if write LOW then disable ....................PA12
+int  UHF_I      ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_0         );}//                                                ..........................PB0
+int  UHF_FLT    ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_4         );} //if read LOW then fault, else no fault              ......................PB4
+void UHF_EN     (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_7 , value );} //        .................................................................PD7
+int  PL_I       ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_4         );}//         .................................................................PC4
+int  PL_FLT     ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_14        );} //if read LOW then fault, else no fault  ..................................PD14
+void PL_EN      (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_13, value );} //                                       ..................................PD13
+int  RS3V3_I    ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_6         );}//                                        ..................................PA6
+int  RS3V3_FLT  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_8         );} //if read LOW then fault, else no fault  ..................................PD8
+void RS3V3_EN   (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_15        );} //if write HIGH then enable, if write LOW then disable     ................PB15
+int  GPS_I      ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_3         );} //                                                 ........................PC3
+int  GPS_FLT    ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_5         );} //if read LOW then fault, else no fault                       .............PB5
+void GPS_EN     (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_6,  value );} //if write HIGH then enable, if write LOW then disable        .............PB6
+int  ADCS5V_I   ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_2         );} //                                                        .................PC2
+int  ADCS5V_FLT ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_9         );} //if read LOW then fault, else no fault                     ...............PB9
+void ADCS5V_EN  (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_4,  value );} //if write HIGH then enable, if write LOW then disable      ...............PE4
+int  PL5V_I     ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_1         );}//                                                      ....................PC1
+int  PL5V_FLT   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_0         );} //if read LOW then fault, else no fault                       .............PE0
+void PL5V_EN    (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_3,  value );} //if write HIGH then enable, if write LOW then disable        .............PE3
+int  CCU5V_I    ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_4         );} //                                                   ......................PA4
+int  CCU5V_FLT  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_11        );} //if read LOW then fault, else no fault         ...........................PE11
+void CCU5V_EN   (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_10, value );} //if write HIGH then enable, if write LOW then disable                 ....PE10
+int  XB12V_I    ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_3         );} //                                      ...................................PA3
+int  XB12V_FLT  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_9         );} //if read LOW then fault, else no fault               .....................PE9
+void XB12V_EN   (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_8,  value );} //if write HIGH then enable, if write LOW then disable          ...........PE8
+int  ADCS12V_FLT()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_7         );} //if read LOW then fault, else no fault                      ..............PB7
+int  ADCS12V_I  ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_5         );} //                                                  .......................PC5
+void ADCS12_EN  (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_8,  value );} //if write HIGH then enable, if write LOW then disable           ..........PB8
+int  RS12V_FLT  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_7         );} //if read LOW then fault, else no fault                    ................PE7
+void RS12V_EN   (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_2,  value );} //if write HIGH then enable, if write LOW then disable          ...........PB2
+int  RS5V_FLT   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_1         );} //if read LOW then fault, else no fault               .....................PE1
+int  RS5V_I     ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_0         );} //                                           ..............................PC0
+void RS5V_EN    (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_2 , value );} //if write HIGH then enable, if write LOW then disable       ..............PE2
 // other variables
 int RESPONSE_WAIT           = 10000;//response_wait()
 int CURRENTMODE             = 0;
@@ -139,30 +135,34 @@ int COMMAND_PARAMETER_I2C   = 0;
 
 //####################################
 
-int RS4851_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;} //                          .............................................. PD6
-int RS4851_DE  () {return 0;} //in?                                                                  .............................................. PD4
-int RS4851_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}//            .............................................. PD5
-int RS4852_RX  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in V                       .............................................. PB11
-int RS4852_DE  () {/*HAL_GPIO_ReadPin( GPIOB, GPIO_PIN_15 ))*/return 0;}//in !V                      .............................................. PD12
-int RS4852_TX  () {/*HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);*/return 0;}//            .............................................. PB10
-
 int send_bit_rs485  (int bit){
-if(bit){RS4851_TX(); RS4852_TX(); RS4851_DE(1); RS4852_DE(1);}
-else   {RS4851_TX(); RS4852_TX(); RS4851_DE(1); RS4852_DE(1);}
-return 0;
-}//
-
-int send_pause_rs485(){
-RS4851_TX(); RS4852_TX(); RS4851_DE(1); RS4852_DE(1);
+if(bit){RS4851_TX(1); RS4852_TX(0); }
+else   {RS4851_TX(0); RS4852_TX(1); }
+RS4851_DE(1); 
+RS4852_DE(1);
 for(int i=0;i<1000;i++){}
 return 0;
 }//
 
+//#####################################
+	
+int send_pause_rs485(){
+RS4851_TX(1); RS4852_TX(1);
+RS4851_DE(1); RS4852_DE(1);
+for(int i=0;i<1000;i++){}
+return 0;
+}//
+
+//###################################
+	
 int receive_rs485(){
 int result;
-if( RS4851_RX() & RS4852_RX() & RS4851_DE(0) & RS4852_DE(0) ){result=;}
-if( RS4851_RX() & RS4852_RX() & RS4851_DE(0) & RS4852_DE(0) ){result=;}
-if( RS4851_RX() & RS4852_RX() & RS4851_DE(0) & RS4852_DE(0) ){result=;}
+RS4851_DE(0);
+RS4852_DE(0);
+if( RS4851_RX(1) & RS4852_RX(0)  ){result=1;}//1
+if( RS4851_RX(0) & RS4852_RX(1)  ){result=0;}//0
+if( RS4851_RX(0) & RS4852_RX(0)  ){result=2;}//end
+if( RS4851_RX(1) & RS4852_RX(1)  ){result=3;}//pause
 return result;
 }//
 
