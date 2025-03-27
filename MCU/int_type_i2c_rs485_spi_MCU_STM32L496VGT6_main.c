@@ -8,7 +8,7 @@
 int main(){//main
 	
 
-	
+// add const def	
 //############ DECLARATIONS ###########
 	
 //Boolean
@@ -76,11 +76,11 @@ int  RS4852_RX  ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_11       
 void RS4852_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_12, value );} //                          .............................................. PD12
 void RS4852_TX  (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_10, value );} //                          .............................................. PB10
 int  SPI1_SS    ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_12        );} //                          .............................................. PE12
-int  SPI1_SCK   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_13        );} //                          .............................................. PE13
+void SPI1_SCK   ()          {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_13, value );} //                          .............................................. PE13
 void SPI1_MISO  (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_14, value );} //                          .............................................. PE14
 int  SPI1_MOSI  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_15        );} //                          .............................................. PE15
 int  SPI3_SS    ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_15        );} //                          .............................................. PA15
-int  SPI3_SCK   ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_10        );} //                          .............................................. PC10
+void SPI3_SCK   ()          {       HAL_GPIO_WritePin( GPIOC, GPIO_PIN_10, value );} //                          .............................................. PC10
 void SPI3_MISO  (int value) {       HAL_GPIO_WritePin( GPIOC, GPIO_PIN_11, value );} //                          .............................................. PC11
 int  SPI3_MOSI  ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_12        );} //                          .............................................. PC12
 int  I2C2_SCL   ()          {                                             return 0;} // ccu/obc master, unidirectional  ....................................... PB13
@@ -119,7 +119,7 @@ int  XB12V_FLT  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_9        
 void XB12V_EN   (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_8,  value );} //if write HIGH then enable, if write LOW then disable          ...........PE8
 int  ADCS12V_FLT()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_7         );} //if read LOW then fault, else no fault                      ..............PB7
 int  ADCS12V_I  ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_5         );} //                                                  .......................PC5
-void ADCS12_EN  (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_8,  value );} //if write HIGH then enable, if write LOW then disable           ..........PB8
+void ADCS12V_EN (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_8,  value );} //if write HIGH then enable, if write LOW then disable           ..........PB8
 int  RS12V_FLT  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_7         );} //if read LOW then fault, else no fault                    ................PE7
 void RS12V_EN   (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_2,  value );} //if write HIGH then enable, if write LOW then disable          ...........PB2
 int  RS5V_FLT   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_1         );} //if read LOW then fault, else no fault               .....................PE1
@@ -196,42 +196,42 @@ int execute_rs485( int cp ){
     if(  command==PING ){ write_response_rs485(ACK,0); }//ACK...........Fault reporting mechanisms?
     if ( command==SON ){
                         int else_check=1;
-                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(else_check==1         ){write_response_rs485(NACK,0);}//NACK
+                        if(parameter==PL5V_EN        ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);PL5V_EN   (1); }//ACK.... do action
+                        if(parameter==ADCS5V_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);ADCS5V_EN (1); }//ACK.... do action
+                        if(parameter==RS12V_EN       ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);RS12V_EN  (1); }//ACK.... do action
+                        if(parameter==XB12V_EN       ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);XB12V_EN  (1); }//ACK.... do action
+                        if(parameter==RS3V3_EN       ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);RS3V3_EN  (1); }//ACK.... do action
+                        if(parameter==PL_EN          ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);PL_EN     (1); }//ACK.... do action
+                        if(parameter==ADCS_EN        ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);ADCS_EN   (1); }//ACK.... do action
+                        if(parameter==UHF_EN         ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);UHF_EN    (1); }//ACK.... do action
+                        if(parameter==GPS_EN         ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);GPS_EN    (1); }//ACK.... do action
+                        if(parameter==ADCS12V_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);ADCS12V_EN(1); }//ACK.... do action
+                        if(else_check==1             ){                                write_response_rs485(NACK,0);               }//NACK
     }//SON
     if ( command==SOF ){
                         int else_check=1;
-                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(else_check==1                     ){write_response_rs485(NACK,0);}//NACK
+                        if(parameter==PL5V_EN        ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);PL5V_EN   (0); }//ACK.... do action
+                        if(parameter==ADCS5V_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);ADCS5V_EN (0); }//ACK.... do action
+                        if(parameter==RS12V_EN       ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);RS12V_EN  (0); }//ACK.... do action
+                        if(parameter==XB12V_EN       ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);XB12V_EN  (0); }//ACK.... do action
+                        if(parameter==RS3V3_EN       ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);RS3V3_EN  (0); }//ACK.... do action
+                        if(parameter==PL_EN          ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);PL_EN     (0); }//ACK.... do action
+                        if(parameter==ADCS_EN        ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);ADCS_EN   (0); }//ACK.... do action
+                        if(parameter==UHF_EN         ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);UHF_EN    (0); }//ACK.... do action
+                        if(parameter==GPS_EN         ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);GPS_EN    (0); }//ACK.... do action
+                        if(parameter==ADCS12V_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);ADCS12V_EN(0); }//ACK.... do action
+                        if(else_check==1             ){                                write_response_rs485(NACK,0);               }//NACK
     }//SOF
     if (  command==SM  ){
                          int else_check=1;
-                         if(parameter==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(else_check==1                        ){write_response_rs485(NACK,0);}//NACK
+                         if(parameter==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_rs485(ACK ,0);     }//ACK.... do action
+                         if(parameter==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_rs485(ACK ,0);     }//ACK.... do action
+                         if(parameter==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;write_response_rs485(ACK ,0);     }//ACK.... do action
+                         if(parameter==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_rs485(ACK ,0);     }//ACK.... do action
+                         if(parameter==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_rs485(ACK ,0);     }//ACK.... do action
+                         if(parameter==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;write_response_rs485(ACK ,0);     }//ACK.... do action
+                         if(parameter==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_rs485(ACK ,0);     }//ACK.... do action
+                         if(else_check==1            ){                                       write_response_rs485(NACK,0);     }//NACK
     }//SM
     if (  command==GM    ){ write_response_rs485(ACK,CURRENTMODE       ); }//ACK //GM
     if (  command==GSC   ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
@@ -249,112 +249,96 @@ return 0;
 	
 //################# END RS485 METHODS ###################
 
-//################# SPI1 METHODS ################### brianoure
-	
-int receive_rs485(){
-int result;
-RS4851_DE(0);
-RS4852_DE(0);
-if( RS4851_RX(1) & RS4852_RX(0)  ){result=1;}//1
-if( RS4851_RX(0) & RS4852_RX(1)  ){result=0;}//0
-if( RS4851_RX(0) & RS4852_RX(0)  ){result=2;}//end
-if( RS4851_RX(1) & RS4852_RX(1)  ){result=3;}//pause
-return result;
+//################# SPI1 METHODS ########################
+
+int COMMAND_PARAMETER_SPI1=0;
+int TWO_BYTE_RESPONSE_SPI1=0;
+int spi1_bit_index=0;
+int receive_bit_transmit_bit_spi1(){
+    int rx = 0;
+    if ( SPI1_SS() ){
+         SPI1_SCK(1);
+         rx = SPI1_MOSI();
+	 if(spi1_bit_index==16){spi1_bit_index=0;}
+	 int tx_bit = (int) ( ( TWO_BYTE_RESPONSE_SPI1 >> (15-spi1_bit_index) ) & 1 );
+	 SPI1_MISO( tx_bit );
+	 spi1_bit_index = spi1_bit_index + 1;
+	 for(int i;i<1000;i++){}
+    }//if
+    SPI1_SCK(0);
+    for(int i;i<1000;i++){}
+return rx;
 }//
 
 //####################################
 	
-//get_command_parameter_after_leftShift_insertEnd_rs485
-int get_command_parameter_after_leftShift_insertEnd_rs485(int insertionbit){
-    COMMAND_PARAMETER_RS485 = (COMMAND_PARAMETER_RS485<<1) & (65534|insertionbit);
-    return COMMAND_PARAMETER_RS485;
-}//get_command_parameter_after_leftShift_insertEnd_rs485
+//get_command_parameter_after_leftShift_insertEnd_spi1
+int get_command_parameter_after_leftShift_insertEnd_spi1(int insertionbit){
+    COMMAND_PARAMETER_SPI1 = COMMAND_PARAMETER_SPI1<<1 ;
+    COMMAND_PARAMETER_SPI1 = COMMAND_PARAMETER_SPI1 & ( 65534|insertionbit );
+    return COMMAND_PARAMETER_SPI1;
+}//get_command_parameter_after_leftShift_insertEnd_spi1
 
 //###################################
 	
-//TRUTH TABLE
-//RS4851_TX RS4852_TX   Y
-//0         0           3(end)
-//0         1           0
-//1         0           1
-//1         1           2(pause)
-//write_response_rs485
-int write_response_rs485( int firstbyte, int secondbyte){
-    void send_bit_rs485  (int bit){
-         if(bit){ RS4851_TX(1); RS4852_TX(0); } else { RS4851_TX(0); RS4852_TX(1); }
-         RS4851_DE(1); RS4852_DE(1);
-         for(int i=0;i<1000;i++){}//for
-	 RS4851_TX(1); RS4852_TX(1);
-         RS4851_DE(1); RS4852_DE(1);
-         for(int i=0;i<1000;i++){}//for
-    return 0;
-    }//send_bit_rs485
-    int RESPONSEARRAY_RS485[16];
-    for( int index=0; index<=7 ; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); }//for
-    for( int index=8; index<=15; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); }//for
-    for( int index=0; index<=15; index++ ){ send_bit_rs485(  RESPONSEARRAY_RS485[index]  );                                  }//for
-return 0;
-}//write_response_rs485
-
-//#################################
-
 //execute
-int execute_rs485( int cp ){
+int execute_spi( int cp ){
     int command  = (cp>>8) & 255;
     int parameter=  cp & 255;
-    if(  command==PING ){ write_response_rs485(ACK,0); }//ACK...........Fault reporting mechanisms?
+    if(  command==PING ){ TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0); }//ACK...........Fault reporting mechanisms?
     if ( command==SON ){
                         int else_check=1;
-                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(else_check==1         ){write_response_rs485(NACK,0);}//NACK
+                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);PL5V_EN   (1);  }//ACK.... do action
+                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS5V_EN (1);  }//ACK.... do action
+                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);RS12V_EN  (1);  }//ACK.... do action
+                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);XB12V_EN  (1);  }//ACK.... do action
+                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);RS3V3_EN  (1);  }//ACK.... do action
+                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);PL_EN     (1);  }//ACK.... do action
+                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS_EN   (1);  }//ACK.... do action
+                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);UHF_EN    (1);  }//ACK.... do action
+                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);GPS_EN    (1);  }//ACK.... do action
+                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS12V_EN(1);  }//ACK.... do action
+                        if(else_check==1         ){                                TWO_BYTE_RESPONSE_SPI1 = (NACK<<8)|(0);                }//NACK
     }//SON
     if ( command==SOF ){
                         int else_check=1;
-                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK,0);     }//ACK.... do action
-                        if(else_check==1                     ){write_response_rs485(NACK,0);}//NACK
+                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);PL5V_EN   (0); }//ACK.... do action
+                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS5V_EN (0); }//ACK.... do action
+                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);RS12V_EN  (0); }//ACK.... do action
+                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);XB12V_EN  (0); }//ACK.... do action
+                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);RS3V3_EN  (0); }//ACK.... do action
+                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);PL_EN     (0); }//ACK.... do action
+                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS_EN   (0); }//ACK.... do action
+                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);GPS_EN    (0); }//ACK.... do action
+                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);GPS_EN    (0); }//ACK.... do action
+                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS12V_EN(0); }//ACK.... do action
+                        if(else_check==1         ){                                TWO_BYTE_RESPONSE_SPI1 = (NACK<<8)|(0);               }//NACK
     }//SOF
     if (  command==SM  ){
                          int else_check=1;
-                         if(parameter==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(parameter==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_rs485(ACK,0);     }//ACK.... do action
-                         if(else_check==1                        ){write_response_rs485(NACK,0);}//NACK
+                         if(parameter==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
+                         if(parameter==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
+                         if(parameter==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
+                         if(parameter==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
+                         if(parameter==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
+                         if(parameter==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
+                         if(parameter==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
+                         if(else_check==1            ){                                       TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//NACK
     }//SM
-    if (  command==GM    ){ write_response_rs485(ACK,CURRENTMODE       ); }//ACK //GM
-    if (  command==GSC   ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    if (  command==SSC   ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=parameter; }//ACK
+    if (  command==GM    ){ TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(CURRENTMODE       );                              }//ACK //GM
+    if (  command==GSC   ){ TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(CURRENTSYSTEMCLOCK);                              }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if (  command==SSC   ){ TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0                 );CURRENTSYSTEMCLOCK=parameter; }//ACK
     if (  command==GOSTM ){
-                             int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
-                             int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
-                             write_response_rs485(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
+                            int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
+                            int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
+                            TWO_BYTE_RESPONSE_SPI1 = (  (ACK<<8)   |   ((int) (a | b | c | d | e | f | g |  1))    );
     }//ACK //GOSTM
-    if ( command==KEN   ){ write_response_rs485(ACK,KEN ); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
-    if ( command==KDIS  ){ write_response_rs485(ACK,KDIS); }//ACK //KDIS
+    if ( command==KEN   ){ TWO_BYTE_RESPONSE_SPI1 = ((ACK << 8 )|(KEN )); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
+    if ( command==KDIS  ){ TWO_BYTE_RESPONSE_SPI1 = ((ACK << 8 )|(KDIS)); }//ACK //KDIS
     //YOU CAN ALSO ADD LOGIC
 return 0;
 }//execute
+
 	
 //################# END SPI1 METHODS ###################
 
@@ -362,6 +346,13 @@ return 0;
 //################################################################### END OF DECLARATIONS ################################################
 
 //########################   MAIN EVENT  ###########################################
+int raw_input_spi;
+int previous_spi;
+int flip_21_detected_spi=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_12_detected_spi=0;//change from 1(HIGH) to 2(PAUSE)
+int flip_20_detected_spi=0;//change from 2(PAUSE) to 1(HIGH)
+int flip_02_detected_spi=0;//change from 0(LOW) to 2(PAUSE)
+//##
 int raw_input_i2c;
 int previous_i2c;
 int flip_21_detected_i2c=0;//change from 2(PAUSE) to 1(HIGH)
@@ -378,6 +369,23 @@ int flip_02_detected_rs485=0;//change from 0(LOW) to 2(PAUSE)
 //##
 //MAIN LOOP
 while(1){//while
+	//######## SPI ############
+	raw_input_spi = read_binary_input_spi();
+	if ( (previous_spi==2) & (raw_input_spi==1) ){  flip_21_detected_spi=1;  }
+        if ( (previous_spi==1) & (raw_input_spi==2) ){  flip_12_detected_spi=1;  }
+        if ( (previous_spi==2) & (raw_input_spi==0) ){  flip_20_detected_spi=1;  }
+        if ( (previous_spi==0) & (raw_input_spi==2) ){  flip_02_detected_spi=1;  }
+        if ( flip_21_detected_spi & flip_12_detected_spi ){ 
+	   command_leftShift_insertEnd_spi(1);
+	   flip_21_detected_spi=0;flip_12_detected_spi=0;flip_20_detected_spi=0;flip_02_detected_spi=0;
+	   execute_spi(  get_command_parameter_after_leftShift_insertEnd_spi(1)  );
+	}//if
+        if ( flip_20_detected_spi & flip_02_detected_spi ){
+           flip_21_detected_spi=0;flip_12_detected_spi=0;flip_20_detected_spi=0;flip_02_detected_spi=0;
+	   execute_spi(  get_command_parameter_after_leftShift_insertEnd_spi(0)  );
+	}//if
+        previous_spi = raw_input_spi;
+	//######## END SPI ############
 	//######## I2C ############
 	raw_input_i2c = read_binary_input_i2c();
 	if ( (previous_i2c==2) & (raw_input_i2c==1) ){  flip_21_detected_i2c=1;  }
