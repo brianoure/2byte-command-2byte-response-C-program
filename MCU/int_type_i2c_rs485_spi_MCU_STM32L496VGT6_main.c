@@ -471,8 +471,8 @@ while(1){//while
 	   flip_10_detected_spi1=0;flip_01_detected_spi1=0;
 	   execute_spi1(  get_command_parameter_after_leftShift_insertEnd_spi1(1)  );
 	}//if
-        if ( flip_10_detected_spi ){
-           flip_10_detected_spi=0;flip_01_detected_spi=0;
+        if ( flip_10_detected_spi1 ){
+           flip_10_detected_spi1=0;flip_01_detected_spi1=0;
 	   execute_spi1(  get_command_parameter_after_leftShift_insertEnd_spi1(0)  );
 	}//if
         previous_spi1 = raw_input_spi1;
@@ -487,8 +487,8 @@ while(1){//while
 	   flip_10_detected_spi3=0;flip_01_detected_spi3=0;
 	   execute_spi3(  get_command_parameter_after_leftShift_insertEnd_spi3(1)  );
 	}//if
-        if ( flip_10_detected_spi ){
-           flip_10_detected_spi=0;flip_01_detected_spi=0;
+        if ( flip_10_detected_spi3 ){
+           flip_10_detected_spi3=0;flip_01_detected_spi3=0;
 	   execute_spi3(  get_command_parameter_after_leftShift_insertEnd_spi3(0)  );
 	}//if
         previous_spi3 = raw_input_spi3;
