@@ -274,7 +274,7 @@ int write_response_spi1(int first, int second){ //external master clock
 	 int   ss_3samples  =  SPI1_SS () +  SPI1_SS () +  SPI1_SS (); int   ss= 0; if(  ss_3samples>=2 ){  ss=1;}
          int  sck_3samples  =  SPI1_SCK() +  SPI1_SCK() +  SPI1_SCK(); int  sck= 0; if( sck_3samples>=2 ){ sck=1;}
 	 //miso guarantee
-	 if (!sck){send_bit_spi1(bit);}
+	 if (!sck){ send_bit_spi1(bit); }//recursion
 	 if ( ss ){
                   if(   sck  &   bit ){ SPI1_MISO(1);}
 	          if(   sck  & (!bit)){ SPI1_MISO(0);}
@@ -289,23 +289,6 @@ int write_response_spi1(int first, int second){ //external master clock
 return rx;
 }//
 
-//NNNNNNNNNNNNNNNN
-int write_response_rs485( int firstbyte, int secondbyte){
-    void send_bit_rs485  (int bit){
-         if(bit){ RS4851_TX(1); RS4852_TX(0); } else { RS4851_TX(0); RS4852_TX(1); }
-         RS4851_DE(1); RS4852_DE(1);
-         for(int i=0;i<1000;i++){}//for
-	 RS4851_TX(1); RS4852_TX(1);
-         RS4851_DE(1); RS4852_DE(1);
-         for(int i=0;i<1000;i++){}//for
-    }//send_bit_rs485
-    int RESPONSEARRAY_RS485[16];
-    for( int index=0; index<=7 ; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); }//for
-    for( int index=8; index<=15; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); }//for
-    for( int index=0; index<=15; index++ ){ send_bit_rs485(  RESPONSEARRAY_RS485[index]  );                                  }//for
-return 0;
-}//write_response_rs485
-//NNNNNNNNNNNNNNNNN
 
 //###################################
 
