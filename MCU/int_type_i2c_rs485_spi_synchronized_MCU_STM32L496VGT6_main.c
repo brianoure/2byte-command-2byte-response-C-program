@@ -70,12 +70,12 @@ int EPS_EN        = 97 ;   int EPS_ENABLE                     = EPS_EN    ;//fun
 int  SA1_I      ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_0         );} //current reading from SA1  .............................................. PA0
 int  SA2_I      ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_1         );} //current reading from SA2  .............................................. PA1
 int  SA3_I      ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_2         );} //current reading from SA3  .............................................. PA2
-int  RS4851_RX  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_6         );} //                          .............................................. PD6
-void RS4851_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_4 , value );} //                          .............................................. PD4
-void RS4851_TX  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_5 , value );} //                          .............................................. PD5
-int  RS4852_RX  ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_11        );} //                          .............................................. PB11
-void RS4852_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_12, value );} //                          .............................................. PD12
-void RS4852_TX  (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_10, value );} //                          .............................................. PB10
+int  RS4851_RX  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_6         );} //                          .............................................. PD6              //receiving (convolution amigo)
+void RS4851_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_4 , value );} //                          .............................................. PD4              //sending if high, receiving if low
+void RS4851_TX  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_5 , value );} //                          .............................................. PD5              //sending
+int  RS4852_RX  ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_11        );} //                          .............................................. PB11             //receiving (convolution amigo)
+void RS4852_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_12, value );} //                          .............................................. PD12             //sending if high, receiving if low
+void RS4852_TX  (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_10, value );} //                          .............................................. PB10             //sending 
 int  SPI1_SS    ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_12        );} //                          .............................................. PE12
 int  SPI1_SCK   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_13        );} //                          .............................................. PE13
 void SPI1_MISO  (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_14, value );} //                          .............................................. PE14
@@ -485,17 +485,18 @@ int input_0_detected_spi3;
 //##
 int raw_input_i2c;
 int previous_i2c;
-int flip_21_detected_i2c=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_12_detected_i2c=0;//change from 1(HIGH) to 2(PAUSE)
-int flip_20_detected_i2c=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_02_detected_i2c=0;//change from 0(LOW) to 2(PAUSE)
+int input_1_detected_i2c;
+int input_0_detected_i2c;
 //##
-int raw_input_rs485;
-int previous_rs485;
-int flip_21_detected_rs485=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_12_detected_rs485=0;//change from 1(HIGH) to 2(PAUSE)
-int flip_20_detected_rs485=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_02_detected_rs485=0;//change from 0(LOW) to 2(PAUSE)
+int raw_input_rs4851;
+int previous_rs4851;
+int input_1_detected_rs4851;
+int input_0_detected_rs4851;
+//##
+int raw_input_rs4852;
+int previous_rs4852;
+int input_1_detected_rs4852;
+int input_0_detected_rs4852;
 //##
 //MAIN LOOP
 while(1){//while
@@ -515,39 +516,30 @@ while(1){//while
                if ( input_0_detected_spi3 ){ input_0_detected_spi3=0; command_leftShift_insertEnd_spi3(0); execute_spi3( get_command_parameter_after_leftShift_insertEnd_spi3(0) ); }//if
                previous_spi3 = raw_input_spi3;
 	       //######## END SPI3 ############
-	//######## I2C ############
-	raw_input_i2c = read_binary_input_i2c();
-	//if ( (previous_i2c==2) & (raw_input_i2c==1) ){  flip_21_detected_i2c=1;  }
-        if ( (previous_i2c==1) & (raw_input_i2c==2) ){  flip_12_detected_i2c=1;  }
-        if ( (previous_i2c==2) & (raw_input_i2c==0) ){  flip_20_detected_i2c=1;  }
-        if ( (previous_i2c==0) & (raw_input_i2c==2) ){  flip_02_detected_i2c=1;  }
-        if ( flip_21_detected_i2c & flip_12_detected_i2c ){ 
-	   command_leftShift_insertEnd_i2c(1);
-	   flip_21_detected_i2c=0;flip_12_detected_i2c=0;flip_20_detected_i2c=0;flip_02_detected_i2c=0;
-	   execute_i2c(  get_command_parameter_after_leftShift_insertEnd_i2c(1)  );
-	}//if
-        if ( flip_20_detected_i2c & flip_02_detected_i2c ){
-           flip_21_detected_i2c=0;flip_12_detected_i2c=0;flip_20_detected_i2c=0;flip_02_detected_i2c=0;
-	   execute_i2c(  get_command_parameter_after_leftShift_insertEnd_i2c(0)  );
-	}//if
-        previous_i2c = raw_input_i2c;
-	//######## END I2C ############
-	//######## RS485 ##############
-	raw_input_rs485 = receive_rs485();
-	if ( (previous_rs485==2) & (raw_input_rs485==1) ){  flip_21_detected_rs485=1;  }
-        if ( (previous_rs485==1) & (raw_input_rs485==2) ){  flip_12_detected_rs485=1;  }
-        if ( (previous_rs485==2) & (raw_input_rs485==0) ){  flip_20_detected_rs485=1;  }
-        if ( (previous_rs485==0) & (raw_input_rs485==2) ){  flip_02_detected_rs485=1;  }
-        if ( flip_21_detected_rs485 & flip_12_detected_rs485 ){ 
-	   flip_21_detected_rs485=0;flip_12_detected_rs485=0;flip_20_detected_rs485=0;flip_02_detected_rs485=0;
-	   execute_rs485(  get_command_parameter_after_leftShift_insertEnd_rs485(1)  );
-	}//if
-        if ( flip_20_detected_rs485 & flip_02_detected_rs485 ){
-           flip_21_detected_rs485=0;flip_12_detected_rs485=0;flip_20_detected_rs485=0;flip_02_detected_rs485=0;
-	   execute_rs485(  get_command_parameter_after_leftShift_insertEnd_rs485(0)  );
-	}//if
-        previous_rs485= raw_input_rs485;
-	//######## END RS485 ############
+	       //######## I2C ############
+	       raw_input_i2c = receive_bit_transmit_bit_i2c();
+               if ( ((previous_i2c==1) & (raw_input_i2c==2)) |  ((previous_i2c==1) & (raw_input_i2c==3)) ){  input_1_detected_i2c=1;  }
+	       if ( ((previous_i2c==0) & (raw_input_i2c==2)) |  ((previous_i2c==0) & (raw_input_i2c==3)) ){  input_0_detected_i2c=1;  }
+               if ( input_1_detected_i2c ){ input_1_detected_i2c=0; command_leftShift_insertEnd_i2c(1); execute_i2c( get_command_parameter_after_leftShift_insertEnd_i2c(1) ); }//if
+               if ( input_0_detected_i2c ){ input_0_detected_i2c=0; command_leftShift_insertEnd_i2c(0); execute_i2c( get_command_parameter_after_leftShift_insertEnd_i2c(0) ); }//if
+               previous_i2c = raw_input_i2c;
+	       //######## END I2C ############
+	       //######## RS4851 ##############
+	       raw_input_rs4851 = receive_bit_transmit_bit_rs4851();
+               if ( ((previous_rs4851==1) & (raw_input_rs4851==2)) |  ((previous_rs4851==1) & (raw_input_rs4851==3)) ){  input_1_detected_rs4851=1;  }
+	       if ( ((previous_rs4851==0) & (raw_input_rs4851==2)) |  ((previous_rs4851==0) & (raw_input_rs4851==3)) ){  input_0_detected_rs4851=1;  }
+               if ( input_1_detected_rs4851 ){ input_1_detected_rs4851=0; command_leftShift_insertEnd_rs4851(1); execute_rs4851( get_command_parameter_after_leftShift_insertEnd_rs4851(1) ); }//if
+               if ( input_0_detected_rs4851 ){ input_0_detected_rs4851=0; command_leftShift_insertEnd_rs4851(0); execute_rs4851( get_command_parameter_after_leftShift_insertEnd_rs4851(0) ); }//if
+               previous_rs4851 = raw_input_rs4851;
+	       //######## END RS4851 ############
+	       //######## RS4852 ##############
+	       raw_input_rs4852 = receive_bit_transmit_bit_rs4852();
+               if ( ((previous_rs4852==1) & (raw_input_rs4852==2)) |  ((previous_rs4852==1) & (raw_input_rs4852==3)) ){  input_1_detected_rs4852=1;  }
+	       if ( ((previous_rs4852==0) & (raw_input_rs4852==2)) |  ((previous_rs4852==0) & (raw_input_rs4852==3)) ){  input_0_detected_rs4852=1;  }
+               if ( input_1_detected_rs4852 ){ input_1_detected_rs4852=0; command_leftShift_insertEnd_rs4852(1); execute_rs4852( get_command_parameter_after_leftShift_insertEnd_rs4851(1) ); }//if
+               if ( input_0_detected_rs4852 ){ input_0_detected_rs4852=0; command_leftShift_insertEnd_rs4852(0); execute_rs4852( get_command_parameter_after_leftShift_insertEnd_rs4851(0) ); }//if
+               previous_rs4852 = raw_input_rs4852;
+	       //######## END RS4852 ############
 }//while  
 //MAIN LOOP
 //#########################    END MAIN EVENT   #################################
