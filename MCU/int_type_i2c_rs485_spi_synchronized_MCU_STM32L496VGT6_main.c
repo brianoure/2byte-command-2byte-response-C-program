@@ -261,8 +261,8 @@ int receive_spi1(){ //external master clock
     int mosi_3samples  = MOSI1_SCK() + MOSI1_SCK() + MOSI1_SCK(); int mosi= 0; if( sck_3samples>=2 ){mosi=1;}
     //miso guarantee
     if ( ss ){
-	 if( ( sck) & ( mosi) ){rx=0;}//0
-	 if( ( sck) & (!mosi) ){rx=1;}//1
+	 if( ( sck) & ( mosi) ){rx=1;}//1
+	 if( ( sck) & (!mosi) ){rx=0;}//0
 	 if( (!sck) & ( mosi) ){rx=2;}//pause
 	 if( (!sck) & (!mosi) ){rx=3;}//end
     }//if
@@ -475,13 +475,13 @@ return 0;
 //########################   MAIN EVENT  ###########################################
 int raw_input_spi1;
 int previous_spi1;
-int flip_to_sck_mosi_spi1=0;
-int flip_to_sck_notmosi_spi1=0;
+int input_1_detected_spi1;
+int input_0_detected_spi1;	
 //##
 int raw_input_spi3;
 int previous_spi3;
-int flip_01_detected_spi3=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_10_detected_spi3=0;//change from 1(HIGH) to 2(PAUSE)
+int input_1_detected_spi3;
+int input_0_detected_spi3;
 //##
 int raw_input_i2c;
 int previous_i2c;
@@ -501,36 +501,28 @@ int flip_02_detected_rs485=0;//change from 0(LOW) to 2(PAUSE)
 while(1){//while
 	       //######## SPI1 ############
 	       raw_input_spi1 = receive_bit_transmit_bit_spi1();
-               if ( (previous_spi1==1) & (raw_input_spi1==0) ){  flip_10_detected_spi1=0;  }
-               if ( (previous_spi1==0) & (raw_input_spi1==1) ){  flip_01_detected_spi1=1;  }
-               if ( flip_01_detected_spi1 ){
-                                           flip_10_detected_spi1=0;flip_01_detected_spi1=0;
-	                                   command_leftShift_insertEnd_spi1(1);
-	                                   execute_spi1( get_command_parameter_after_leftShift_insertEnd_spi1(1)  );
+               if ( ((previous_spi1==1) & (raw_input_spi1==2)) |  ((previous_spi1==1) & (raw_input_spi1==3)) ){  input_1_detected_spi1=1;  }
+	       if ( ((previous_spi1==0) & (raw_input_spi1==2)) |  ((previous_spi1==0) & (raw_input_spi1==3)) ){  input_0_detected_spi1=1;  }
+               if ( input_1_detected_spi1 ){
+                                           input_1_detected_spi1=0; command_leftShift_insertEnd_spi1(1); execute_spi1( get_command_parameter_after_leftShift_insertEnd_spi1(1) );
 	       }//if
-               if ( flip_10_detected_spi1 ){
-                                           flip_10_detected_spi1=0;flip_01_detected_spi1=0;
-                                           command_leftShift_insertEnd_spi1(0);
-	                                   execute_spi1( get_command_parameter_after_leftShift_insertEnd_spi1(0)  );
+               if ( input_0_detected_spi1 ){
+                                           input_0_detected_spi1=0; command_leftShift_insertEnd_spi1(0); execute_spi1( get_command_parameter_after_leftShift_insertEnd_spi1(0) );
 	       }//if
                previous_spi1 = raw_input_spi1;
 	       //######## END SPI1 ############
-               //######## SPI3 ############
-	       raw_input_spi3 = receive_bit_transmit_bit_spi3();
-               if ( (previous_spi3==1) & (raw_input_spi3==0) ){  flip_10_detected_spi3=0;  }
-               if ( (previous_spi3==0) & (raw_input_spi3==1) ){  flip_01_detected_spi3=1;  }
-               if ( flip_01_detected_spi3 ){
-		                           flip_10_detected_spi3=0;flip_01_detected_spi3=0;
-	                                   command_leftShift_insertEnd_spi3(1);
-	                         	   execute_spi3(  get_command_parameter_after_leftShift_insertEnd_spi3(1)  );
+               //######## SPI3 ################
+	       raw_input_spi3 = receive_bit_transmit_bit_spi1();
+               if ( ((previous_spi3==1) & (raw_input_spi3==2)) |  ((previous_spi3==1) & (raw_input_spi3==3)) ){  input_1_detected_spi3=1;  }
+	       if ( ((previous_spi3==0) & (raw_input_spi3==2)) |  ((previous_spi3==0) & (raw_input_spi3==3)) ){  input_0_detected_spi3=1;  }
+               if ( input_1_detected_spi3 ){
+                                           input_1_detected_spi3=0; command_leftShift_insertEnd_spi3(1); execute_spi3( get_command_parameter_after_leftShift_insertEnd_spi3(1) );
 	       }//if
-               if ( flip_10_detected_spi3 ){
-                                           flip_10_detected_spi3=0;flip_01_detected_spi3=0;
-	                                   execute_spi3(  get_command_parameter_after_leftShift_insertEnd_spi3(0)  );
+               if ( input_0_detected_spi3 ){
+                                           input_0_detected_spi3=0; command_leftShift_insertEnd_spi3(0); execute_spi3( get_command_parameter_after_leftShift_insertEnd_spi3(0) );
 	       }//if
                previous_spi3 = raw_input_spi3;
 	       //######## END SPI3 ############
-	
 	//######## I2C ############
 	raw_input_i2c = read_binary_input_i2c();
 	//if ( (previous_i2c==2) & (raw_input_i2c==1) ){  flip_21_detected_i2c=1;  }
