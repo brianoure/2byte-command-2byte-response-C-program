@@ -254,23 +254,60 @@ return 0;
 
 int COMMAND_PARAMETER_SPI1=0;
 int TWO_BYTE_RESPONSE_SPI1=0;
-int spi1_bit_index=0;
-int receive_bit_transmit_bit_spi1(){ //external master clock
+int receive_spi1(){ //external master clock
     int rx = 0;
-    int ss0  = SPI1_SS (); int ss1  = SPI1_SS (); int ss2  = SPI1_SS (); int ss =0; if((ss0 +ss1 +ss2 )>=2){ss =1;}
-    int sck0 = SPI1_SCK(); int sck1 = SPI1_SCK(); int sck2 = SPI1_SCK(); int sck=0; if((sck0+sck1+sck2)>=2){sck=1;} 
-    if ( ss & sck ){
-         rx = SPI1_MOSI();
-	 if(spi1_bit_index==16){spi1_bit_index=0;}
-	 int tx_bit = (int) ( ( TWO_BYTE_RESPONSE_SPI1 >> (15-spi1_bit_index) ) & 1 );
-	 SPI1_MISO( tx_bit );
-	 spi1_bit_index = spi1_bit_index + 1;
+    int   ss_3samples  =  SPI1_SS () +  SPI1_SS () +  SPI1_SS (); int   ss= 0; if(  ss_3samples>=2 ){  ss=1;}
+    int  sck_3samples  =  SPI1_SCK() +  SPI1_SCK() +  SPI1_SCK(); int  sck= 0; if( sck_3samples>=2 ){ sck=1;}
+    int mosi_3samples  = MOSI1_SCK() + MOSI1_SCK() + MOSI1_SCK(); int mosi= 0; if( sck_3samples>=2 ){mosi=1;}
+    //miso guarantee
+    if ( ss ){
+	 if( ( sck) & ( mosi) ){rx=0;}//0
+	 if( ( sck) & (!mosi) ){rx=1;}//1
+	 if( (!sck) & ( mosi) ){rx=2;}//pause
+	 if( (!sck) & (!mosi) ){rx=3;}//end
     }//if
 return rx;
 }//
 
 //####################################
-	
+
+int write_response_spi1(int first, int second){ //external master clock
+    void send_bit_spi1 (int bit){
+	 int   ss_3samples  =  SPI1_SS () +  SPI1_SS () +  SPI1_SS (); int   ss= 0; if(  ss_3samples>=2 ){  ss=1;}
+         int  sck_3samples  =  SPI1_SCK() +  SPI1_SCK() +  SPI1_SCK(); int  sck= 0; if( sck_3samples>=2 ){ sck=1;}
+	 //miso guarantee
+         if(   sck  &   bit ){ SPI1_MISO(1);}
+	 if(   sck  & (!bit)){ SPI1_MISO(0);}
+         if( (!sck) &   bit ){ SPI1_MISO(1);}
+	 if( (!sck) & (!bit)){ SPI1_MISO(0);}
+    }//send_bit
+    int RESPONSEARRAY_RS485[16];
+    for( int index=0; index<=7 ; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); }//for
+    for( int index=8; index<=15; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); }//for
+    for( int index=0; index<=15; index++ ){ send_bit_rs485(  RESPONSEARRAY_RS485[index]  );                                  }//for
+return rx;
+}//
+
+//NNNNNNNNNNNNNNNN
+int write_response_rs485( int firstbyte, int secondbyte){
+    void send_bit_rs485  (int bit){
+         if(bit){ RS4851_TX(1); RS4852_TX(0); } else { RS4851_TX(0); RS4852_TX(1); }
+         RS4851_DE(1); RS4852_DE(1);
+         for(int i=0;i<1000;i++){}//for
+	 RS4851_TX(1); RS4852_TX(1);
+         RS4851_DE(1); RS4852_DE(1);
+         for(int i=0;i<1000;i++){}//for
+    }//send_bit_rs485
+    int RESPONSEARRAY_RS485[16];
+    for( int index=0; index<=7 ; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); }//for
+    for( int index=8; index<=15; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); }//for
+    for( int index=0; index<=15; index++ ){ send_bit_rs485(  RESPONSEARRAY_RS485[index]  );                                  }//for
+return 0;
+}//write_response_rs485
+//NNNNNNNNNNNNNNNNN
+
+//###################################
+
 //get_command_parameter_after_leftShift_insertEnd_spi1
 int get_command_parameter_after_leftShift_insertEnd_spi1(int insertionbit){
     COMMAND_PARAMETER_SPI1 = COMMAND_PARAMETER_SPI1<<1 ;
@@ -438,8 +475,8 @@ return 0;
 //########################   MAIN EVENT  ###########################################
 int raw_input_spi1;
 int previous_spi1;
-int flip_01_detected_spi1=0;//change from 2(PAUSE) to 1(HIGH)
-int flip_10_detected_spi1=0;//change from 1(HIGH) to 2(PAUSE)
+int flip_to_sck_mosi_spi1=0;
+int flip_to_sck_notmosi_spi1=0;
 //##
 int raw_input_spi3;
 int previous_spi3;
@@ -464,36 +501,35 @@ int flip_02_detected_rs485=0;//change from 0(LOW) to 2(PAUSE)
 while(1){//while
 	       //######## SPI1 ############
 	       raw_input_spi1 = receive_bit_transmit_bit_spi1();
-         if ( (previous_spi1==1) & (raw_input_spi1==0) ){  flip_10_detected_spi1=0;  }
-         if ( (previous_spi1==0) & (raw_input_spi1==1) ){  flip_01_detected_spi1=1;  }
-         if ( flip_01_detected_spi1 ){
-                                     flip_10_detected_spi1=0;flip_01_detected_spi1=0;
+               if ( (previous_spi1==1) & (raw_input_spi1==0) ){  flip_10_detected_spi1=0;  }
+               if ( (previous_spi1==0) & (raw_input_spi1==1) ){  flip_01_detected_spi1=1;  }
+               if ( flip_01_detected_spi1 ){
+                                           flip_10_detected_spi1=0;flip_01_detected_spi1=0;
 	                                   command_leftShift_insertEnd_spi1(1);
 	                                   execute_spi1( get_command_parameter_after_leftShift_insertEnd_spi1(1)  );
 	       }//if
-         if ( flip_10_detected_spi1 ){
-                                     flip_10_detected_spi=0;flip_01_detected_spi=0;
-                                     command_leftShift_insertEnd_spi1(0);
+               if ( flip_10_detected_spi1 ){
+                                           flip_10_detected_spi1=0;flip_01_detected_spi1=0;
+                                           command_leftShift_insertEnd_spi1(0);
 	                                   execute_spi1( get_command_parameter_after_leftShift_insertEnd_spi1(0)  );
 	       }//if
-        previous_spi1 = raw_input_spi1;
-	      //######## END SPI1 ############
-
-        //######## SPI3 ############
-	raw_input_spi3 = receive_bit_transmit_bit_spi3();
-        if ( (previous_spi3==1) & (raw_input_spi3==0) ){  flip_10_detected_spi3=0;  }
-        if ( (previous_spi3==0) & (raw_input_spi3==1) ){  flip_01_detected_spi3=1;  }
-        if ( flip_01_detected_spi3 ){ 
-	   command_leftShift_insertEnd_spi3(1);
-	   flip_10_detected_spi3=0;flip_01_detected_spi3=0;
-	   execute_spi3(  get_command_parameter_after_leftShift_insertEnd_spi3(1)  );
-	}//if
-        if ( flip_10_detected_spi3 ){
-           flip_10_detected_spi=0;flip_01_detected_spi=0;
-	   execute_spi3(  get_command_parameter_after_leftShift_insertEnd_spi3(0)  );
-	}//if
-        previous_spi3 = raw_input_spi3;
-	//######## END SPI3 ############
+               previous_spi1 = raw_input_spi1;
+	       //######## END SPI1 ############
+               //######## SPI3 ############
+	       raw_input_spi3 = receive_bit_transmit_bit_spi3();
+               if ( (previous_spi3==1) & (raw_input_spi3==0) ){  flip_10_detected_spi3=0;  }
+               if ( (previous_spi3==0) & (raw_input_spi3==1) ){  flip_01_detected_spi3=1;  }
+               if ( flip_01_detected_spi3 ){
+		                           flip_10_detected_spi3=0;flip_01_detected_spi3=0;
+	                                   command_leftShift_insertEnd_spi3(1);
+	                         	   execute_spi3(  get_command_parameter_after_leftShift_insertEnd_spi3(1)  );
+	       }//if
+               if ( flip_10_detected_spi3 ){
+                                           flip_10_detected_spi3=0;flip_01_detected_spi3=0;
+	                                   execute_spi3(  get_command_parameter_after_leftShift_insertEnd_spi3(0)  );
+	       }//if
+               previous_spi3 = raw_input_spi3;
+	       //######## END SPI3 ############
 	
 	//######## I2C ############
 	raw_input_i2c = read_binary_input_i2c();
