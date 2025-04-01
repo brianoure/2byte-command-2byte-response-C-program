@@ -149,7 +149,7 @@ return 0;
 struct twobyte COMMAND_PARAMETER_RS485  = {0,0};// a fusion of 4851 and 4852 because we can't identify pauses
   
 int receive_rs485 (){
-int result; int r4851; int r4852;
+int result=0; int r4851=0; int r4852=0;
 RS4851_DE(0); RS4852_DE(0);
 if((RS4851_RX()+RS4851_RX()+RS4851_RX())>=2 ){r4851=1;}
 if((RS4852_RX()+RS4852_RX()+RS4852_RX())>=2 ){r4852=1;}
