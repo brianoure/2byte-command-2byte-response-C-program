@@ -268,7 +268,7 @@ int execute_rs485(struct fourbyte command_parameter){
     }//SM
     if ( check_command(GM   ) ){ write_response_rs485(ACK,CURRENTMODE       ); }//ACK //GM
     if ( check_command(GSC  ) ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    if ( check_command(SSC  ) ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=parameter; }//ACK
+    if ( check_command(SSC  ) ){ write_response_rs485(ACK, EMPTY  );CURRENTSYSTEMCLOCK=parameter; }//ACK
     if ( check_command(GOSTM) ){
                                int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
                                int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
