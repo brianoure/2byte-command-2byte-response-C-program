@@ -144,7 +144,7 @@ int response_wait(){
 return 0;
 }//response_wait
 	
-//################# RS485 METHODS ###################
+//################# RS485 METHODS/DECLARATIONS ###################
 
 struct twobyte COMMAND_PARAMETER_RS485  = {0,0};// a fusion of 4851 and 4852 because we can't identify pauses
   
@@ -192,8 +192,8 @@ int execute_rs485( struct twobyte command, struct twobyte parameter){
     }//write_response_rs485
     int check_command  (struct twobyte x){ if ((  command.byte1==x.byte1)&(  command.byte2==x.byte2)){ return 1; }else{ return 0; } }
     int check_parameter(struct twobyte x){ if ((parameter.byte1==x.byte1)&(parameter.byte2==x.byte2)){ return 1; }else{ return 0; } }
-    if ( checkcommand(PING)  ){ write_response_rs485(ACK,0); }//ACK...........Fault reporting mechanisms?
-    if ( checkcommand(SON )  ){
+    if ( check_command(PING)  ){ write_response_rs485(ACK,0); }//ACK...........Fault reporting mechanisms?
+    if ( check_command(SON )  ){
                         int else_check=1;
                         if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);PL5V_EN   (1); }//ACK.... do action
                         if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);ADCS5V_EN (1); }//ACK.... do action
@@ -207,7 +207,7 @@ int execute_rs485( struct twobyte command, struct twobyte parameter){
                         if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);ADCS12V_EN(1); }//ACK.... do action
                         if(else_check==1                ){                                write_response_rs485(NACK,0);               }//NACK
     }//SON
-    if ( checkcommand(SOF)  ){
+    if ( check_command(SOF)  ){
                         int else_check=1;
                         if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);PL5V_EN   (0); }//ACK.... do action
                         if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);ADCS5V_EN (0); }//ACK.... do action
@@ -221,7 +221,7 @@ int execute_rs485( struct twobyte command, struct twobyte parameter){
                         if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,0);ADCS12V_EN(0); }//ACK.... do action
                         if(else_check==1                ){                                write_response_rs485(NACK,0);               }//NACK
     }//SOF
-    if ( checkcommand(SM )  ){
+    if ( check_command(SM )  ){
                          int else_check=1;
                          if(check_parameter( INITIALIZE    ) ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_rs485(ACK ,0);     }//ACK.... do action
                          if(check_parameter( DETUMBLE      ) ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_rs485(ACK ,0);     }//ACK.... do action
@@ -232,16 +232,16 @@ int execute_rs485( struct twobyte command, struct twobyte parameter){
                          if(check_parameter( EMERGENCY     ) ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_rs485(ACK ,0);     }//ACK.... do action
                          if(else_check==1                    ){                                       write_response_rs485(NACK,0);     }//NACK
     }//SM
-    if ( checkcommand(GM   ) ){ write_response_rs485(ACK,CURRENTMODE       ); }//ACK //GM
-    if ( checkcommand(GSC  ) ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    if ( checkcommand(SSC  ) ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=parameter; }//ACK
-    if ( checkcommand(GOSTM) ){
+    if ( check_command(GM   ) ){ write_response_rs485(ACK,CURRENTMODE       ); }//ACK //GM
+    if ( check_command(GSC  ) ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if ( check_command(SSC  ) ){ write_response_rs485(ACK, 0  );CURRENTSYSTEMCLOCK=parameter; }//ACK
+    if ( check_command(GOSTM) ){
                                int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
                                int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
                                write_response_rs485(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
     }//ACK //GOSTM
-    if ( checkcommand(KEN ) ){ write_response_rs485(ACK,KEN ); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
-    if ( checkcommand(KDIS) ){ write_response_rs485(ACK,KDIS); }//ACK //KDIS
+    if ( check_command(KEN ) ){ write_response_rs485(ACK,KEN ); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
+    if ( check_command(KDIS) ){ write_response_rs485(ACK,KDIS); }//ACK //KDIS
     //YOU CAN ALSO ADD LOGIC
 return 0;
 }//execute
@@ -250,111 +250,100 @@ return 0;
 
 //################# SPI1 METHODS ########################
 
-int COMMAND_PARAMETER_SPI1=0;
-int TWO_BYTE_RESPONSE_SPI1=0;
-int receive_spi1(){ //external master clock
-    int rx = 0;
-    int   ss_3samples  =  SPI1_SS () +  SPI1_SS () +  SPI1_SS (); int   ss= 0; if(  ss_3samples>=2 ){  ss=1;}
-    int  sck_3samples  =  SPI1_SCK() +  SPI1_SCK() +  SPI1_SCK(); int  sck= 0; if( sck_3samples>=2 ){ sck=1;}
-    int mosi_3samples  = MOSI1_SCK() + MOSI1_SCK() + MOSI1_SCK(); int mosi= 0; if( sck_3samples>=2 ){mosi=1;}
-    //miso guarantee
-    if ( ss ){
-	 if( ( sck) & ( mosi) ){rx=1;}//1
-	 if( ( sck) & (!mosi) ){rx=0;}//0
-	 if( (!sck) & ( mosi) ){rx=2;}//pause
-	 if( (!sck) & (!mosi) ){rx=3;}//end
-    }//if
-return rx;
+struct twobyte COMMAND_PARAMETER_SPI1  = {0,0};
+  
+int receive_spi1 (){
+int result=0; int spi1_mosi=0; int spi1_sck=0; int spi1_ss=0;
+if ((SPI1_MOSI() + SPI1_MOSI() + SPI1_MOSI())>=2){spi1_mosi = 1;}
+if ((SPI1_SS  () + SPI1_SS  () + SPI1_SS  ())>=2){spi1_ss   = 1;}
+if ((SPI1_SCK () + SPI1_SCK () + SPI1_SCK ())>=2){spi1_sck  = 1;}
+if ( spi1_ss ){
+	       if ( !spi1_ss & !spi1_sck ){result=3;}//3
+               if ( !spi1_ss &  spi1_sck ){result=0;}//0
+               if (  spi1_ss & !spi1_sck ){result=2;}//2
+               if (  spi1_ss &  spi1_sck ){result=1;}//1
+}
+return result;
 }//
 
 //####################################
-//brian will be back! id ul fitr friday dad called dumplings
-int write_response_spi1(int first, int second){ //external master clock
-    void send_bit_spi1 (int bit){
-	 int   ss_3samples  =  SPI1_SS () +  SPI1_SS () +  SPI1_SS (); int   ss= 0; if(  ss_3samples>=2 ){  ss=1;}
-         int  sck_3samples  =  SPI1_SCK() +  SPI1_SCK() +  SPI1_SCK(); int  sck= 0; if( sck_3samples>=2 ){ sck=1;}
-	 //miso guarantee
-	 if (!sck){ send_bit_spi1(bit); }//recursion
-	 if ( ss ){
-                  if(   sck  &   bit ){ SPI1_MISO(1);}
-	          if(   sck  & (!bit)){ SPI1_MISO(0);}
-                  //if( (!sck) &   bit ){ SPI1_MISO(1);}
-	          //if( (!sck) & (!bit)){ SPI1_MISO(0);}
-	 }//if
-    }//send_bit
-    int RESPONSEARRAY_RS485[16];
-    for( int index=0; index<=7 ; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( firstbyte >>(7 -index) ) ) & 1 ); }//for
-    for( int index=8; index<=15; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( secondbyte>>(15-index) ) ) & 1 ); }//for
-    for( int index=0; index<=15; index++ ){ send_bit_rs485(  RESPONSEARRAY_RS485[index]  );                                  }//for
-return rx;
-}//
-
-
-//###################################
-
+	
 //get_command_parameter_after_leftShift_insertEnd_spi1
-int get_command_parameter_after_leftShift_insertEnd_spi1(int insertionbit){
-    COMMAND_PARAMETER_SPI1 = COMMAND_PARAMETER_SPI1<<1 ;
-    COMMAND_PARAMETER_SPI1 = COMMAND_PARAMETER_SPI1 & ( 65534|insertionbit );
+struct twobyte get_command_parameter_after_leftShift_insertEnd_spi1(int insertionbit){
+    COMMAND_PARAMETER_SPI1.byte1 = ( (COMMAND_PARAMETER_SPI1.byte1<<1) | (COMMAND_PARAMETER_SPI1.byte2>>7) ) & 255;
+    COMMAND_PARAMETER_SPI1.byte2 = ( (COMMAND_PARAMETER_SPI1.byte2<<1) | insertionbit                      ) & 255;
     return COMMAND_PARAMETER_SPI1;
 }//get_command_parameter_after_leftShift_insertEnd_spi1
 
 //###################################
-	
+
 //execute
-int execute_spi1( int cp ){
-    int command  = (cp>>8) & 255;
-    int parameter=  cp & 255;
-    if(  command==PING ){ TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0); }//ACK...........Fault reporting mechanisms?
-    if ( command==SON ){
+int execute_spi1( struct twobyte command, struct twobyte parameter){
+    int write_response_spi1and3( struct twobyte ab, struct twobyte cd ){
+        void send_bit_spi1and3  (int bit){
+        if(bit){ SPI1_MISO(1); SPI3_MISO(1); for(int i=0;i<1000;i++){} SPI1_MISO(0); SPI3_MISO(1); for(int i=0;i<1000;i++){} }
+	else   { SPI1_MISO(1); SPI3_MISO(0); for(int i=0;i<1000;i++){} SPI1_MISO(0); SPI3_MISO(1); for(int i=0;i<1000;i++){} }
+        }//
+        int RESPONSEARRAY_SPI1[32];
+        for( int index= 0; index<= 7; index++ ){ RESPONSEARRAY_SPI1[index] = (int) ( ( (int) ( ab.byte1 >>(7 -index) ) ) & 1 ); }//for
+        for( int index= 8; index<=15; index++ ){ RESPONSEARRAY_SPI1[index] = (int) ( ( (int) ( ab.byte2 >>(15-index) ) ) & 1 ); }//for
+        for( int index=16; index<=23; index++ ){ RESPONSEARRAY_SPI1[index] = (int) ( ( (int) ( cd.byte1 >>(23-index) ) ) & 1 ); }//for
+        for( int index=24; index<=31; index++ ){ RESPONSEARRAY_SPI1[index] = (int) ( ( (int) ( cd.byte2 >>(31-index) ) ) & 1 ); }//for
+        for( int index= 0; index<=31; index++ ){ send_bit_spi1and3(  RESPONSEARRAY_SPI1[index]  );                                  }//for
+    return 0;
+    }//write_response_spi1
+    int check_command  (struct twobyte x){ if ((  command.byte1==x.byte1)&(  command.byte2==x.byte2)){ return 1; }else{ return 0; } }
+    int check_parameter(struct twobyte x){ if ((parameter.byte1==x.byte1)&(parameter.byte2==x.byte2)){ return 1; }else{ return 0; } }
+    if ( check_command(PING)  ){ write_response_spi1and3(ACK,0); }//ACK...........Fault reporting mechanisms?
+    if ( check_command(SON )  ){
                         int else_check=1;
-                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);PL5V_EN   (1);  }//ACK.... do action
-                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS5V_EN (1);  }//ACK.... do action
-                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);RS12V_EN  (1);  }//ACK.... do action
-                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);XB12V_EN  (1);  }//ACK.... do action
-                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);RS3V3_EN  (1);  }//ACK.... do action
-                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);PL_EN     (1);  }//ACK.... do action
-                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS_EN   (1);  }//ACK.... do action
-                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);UHF_EN    (1);  }//ACK.... do action
-                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);GPS_EN    (1);  }//ACK.... do action
-                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS12V_EN(1);  }//ACK.... do action
-                        if(else_check==1         ){                                TWO_BYTE_RESPONSE_SPI1 = (NACK<<8)|(0);                }//NACK
+                        if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);PL5V_EN   (1); }//ACK.... do action
+                        if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS5V_EN (1); }//ACK.... do action
+                        if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);RS12V_EN  (1); }//ACK.... do action
+                        if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);XB12V_EN  (1); }//ACK.... do action
+                        if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);RS3V3_EN  (1); }//ACK.... do action
+                        if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);PL_EN     (1); }//ACK.... do action
+                        if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS_EN   (1); }//ACK.... do action
+                        if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);UHF_EN    (1); }//ACK.... do action
+                        if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);GPS_EN    (1); }//ACK.... do action
+                        if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS12V_EN(1); }//ACK.... do action
+                        if(else_check==1                ){                                write_response_spi1and3(NACK,0);               }//NACK
     }//SON
-    if ( command==SOF ){
+    if ( check_command(SOF)  ){
                         int else_check=1;
-                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);PL5V_EN   (0); }//ACK.... do action
-                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS5V_EN (0); }//ACK.... do action
-                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);RS12V_EN  (0); }//ACK.... do action
-                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);XB12V_EN  (0); }//ACK.... do action
-                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);RS3V3_EN  (0); }//ACK.... do action
-                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);PL_EN     (0); }//ACK.... do action
-                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS_EN   (0); }//ACK.... do action
-                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);GPS_EN    (0); }//ACK.... do action
-                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);GPS_EN    (0); }//ACK.... do action
-                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);ADCS12V_EN(0); }//ACK.... do action
-                        if(else_check==1         ){                                TWO_BYTE_RESPONSE_SPI1 = (NACK<<8)|(0);               }//NACK
+                        if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);PL5V_EN   (0); }//ACK.... do action
+                        if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS5V_EN (0); }//ACK.... do action
+                        if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);RS12V_EN  (0); }//ACK.... do action
+                        if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);XB12V_EN  (0); }//ACK.... do action
+                        if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);RS3V3_EN  (0); }//ACK.... do action
+                        if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);PL_EN     (0); }//ACK.... do action
+                        if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS_EN   (0); }//ACK.... do action
+                        if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);UHF_EN    (0); }//ACK.... do action
+                        if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);GPS_EN    (0); }//ACK.... do action
+                        if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS12V_EN(0); }//ACK.... do action
+                        if(else_check==1                ){                                write_response_spi1and3(NACK,0);               }//NACK
     }//SOF
-    if (  command==SM  ){
+    if ( check_command(SM )  ){
                          int else_check=1;
-                         if(parameter==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(else_check==1            ){                                       TWO_BYTE_RESPONSE_SPI1 = (NACK<<8)|(0);    }//NACK
+                         if(check_parameter( INITIALIZE    ) ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( DETUMBLE      ) ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( NORMAL        ) ){else_check=0;CURRENTMODE=NORMAL       ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( COMMUNICATION ) ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( PAYLOAD       ) ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( IMAGE         ) ){else_check=0;CURRENTMODE=IMAGE        ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( EMERGENCY     ) ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(else_check==1                    ){                                       write_response_spi1and3(NACK,0);     }//NACK
     }//SM
-    if (  command==GM    ){ TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(CURRENTMODE       );                              }//ACK //GM
-    if (  command==GSC   ){ TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(CURRENTSYSTEMCLOCK);                              }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    if (  command==SSC   ){ TWO_BYTE_RESPONSE_SPI1 = (ACK <<8)|(0                 );CURRENTSYSTEMCLOCK=parameter; }//ACK
-    if (  command==GOSTM ){
-                            int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
-                            int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
-                            TWO_BYTE_RESPONSE_SPI1 = (  (ACK<<8)   |   ((int) (a | b | c | d | e | f | g |  1))    );
+    if ( check_command(GM   ) ){ write_response_spi1and3(ACK,CURRENTMODE       ); }//ACK //GM
+    if ( check_command(GSC  ) ){ write_response_spi1and3(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if ( check_command(SSC  ) ){ write_response_spi1and3(ACK, 0  );CURRENTSYSTEMCLOCK=parameter; }//ACK
+    if ( check_command(GOSTM) ){
+                               int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
+                               int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
+                               write_response_spi1and3(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
     }//ACK //GOSTM
-    if ( command==KEN   ){ TWO_BYTE_RESPONSE_SPI1 = ((ACK << 8 )|(KEN )); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
-    if ( command==KDIS  ){ TWO_BYTE_RESPONSE_SPI1 = ((ACK << 8 )|(KDIS)); }//ACK //KDIS
+    if ( check_command(KEN ) ){ write_response_spi1and3(ACK,KEN ); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
+    if ( check_command(KDIS) ){ write_response_spi1and3(ACK,KDIS); }//ACK //KDIS
     //YOU CAN ALSO ADD LOGIC
 return 0;
 }//execute
@@ -364,88 +353,100 @@ return 0;
 	
 //################# SPI3 METHODS ########################
 
-int COMMAND_PARAMETER_SPI3=0;
-int TWO_BYTE_RESPONSE_SPI3=0;
-int spi3_bit_index=0;
-int receive_bit_transmit_bit_spi3(){
-    int rx = 0;
-    int ss0  = SPI3_SS (); int ss1  = SPI3_SS (); int ss2  = SPI3_SS (); int ss =0; if((ss0 +ss1 +ss2 )>=2){ss =1;}
-    int sck0 = SPI3_SCK(); int sck1 = SPI3_SCK(); int sck2 = SPI3_SCK(); int sck=0; if((sck0+sck1+sck2)>=2){sck=1;} 
-    if ( ss & sck ){
-         rx = SPI3_MOSI();
-	 if(spi3_bit_index==16){spi3_bit_index=0;}
-	 int tx_bit = (int) ( ( TWO_BYTE_RESPONSE_SPI3 >> (15-spi3_bit_index) ) & 1 );
-	 SPI3_MISO( tx_bit );
-	 spi3_bit_index = spi3_bit_index + 1;
-    }//if
-return rx;
+struct twobyte COMMAND_PARAMETER_SPI3  = {0,0};
+  
+int receive_spi3 (){
+int result=0; int spi3_mosi=0; int spi3_sck=0; int spi3_ss=0;
+if ((SPI3_MOSI() + SPI3_MOSI() + SPI3_MOSI())>=2){spi3_mosi = 1;}
+if ((SPI3_SS  () + SPI3_SS  () + SPI3_SS  ())>=2){spi3_ss   = 1;}
+if ((SPI3_SCK () + SPI3_SCK () + SPI3_SCK ())>=2){spi3_sck  = 1;}
+if ( spi3_ss ){
+	       if ( !spi3_ss & !spi3_sck ){result=3;}//3
+               if ( !spi3_ss &  spi3_sck ){result=0;}//0
+               if (  spi3_ss & !spi3_sck ){result=2;}//2
+               if (  spi3_ss &  spi3_sck ){result=1;}//1
+}
+return result;
 }//
 
 //####################################
 	
 //get_command_parameter_after_leftShift_insertEnd_spi3
-int get_command_parameter_after_leftShift_insertEnd_spi3(int insertionbit){
-    COMMAND_PARAMETER_SPI3 = COMMAND_PARAMETER_SPI3<<1 ;
-    COMMAND_PARAMETER_SPI3 = COMMAND_PARAMETER_SPI3 & ( 65534|insertionbit );
+struct twobyte get_command_parameter_after_leftShift_insertEnd_spi3(int insertionbit){
+    COMMAND_PARAMETER_SPI3.byte1 = ( (COMMAND_PARAMETER_SPI3.byte1<<1) | (COMMAND_PARAMETER_SPI3.byte2>>7) ) & 255;
+    COMMAND_PARAMETER_SPI3.byte2 = ( (COMMAND_PARAMETER_SPI3.byte2<<1) | insertionbit                      ) & 255;
     return COMMAND_PARAMETER_SPI3;
 }//get_command_parameter_after_leftShift_insertEnd_spi3
 
 //###################################
-	
+
 //execute
-int execute_spi3( int c_a, int c_b, int p_a, int p_b ){
-    int command  = (cp>>8) & 255;
-    int parameter=  cp & 255;
-    if(  command==PING ){ TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0); }//ACK...........Fault reporting mechanisms?
-    if ( command==SON ){
+int execute_spi3( struct twobyte command, struct twobyte parameter){
+    int write_response_spi1and3( struct twobyte ab, struct twobyte cd ){
+        void send_bit_spi1and3  (int bit){
+        if(bit){ SPI1_MISO(1); SPI3_MISO(1); for(int i=0;i<1000;i++){} SPI1_MISO(0); SPI3_MISO(1); for(int i=0;i<1000;i++){} }
+	else   { SPI1_MISO(1); SPI3_MISO(0); for(int i=0;i<1000;i++){} SPI1_MISO(0); SPI3_MISO(1); for(int i=0;i<1000;i++){} }
+        }//
+        int RESPONSEARRAY_SPI3[32];
+        for( int index= 0; index<= 7; index++ ){ RESPONSEARRAY_SPI3[index] = (int) ( ( (int) ( ab.byte1 >>(7 -index) ) ) & 1 ); }//for
+        for( int index= 8; index<=15; index++ ){ RESPONSEARRAY_SPI3[index] = (int) ( ( (int) ( ab.byte2 >>(15-index) ) ) & 1 ); }//for
+        for( int index=16; index<=23; index++ ){ RESPONSEARRAY_SPI3[index] = (int) ( ( (int) ( cd.byte1 >>(23-index) ) ) & 1 ); }//for
+        for( int index=24; index<=31; index++ ){ RESPONSEARRAY_SPI3[index] = (int) ( ( (int) ( cd.byte2 >>(31-index) ) ) & 1 ); }//for
+        for( int index= 0; index<=31; index++ ){ send_bit_spi1and3(  RESPONSEARRAY_SPI3[index]  );                                  }//for
+    return 0;
+    }//write_response_spi1and3
+    int check_command  (struct twobyte x){ if ((  command.byte1==x.byte1)&(  command.byte2==x.byte2)){ return 1; }else{ return 0; } }
+    int check_parameter(struct twobyte x){ if ((parameter.byte1==x.byte1)&(parameter.byte2==x.byte2)){ return 1; }else{ return 0; } }
+    if ( check_command(PING)  ){ write_response_spi1and3(ACK,0); }//ACK...........Fault reporting mechanisms?
+    if ( check_command(SON )  ){
                         int else_check=1;
-                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);PL5V_EN   (1);  }//ACK.... do action
-                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);ADCS5V_EN (1);  }//ACK.... do action
-                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);RS12V_EN  (1);  }//ACK.... do action
-                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);XB12V_EN  (1);  }//ACK.... do action
-                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);RS3V3_EN  (1);  }//ACK.... do action
-                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);PL_EN     (1);  }//ACK.... do action
-                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);ADCS_EN   (1);  }//ACK.... do action
-                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);UHF_EN    (1);  }//ACK.... do action
-                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);GPS_EN    (1);  }//ACK.... do action
-                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);ADCS12V_EN(1);  }//ACK.... do action
-                        if(else_check==1         ){                                TWO_BYTE_RESPONSE_SPI3 = (NACK<<8)|(0);                }//NACK
+                        if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);PL5V_EN   (1); }//ACK.... do action
+                        if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS5V_EN (1); }//ACK.... do action
+                        if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);RS12V_EN  (1); }//ACK.... do action
+                        if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);XB12V_EN  (1); }//ACK.... do action
+                        if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);RS3V3_EN  (1); }//ACK.... do action
+                        if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);PL_EN     (1); }//ACK.... do action
+                        if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS_EN   (1); }//ACK.... do action
+                        if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);UHF_EN    (1); }//ACK.... do action
+                        if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);GPS_EN    (1); }//ACK.... do action
+                        if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS12V_EN(1); }//ACK.... do action
+                        if(else_check==1                ){                                write_response_spi1and3(NACK,0);               }//NACK
     }//SON
-    if ( command==SOF ){
+    if ( check_command(SOF)  ){
                         int else_check=1;
-                        if(parameter==PL5V_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);PL5V_EN   (0); }//ACK.... do action
-                        if(parameter==ADCS5V_EN  ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);ADCS5V_EN (0); }//ACK.... do action
-                        if(parameter==RS12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);RS12V_EN  (0); }//ACK.... do action
-                        if(parameter==XB12V_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);XB12V_EN  (0); }//ACK.... do action
-                        if(parameter==RS3V3_EN   ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);RS3V3_EN  (0); }//ACK.... do action
-                        if(parameter==PL_EN      ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);PL_EN     (0); }//ACK.... do action
-                        if(parameter==ADCS_EN    ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);ADCS_EN   (0); }//ACK.... do action
-                        if(parameter==UHF_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);GPS_EN    (0); }//ACK.... do action
-                        if(parameter==GPS_EN     ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);GPS_EN    (0); }//ACK.... do action
-                        if(parameter==ADCS12V_EN ){else_check=0;CURRENTMODE=CUSTOM;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);ADCS12V_EN(0); }//ACK.... do action
-                        if(else_check==1         ){                                TWO_BYTE_RESPONSE_SPI3 = (NACK<<8)|(0);               }//NACK
+                        if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);PL5V_EN   (0); }//ACK.... do action
+                        if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS5V_EN (0); }//ACK.... do action
+                        if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);RS12V_EN  (0); }//ACK.... do action
+                        if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);XB12V_EN  (0); }//ACK.... do action
+                        if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);RS3V3_EN  (0); }//ACK.... do action
+                        if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);PL_EN     (0); }//ACK.... do action
+                        if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS_EN   (0); }//ACK.... do action
+                        if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);UHF_EN    (0); }//ACK.... do action
+                        if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);GPS_EN    (0); }//ACK.... do action
+                        if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_response_spi1and3(ACK ,0);ADCS12V_EN(0); }//ACK.... do action
+                        if(else_check==1                ){                                write_response_spi1and3(NACK,0);               }//NACK
     }//SOF
-    if (  command==SM  ){
+    if ( check_command(SM )  ){
                          int else_check=1;
-                         if(parameter==INITIALIZE    ){else_check=0;CURRENTMODE=INITIALIZE   ;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==DETUMBLE      ){else_check=0;CURRENTMODE=DETUMBLE     ;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==NORMAL        ){else_check=0;CURRENTMODE=NORMAL       ;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==COMMUNICATION ){else_check=0;CURRENTMODE=COMMUNICATION;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==PAYLOAD       ){else_check=0;CURRENTMODE=PAYLOAD      ;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==IMAGE         ){else_check=0;CURRENTMODE=IMAGE        ;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(parameter==EMERGENCY     ){else_check=0;CURRENTMODE=EMERGENCY    ;TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0);    }//ACK.... do action
-                         if(else_check==1            ){                                       TWO_BYTE_RESPONSE_SPI3 = (NACK<<8)|(0);    }//NACK
+                         if(check_parameter( INITIALIZE    ) ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( DETUMBLE      ) ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( NORMAL        ) ){else_check=0;CURRENTMODE=NORMAL       ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( COMMUNICATION ) ){else_check=0;CURRENTMODE=COMMUNICATION;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( PAYLOAD       ) ){else_check=0;CURRENTMODE=PAYLOAD      ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( IMAGE         ) ){else_check=0;CURRENTMODE=IMAGE        ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(check_parameter( EMERGENCY     ) ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_spi1and3(ACK ,0);     }//ACK.... do action
+                         if(else_check==1                    ){                                       write_response_spi1and3(NACK,0);     }//NACK
     }//SM
-    if (  command==GM    ){ TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(CURRENTMODE       );                              }//ACK //GM
-    if (  command==GSC   ){ TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(CURRENTSYSTEMCLOCK);                              }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    if (  command==SSC   ){ TWO_BYTE_RESPONSE_SPI3 = (ACK <<8)|(0                 );CURRENTSYSTEMCLOCK=parameter; }//ACK
-    if (  command==GOSTM ){
-                            int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
-                            int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
-                            TWO_BYTE_RESPONSE_SPI3 = (  (ACK<<8)   |   ((int) (a | b | c | d | e | f | g |  1))    );
+    if ( check_command(GM   ) ){ write_response_spi1and3(ACK,CURRENTMODE       ); }//ACK //GM
+    if ( check_command(GSC  ) ){ write_response_spi1and3(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if ( check_command(SSC  ) ){ write_response_spi1and3(ACK, 0  );CURRENTSYSTEMCLOCK=parameter; }//ACK
+    if ( check_command(GOSTM) ){
+                               int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
+                               int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
+                               write_response_spi1and3(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
     }//ACK //GOSTM
-    if ( command==KEN   ){ TWO_BYTE_RESPONSE_SPI3 = ((ACK << 8 )|(KEN )); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
-    if ( command==KDIS  ){ TWO_BYTE_RESPONSE_SPI3 = ((ACK << 8 )|(KDIS)); }//ACK //KDIS
+    if ( check_command(KEN ) ){ write_response_spi1and3(ACK,KEN ); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
+    if ( check_command(KDIS) ){ write_response_spi1and3(ACK,KDIS); }//ACK //KDIS
     //YOU CAN ALSO ADD LOGIC
 return 0;
 }//execute
