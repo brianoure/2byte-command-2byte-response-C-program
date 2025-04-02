@@ -12,57 +12,90 @@ struct twobyte { int byte1; int byte2; };
 //############ DECLARATIONS ###########
 	
 //Boolean
-int HIGH          = 1  ;  int TRUE = HIGH; int ONE  = HIGH;
-int LOW           = 0  ;  int FALSE= LOW ; int ZERO = LOW ;
-int PAUSE         = 2  ;
-int END           = 3  ;
+int HIGH    = 1   ;  
+int TRUE    = HIGH;
+int ONE     = HIGH;
+int LOW     = 0   ;  
+int FALSE   = LOW ;
+int ZERO    = LOW ;
+int PAUSE   = 2   ;
+int END     = 3   ;
 //TRANSMISSION AND RECEPTION (COMMUNICATION) SYMBOLS
-struct twobyte PING          = {34 ,34 };   //command
-struct twobyte ACK           = {47 ,47 };   struct twobyte ACKNOWLEDGE     = ACK;
-struct twobyte NACK          = {52 ,52 };   struct twobyte NOT_ACKNOWLEDGE = NACK;
-struct twobyte SON           = {140,140};   struct twobyte SWITCH_ON       = SON;
-struct twobyte UHF           = {24 ,24 };//parameter
-struct twobyte ADCS          = {162,162};   //parameter
-struct twobyte GPS           = {75 ,75 };   //parameter
-struct twobyte SOF           = {218,218};   struct twobyte SWITCH_OFF                    = SOF  ;//command
-struct twobyte  SM           = {107,107};   struct twobyte SET_MODE                      = SM   ;//command
-struct twobyte GM            = {122,122};   struct twobyte GET_MODE                      = GM   ;//command
-struct twobyte GSC           = {94 ,94 };   struct twobyte GET_SYSTEM_CLOCK              = GSC  ;//command
-struct twobyte SSC           = {209,209};   struct twobyte SET_SYSTEM_CLOCK              = SSC  ;//command
-struct twobyte GFP           = {134,134};   //command
-struct twobyte SFP           = {90 ,90 };   //command
-struct twobyte FON           = {55 ,55 };   struct twobyte FUNCTION_ON                   = FON  ;//command
-struct twobyte TWELVEBUS     = {100,100};   //telemetry parameter
-struct twobyte FIVEBUS       = {150,150};   //telemetry parameter
-struct twobyte THREEBUS      = {200,200};   //parameter
-struct twobyte FOF           = {233,233};   struct twobyte FUNCTION_OFF                  = FOF  ;//command
-struct twobyte GOSTM         = {157,157};   struct twobyte GET_ONLINE_SYSTEM_TELEMETRY   = GOSTM;//command
-struct twobyte KEN           = {255,255};   struct twobyte KILL_ENABLE                   = KEN  ;//command
-struct twobyte KDIS          = {227,227};   struct twobyte KILL_DISABLE                  = KDIS ;//command
-struct twobyte GD            = {15 ,15 };   struct twobyte GET_DATA                      = GD   ;//command
-struct twobyte PD            = {245,245};   struct twobyte PUT_DATA                      = PD   ;//command
-struct twobyte RD            = {222,222};   struct twobyte READ_DATA                     = RD   ;//command
-struct twobyte WD            = {133,133};   struct twobyte WRITE_DATA                    = WD   ;//command
-struct twobyte INITIALIZE    = {60 ,60 };   //mode parameter
-struct twobyte DETUMBLE      = {71 ,71 };   //mode parameter
-struct twobyte NORMAL        = {82 ,82 };   //mode parameter
-struct twobyte COMMUNICATION = {93 ,93 };   //mode parameter
-struct twobyte PAYLOAD       = {104,104};   //mode parameter
-struct twobyte IMAGE         = {115,115};   //mode parameter
-struct twobyte EMERGENCY     = {126,126};   //mode parameter
-struct twobyte CUSTOM        = {69 ,69 };   //mode parameter
-struct twobyte PL5V_EN       = {230,230};   struct twobyte PAYLOAD_5V_ENABLE              = PL5V_EN   ;//pin
-struct twobyte ADCS5V_EN     = {143,143};   struct twobyte ADCS_5V_ENABLE                 = ADCS5V_EN ;//pin
-struct twobyte RS12V_EN      = {205,205};   struct twobyte RESERVED_12V_EN                = RS12V_EN  ;//pin
-struct twobyte XB12V_EN      = {139,139};   struct twobyte XBAND_12V_ENABLE               = XB12V_EN  ;//pin
-struct twobyte CCU5V_EN      = {155,155};   struct twobyte CENTRAL_COMMAND_UNIT_5V_ENABLE = CCU5V_EN  ;//pin
-struct twobyte RS3V3_EN      = {212,212};   struct twobyte RESERVED_3V_ENABLE             = RS3V3_EN  ;//pin
-struct twobyte PL_EN         = {172,172};   struct twobyte PAYLOAD_ENABLE                 = PL_EN     ;//pin
-struct twobyte ADCS_EN       = {144,144};   struct twobyte ADCS_ENABLE                    = ADCS_EN   ;//pin
-struct twobyte UHF_EN        = {189,189};   struct twobyte UHF_ENABLE                     = UHF_EN    ;//pin
-struct twobyte GPS_EN        = {57 ,57 };   struct twobyte GPS_ENABLE                     = GPS_EN    ;//pin
-struct twobyte ADCS12V_EN    = {199,199};   struct twobyte ADCS_12V_ENABLE                = ADCS12V_EN;//pin
-struct twobyte EPS_EN        = {97 ,97 };   struct twobyte EPS_ENABLE                     = EPS_EN    ;//funny
+struct twobyte PING            = {34 ,34 }; //command
+struct twobyte ACK             = {47 ,47 };   
+struct twobyte ACKNOWLEDGE     = ACK      ;
+struct twobyte NACK            = {52 ,52 };
+struct twobyte NOT_ACKNOWLEDGE = NACK     ;
+struct twobyte SON             = {140,140};
+struct twobyte SWITCH_ON       = SON      ;
+struct twobyte UHF             = {24 ,24 }; //parameter
+struct twobyte ADCS            = {162,162}; //parameter
+struct twobyte GPS             = {75 ,75 }; //parameter
+struct twobyte SOF             = {218,218};
+struct twobyte SWITCH_OFF      = SOF      ; //command
+struct twobyte SM              = {107,107};
+struct twobyte SET_MODE        = SM       ; //command
+struct twobyte GM              = {122,122};
+struct twobyte GET_MODE        = GM       ; //command
+struct twobyte GSC             = {94 ,94 };
+struct twobyte GET_SYSTEM_CLOCK= GSC      ; //command
+struct twobyte SSC             = {209,209}; 
+struct twobyte SET_SYSTEM_CLOCK= SSC      ; //command
+struct twobyte GFP             = {134,134}; //command
+struct twobyte SFP             = {90 ,90 }; //command
+struct twobyte FON             = {55 ,55 }; 
+struct twobyte FUNCTION_ON     = FON      ; //command
+struct twobyte TWELVEBUS       = {100,100}; //telemetry parameter
+struct twobyte FIVEBUS         = {150,150}; //telemetry parameter
+struct twobyte THREEBUS        = {200,200}; //parameter
+struct twobyte FOF             = {233,233}; 
+struct twobyte FUNCTION_OFF    = FOF      ; //command
+struct twobyte GOSTM           = {157,157};
+struct twobyte GET_ONLINE_SYSTEM_TELEMETRY = GOSTM; //command
+struct twobyte KEN             = {255,255};
+struct twobyte KILL_ENABLE     = KEN      ; //command
+struct twobyte KDIS            = {227,227};
+struct twobyte KILL_DISABLE    = KDIS     ; //command
+struct twobyte GD              = {15 ,15 };
+struct twobyte GET_DATA        = GD       ; //command
+struct twobyte PD              = {245,245};
+struct twobyte PUT_DATA        = PD       ; //command
+struct twobyte RD              = {222,222}; 
+struct twobyte READ_DATA       = RD       ; //command
+struct twobyte WD              = {133,133}; 
+struct twobyte WRITE_DATA      = WD       ; //command
+struct twobyte INITIALIZE      = {60 ,60 }; //mode parameter
+struct twobyte DETUMBLE        = {71 ,71 }; //mode parameter
+struct twobyte NORMAL          = {82 ,82 }; //mode parameter
+struct twobyte COMMUNICATION   = {93 ,93 }; //mode parameter
+struct twobyte PAYLOAD         = {104,104}; //mode parameter
+struct twobyte IMAGE           = {115,115}; //mode parameter
+struct twobyte EMERGENCY       = {126,126}; //mode parameter
+struct twobyte CUSTOM          = {69 ,69 }; //mode parameter
+struct twobyte PL5V_EN         = {230,230}; 
+struct twobyte PAYLOAD_5V_ENABLE = PL5V_EN  ; //pin
+struct twobyte ADCS5V_EN         = {143,143};
+struct twobyte ADCS_5V_ENABLE    = ADCS5V_EN; //pin
+struct twobyte RS12V_EN          = {205,205};
+struct twobyte RESERVED_12V_EN   = RS12V_EN ; //pin
+struct twobyte XB12V_EN          = {139,139};
+struct twobyte XBAND_12V_ENABLE= XB12V_EN ; //pin
+struct twobyte CCU5V_EN          = {155,155}; 
+struct twobyte CENTRAL_COMMAND_UNIT_5V_ENABLE = CCU5V_EN; //pin
+struct twobyte RS3V3_EN          = {212,212};
+struct twobyte RESERVED_3V_ENABLE= RS3V3_EN ; //pin
+struct twobyte PL_EN             = {172,172};
+struct twobyte PAYLOAD_ENABLE    = PL_EN    ; //pin
+struct twobyte ADCS_EN           = {144,144};
+struct twobyte ADCS_ENABLE       = ADCS_EN  ; //pin
+struct twobyte UHF_EN            = {189,189};
+struct twobyte UHF_ENABLE        = UHF_EN   ; //pin
+struct twobyte GPS_EN            = {57 ,57 };
+struct twobyte GPS_ENABLE        = GPS_EN   ; //pin
+struct twobyte ADCS12V_EN        = {199,199} ; 
+struct twobyte ADCS_12V_ENABLE   = ADCS12V_EN; //pin
+struct twobyte EPS_EN            = {97 ,97 } ; 
+struct twobyte EPS_ENABLE        = EPS_EN    ;//funny
 
 
 //############## PINS ##################
