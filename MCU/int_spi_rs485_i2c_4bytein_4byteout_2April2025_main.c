@@ -506,10 +506,10 @@ int previous_spi3;
 int input_1_detected_spi3;
 int input_0_detected_spi3;
 //##
-int raw_input_i2c;
-int previous_i2c;
-int input_1_detected_i2c;
-int input_0_detected_i2c;
+//int raw_input_i2c;
+//int previous_i2c;
+//int input_1_detected_i2c;
+//int input_0_detected_i2c;
 //##
 int raw_input_rs485;
 int previous_rs485;
@@ -519,7 +519,7 @@ int input_0_detected_rs485;
 //MAIN LOOP
 while(1){//while
 	       //######## SPI1 #############
-	       raw_input_spi1 = receive_bit_transmit_bit_spi1();
+	       raw_input_spi1 = receive_spi1();
                if ( ((previous_spi1==1) & (raw_input_spi1==2)) |  ((previous_spi1==1) & (raw_input_spi1==3)) ){  input_1_detected_spi1=1;  }
 	       if ( ((previous_spi1==0) & (raw_input_spi1==2)) |  ((previous_spi1==0) & (raw_input_spi1==3)) ){  input_0_detected_spi1=1;  }
                if ( input_1_detected_spi1 ){ input_1_detected_spi1=0; execute_spi1( get_command_parameter_after_leftShift_insertEnd_spi1(1) ); }//if
@@ -527,7 +527,7 @@ while(1){//while
                previous_spi1 = raw_input_spi1;
 	       //######## END SPI1 ##########
                //######## SPI3 ##############
-	       raw_input_spi3 = receive_bit_transmit_bit_spi1();
+	       raw_input_spi3 = receive_spi3();
                if ( ((previous_spi3==1) & (raw_input_spi3==2)) |  ((previous_spi3==1) & (raw_input_spi3==3)) ){  input_1_detected_spi3=1;  }
 	       if ( ((previous_spi3==0) & (raw_input_spi3==2)) |  ((previous_spi3==0) & (raw_input_spi3==3)) ){  input_0_detected_spi3=1;  }
                if ( input_1_detected_spi3 ){ input_1_detected_spi3=0;  execute_spi3( get_command_parameter_after_leftShift_insertEnd_spi3(1) ); }//if
@@ -535,12 +535,12 @@ while(1){//while
                previous_spi3 = raw_input_spi3;
 	       //######## END SPI3 ##########
 	       //######## I2C ###############
-	       raw_input_i2c = receive_bit_transmit_bit_i2c();
-               if ( ((previous_i2c==1) & (raw_input_i2c==2)) |  ((previous_i2c==1) & (raw_input_i2c==3)) ){  input_1_detected_i2c=1;  }
-	       if ( ((previous_i2c==0) & (raw_input_i2c==2)) |  ((previous_i2c==0) & (raw_input_i2c==3)) ){  input_0_detected_i2c=1;  }
-               if ( input_1_detected_i2c ){ input_1_detected_i2c=0;  execute_i2c( get_command_parameter_after_leftShift_insertEnd_i2c(1) ); }//if
-               if ( input_0_detected_i2c ){ input_0_detected_i2c=0;  execute_i2c( get_command_parameter_after_leftShift_insertEnd_i2c(0) ); }//if
-               previous_i2c = raw_input_i2c;
+	       //raw_input_i2c = receive_bit_transmit_bit_i2c();
+               //if ( ((previous_i2c==1) & (raw_input_i2c==2)) |  ((previous_i2c==1) & (raw_input_i2c==3)) ){  input_1_detected_i2c=1;  }
+	       //if ( ((previous_i2c==0) & (raw_input_i2c==2)) |  ((previous_i2c==0) & (raw_input_i2c==3)) ){  input_0_detected_i2c=1;  }
+               //if ( input_1_detected_i2c ){ input_1_detected_i2c=0;  execute_i2c( get_command_parameter_after_leftShift_insertEnd_i2c(1) ); }//if
+               //if ( input_0_detected_i2c ){ input_0_detected_i2c=0;  execute_i2c( get_command_parameter_after_leftShift_insertEnd_i2c(0) ); }//if
+               //previous_i2c = raw_input_i2c;
 	       //######## END I2C ############
 	       //######## RS485 ##############
 	       raw_input_rs485 = receive_rs485();
