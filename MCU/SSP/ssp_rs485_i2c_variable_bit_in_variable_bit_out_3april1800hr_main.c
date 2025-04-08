@@ -1,3 +1,4 @@
+//simple serial protocol, 9byte command in, variable response out 
 //As it stands for a single while loop cycle, tx 1 bit spi1, re
 //Prferrable to use preamble
 //uint8_t, uint16_t, uint32_t or chars can be used to replace the int types- but int is universal and type size is not an issue
@@ -8,6 +9,7 @@
 
 //SSP input bit frame :   1    ,   1               , 8  , 8     ,  1
 //                      start  ,  address=number2 , cmd , param ,  end
+                        flag, dest, src, cmd, len, data, crc0, crc1, flag
 
 //SSP output bit frame :   1    ,   1          , 8        , 8*16     ,  1
 //                      start  ,  address=dest , ack/nack ,          ,  end
@@ -16,10 +18,12 @@
 //                      start  ,  address=dest , cmd , param ,  end
 
 
+
+
 int main(){//main
-struct
-struct twobyte  { int byte1; int byte2; };
+struct ninebyte { int byte1; int byte2; int byte3; int byte4; int byte5; int byte6; int byte7; int byte8; int byte9; };
 struct fourbyte { int byte1; int byte2; int byte3; int byte4; };
+struct twobyte  { int byte1; int byte2; };
 // add const def	
 //############ DECLARATIONS ###########
 	
