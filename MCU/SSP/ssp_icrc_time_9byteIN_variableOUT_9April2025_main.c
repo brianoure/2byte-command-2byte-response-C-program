@@ -9,7 +9,7 @@
 
 //SSP input bit frame :   1    ,   1               , 8  , 8     ,  1
 //                      start  ,  address=number2 , cmd , param ,  end
-                        flag, dest, src, cmd, len, data, crc0, crc1, flag
+                        flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
 
 //SSP output bit frame :   1    ,   1          , 8        , 8*16     ,  1
 //                      start  ,  address=dest , ack/nack ,          ,  end
@@ -179,8 +179,11 @@ void RS5V_EN    (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_2 , value
 int RESPONSE_WAIT            = 10000;//response_wait()
 int CURRENTMODE              = 0;
 int CURRENTSYSTEMCLOCK       = 0;
+int FF                       = 255;
+int OBC_ADDRESS              = 1  ;
+int EPS_ADDRESS              =
 
-
+	
 //#######################
 
 //response_wait
@@ -226,28 +229,26 @@ return COMMAND_PARAMETER_RS485;
 
 //execute
 int execute_rs485(struct ninebyte input ){
+    struct ninebyte output_rs485;
     int crc_generator_rs485 (){return 0;}
     int crc_validator_rs485 (){return 0;}
-    int write_response_rs485( struct ninebyte output ){
-        void send_bit_rs485  (int bit){
-        if(bit){ RS4851_TX(1); RS4852_TX(1); } else { RS4851_TX(0); RS4852_TX(0); }
-        RS4851_DE(1);RS4852_DE(1);
-        for(int i=0;i<1000;i++){}//for
-	      RS4851_TX(0);RS4852_TX(1);
-        for(int i=0;i<1000;i++){}//for
-	      RS4851_DE(0);RS4852_DE(0);
-        }//send_bit_rs485
-        int RESPONSEARRAY_RS485 [72];
-        for( int index= 0; index<= 7; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( output.byte1 >>(7 -index) ) ) & 1 ); }//for
-        for( int index= 8; index<=15; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( output.byte2 >>(15-index) ) ) & 1 ); }//for
-        for( int index=16; index<=23; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( output.byte3 >>(23-index) ) ) & 1 ); }//for
-        for( int index=24; index<=31; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( output.byte4 >>(31-index) ) ) & 1 ); }//for
-        for( int index=32; index<=39; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( output.byte5 >>(39-index) ) ) & 1 ); }//for
-        for( int index=40; index<=47; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( output.byte6 >>(47-index) ) ) & 1 ); }//for
-        for( int index=48; index<=55; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( output.byte7 >>(55-index) ) ) & 1 ); }//for
-        for( int index=56; index<=63; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( output.byte8 >>(63-index) ) ) & 1 ); }//for
-        for( int index=64; index<=71; index++ ){ RESPONSEARRAY_RS485[index] = (int) ( ( (int) ( output.byte9 >>(71-index) ) ) & 1 ); }//for
-        for( int index= 0; index<=71; index++ ){ send_bit_rs485(  RESPONSEARRAY_RS485[index]  );                                  }//for
+    void pause_rs485(int x){}//mada mada
+    void send_bit_rs485  (int bit){
+         if(bit){ RS4851_TX(1); RS4852_TX(1); } else { RS4851_TX(0); RS4852_TX(0); }
+         RS4851_DE(1);RS4852_DE(1);
+         pause_rs485(1000);
+         RS4851_TX(0);RS4852_TX(1);
+         pause_rs485(1000);
+	 RS4851_DE(0);RS4852_DE(0);
+    }//send_bit_rs485
+    void send_byte_rs485( int out ){
+         for( int index= 0; index<= 7; index++ ){  send_bit_rs485( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }//for
+    }//send_byte_rs485
+    int  write_1byte_response_rs485( int dest, int msg){ 
+         //flag, dest, src, cmd or resp , len, data, crc0, crc1, flag
+	 send_byte_rs485( FF  );send_byte_rs485( dest );send_byte_rs485( EPS );
+         send_byte_rs485( out );send_byte_rs485( out );send_byte_rs485( out );
+         send_byte_rs485( out );send_byte_rs485( out );send_byte_rs485( FF  );//tea break
     return 0;
     }//write_response_rs485
     int check_input   (struct ninebyte inputx){ 
@@ -257,10 +258,10 @@ int execute_rs485(struct ninebyte input ){
            (input.byte7==inputx.byte7)&(input.byte7==inputx.byte7)&(input.byte8==inputx.byte8)&
            (input.byte9==inputx.byte9) 
            ){ return 1;}
-        else{ return 0; } 
-    }//ohayo!!!!!
-    if ( check_command(PING)  ){ write_response_rs485(ACK,EMPTY); }//ACK...........Fault reporting mechanisms?
-    if ( check_command(SON )  ){
+        else{ return 0;} 
+    }// check_input
+    if ( check_input(PING)  ){ write_response_rs485( ACK, EMPTY); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
+    if ( check_input(SON )  ){
                         int else_check=1;
                         if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,EMPTY);PL5V_EN   (1); }//ACK.... do action
                         if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,EMPTY);ADCS5V_EN (1); }//ACK.... do action
@@ -274,7 +275,7 @@ int execute_rs485(struct ninebyte input ){
                         if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,EMPTY);ADCS12V_EN(1); }//ACK.... do action
                         if(else_check==1                ){                                write_response_rs485(NACK,EMPTY);               }//NACK
     }//SON
-    if ( check_command(SOF)  ){
+    if ( check_input(SOF)  ){
                         int else_check=1;
                         if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,EMPTY);PL5V_EN   (0); }//ACK.... do action
                         if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,EMPTY);ADCS5V_EN (0); }//ACK.... do action
@@ -288,7 +289,7 @@ int execute_rs485(struct ninebyte input ){
                         if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_response_rs485(ACK ,EMPTY);ADCS12V_EN(0); }//ACK.... do action
                         if(else_check==1                ){                                write_response_rs485(NACK,EMPTY);               }//NACK
     }//SOF
-    if ( check_command(SM )  ){
+    if ( check_input(SM )  ){
                          int else_check=1;
                          if(check_parameter( INITIALIZE    ) ){else_check=0;CURRENTMODE=INITIALIZE   ;write_response_rs485(ACK ,EMPTY);     }//ACK.... do action
                          if(check_parameter( DETUMBLE      ) ){else_check=0;CURRENTMODE=DETUMBLE     ;write_response_rs485(ACK ,EMPTY);     }//ACK.... do action
@@ -299,16 +300,16 @@ int execute_rs485(struct ninebyte input ){
                          if(check_parameter( EMERGENCY     ) ){else_check=0;CURRENTMODE=EMERGENCY    ;write_response_rs485(ACK ,EMPTY);     }//ACK.... do action
                          if(else_check==1                    ){                                       write_response_rs485(NACK,EMPTY);     }//NACK
     }//SM
-    if ( check_command(GM   ) ){ write_response_rs485(ACK,CURRENTMODE       ); }//ACK //GM
-    if ( check_command(GSC  ) ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
-    if ( check_command(SSC  ) ){ write_response_rs485(ACK, EMPTY  );CURRENTSYSTEMCLOCK=parameter; }//ACK
-    if ( check_command(GOSTM) ){
+    if ( check_input(GM   ) ){ write_response_rs485(ACK,CURRENTMODE       ); }//ACK //GM
+    if ( check_input(GSC  ) ){ write_response_rs485(ACK,CURRENTSYSTEMCLOCK); }//ACK.........MIGHT have to do away with 2 byte response limitation OR i can just specify what each count(1) represents as a time period for a 1 byte maximum
+    if ( check_input(SSC  ) ){ write_response_rs485(ACK, EMPTY  );CURRENTSYSTEMCLOCK=parameter; }//ACK
+    if ( check_input(GOSTM) ){
                                int a = (int) (XB12V_I  ()<<7);  int b = (int) (ADCS12V_I()<<6); int c = (int) (RS5V_I   ()<<5);  int d = (int) (RS3V3_I  ()<<4);
                                int e = (int) (SA1_I    ()<<3);  int f = (int) (SA2_I    ()<<2); int g = (int) (SA3_I    ()<<1);
                                write_response_rs485(  ACK, (int) (a | b | c | d | e | f | g |  1)    );
     }//ACK //GOSTM
-    if ( check_command(KEN ) ){ write_response_rs485(ACK,KEN ); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
-    if ( check_command(KDIS) ){ write_response_rs485(ACK,KDIS); }//ACK //KDIS
+    if ( check_input(KEN ) ){ write_response_rs485(ACK,KEN ); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
+    if ( check_input(KDIS) ){ write_response_rs485(ACK,KDIS); }//ACK //KDIS
     //YOU CAN ALSO ADD LOGIC
 return 0;
 }//execute
