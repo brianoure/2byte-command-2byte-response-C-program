@@ -230,7 +230,6 @@ return COMMAND_PARAMETER_RS485;
 //execute
 int execute_rs485(struct ninebyte input ){
     struct ninebyte output_rs485;
-    int crc_generator_rs485 (){return 0;}
     int crc_validator_rs485 (){return 0;}
     void pause_rs485(int x){}//mada mada
     void send_bit_rs485  (int bit){
@@ -244,11 +243,41 @@ int execute_rs485(struct ninebyte input ){
     void send_byte_rs485( int out ){
          for( int index= 0; index<= 7; index++ ){  send_bit_rs485( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }//for
     }//send_byte_rs485
-    int  write_1byte_response_rs485( int dest, int msg){ 
-         //flag, dest, src, cmd or resp , len, data, crc0, crc1, flag
-	 send_byte_rs485( FF  );send_byte_rs485( dest );send_byte_rs485( EPS );
-         send_byte_rs485( out );send_byte_rs485( out );send_byte_rs485( out );
-         send_byte_rs485( out );send_byte_rs485( out );send_byte_rs485( FF  );//tea break
+    int  write_1byte_response_rs485( int dest, int response){ //crc0,crc1 
+         //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
+	 //flag, dest, src, cmd/response , 0  ,       crc0, crc1, flag
+	 //payload is: dest, src=EPS=2, cmd/response
+	 //poly = 1pow16 + 0pow12 + 1pow5 + 1pow0 = b10000000010100001
+	 int poly_msb = 1;
+	 int poly_lsb = (int) ((1<<5)|1);
+	 dest^poly_lsb; EPS^poly_msb;response^poly_lsb;
+	 int crc0 = 
+	 int crc1;
+	 crc0 =;
+	 int bits[(8*4)+16];
+	 for(int i=0 ; i<=7  ;  i++){bits[i]=((     dest>>(7 -i))&1);}
+	 for(int i=8 ; i<=15 ;  i++){bits[i]=((      src>>(15-i))&1);}
+	 for(int i=16; i<=23 ;  i++){bits[i]=(( response>>(23-i))&1);}
+	 for(int i=24; i<=31 ;  i++){bits[i]=((      len>>(31-i))&1);}
+	 int poly[17]={1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1};
+	 for(int bitsindex=0 ; bitsindex<= ((8*4)-1) ;  bitsindex++){
+            bits[bitsindex+0]=(bits[bitsindex+0]^poly[polyindex]);
+            bits[bitsindex+1]=(bits[bitsindex+1]^poly[polyindex]);
+            bits[bitsindex+2]=(bits[bitsindex+2]^poly[polyindex]);
+            bits[bitsindex+3]=(bits[bitsindex+3]^poly[polyindex]);
+	    bits[bitsindex+0]=(bits[bitsindex+0]^poly[polyindex]);
+            bits[bitsindex+1]=(bits[bitsindex+1]^poly[polyindex]);
+	    bits[bitsindex+0]=(bits[bitsindex+0]^poly[polyindex]);
+            bits[bitsindex+1]=(bits[bitsindex+1]^poly[polyindex]);
+	    bits[bitsindex+0]=(bits[bitsindex+0]^poly[polyindex]);
+            bits[bitsindex+1]=(bits[bitsindex+1]^poly[polyindex]);
+	    bits[bitsindex+0]=(bits[bitsindex+0]^poly[polyindex]);
+            bits[bitsindex+1]=(bits[bitsindex+1]^poly[polyindex]);
+	    for(int polyindex=0 ; polyindex<=16; polyindex++){(bits[bitsindex]^poly[polyindex]);}
+	 }
+	 send_byte_rs485( FF       );send_byte_rs485( dest );send_byte_rs485( EPS );
+         send_byte_rs485( response );send_byte_rs485( 0    );
+         send_byte_rs485( crc0     );send_byte_rs485( crc1 );send_byte_rs485( FF  );//tea break
     return 0;
     }//write_response_rs485
     int check_input   (struct ninebyte inputx){ 
