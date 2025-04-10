@@ -197,7 +197,7 @@ return 0;
 
 struct twobyte crc16_generator_for_3byte(int a, int b, int c){
        struct twobyte {int byte1; int byte2;} rslt;
-       int bits[40];//24+16=(8*3)+16
+       int bits[40];
        for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
        for(int i=8 ; i<=15 ;  i++){bits[i]=((b>>(15-i))&1);}
        for(int i=16; i<=23 ;  i++){bits[i]=((c>>(23-i))&1);}//24 original
@@ -219,15 +219,18 @@ return rslt;
 
 struct twobyte crc16_generator_for_5byte(int a, int b, int c, int d, int e){
        struct twobyte {int byte1; int byte2;} rslt;
-       int bits[56];//48
-       for(int i=0 ; i<=7  ;  i++){bits[i]=((     dest>>(7 -i))&1);}
-       for(int i=8 ; i<=15 ;  i++){bits[i]=((      src>>(15-i))&1);}
-       for(int i=16; i<=23 ;  i++){bits[i]=(( response>>(23-i))&1);}
-       for(int i=24; i<=31 ;  i++){bits[i]=((      len>>(31-i))&1);}
+       int bits[56];
+       for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
+       for(int i=8 ; i<=15 ;  i++){bits[i]=((b>>(15-i))&1);}
+       for(int i=16; i<=23 ;  i++){bits[i]=((c>>(23-i))&1);}
+       for(int i=24; i<=31 ;  i++){bits[i]=((d>>(31-i))&1);}
+       for(int i=32; i<=39 ;  i++){bits[i]=((e>>(39-i))&1);}//24 original
+       for(int i=40; i<=55 ;  i++){bits[i]=          0    ;}//16 padding
        int poly[17]={1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1};//msb(left) to lsb(right)
-       int crc [16];
-       for(int bitsindex=0 ; bitsindex<=31 ;  bitsindex++){ //32
-          for(int polyindex=0 ; polyindex<=16; polyindex++){  crc[polyindex]=(bits[bitsindex]^poly[polyindex]);  }//17
+       for(int b=0;b<=39;b++){
+	  int one_is_present=0; int n=0;
+	  while( (n<=39)&(one_is_present==0) ){ if( bits[n]==1 ){one_is_present=1;} n=n+1; }
+	  if (one_is_present){    for(int x=b;x<=(b+16);x++){bits[x+b]=(bits[x+b]^poly[x-b]);}    }
        }//for
        rslt.byte1 = (crc[0]*128)+(crc[1]*64)+(crc[2 ]*32)+(crc[3 ]*16)+(crc[4 ]*8)+(crc[5 ]*4)+(crc[6 ]*2)+(crc[7 ] );
        rslt.byte2 = (crc[8]*128)+(crc[9]*64)+(crc[10]*32)+(crc[11]*16)+(crc[12]*8)+(crc[13]*4)+(crc[14]*2)+(crc[15] );
@@ -287,10 +290,17 @@ int execute_rs485(struct ninebyte input ){
     int  write_3byte_payload_response_rs485( int dest, int src, int resp){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
 	 struct twobyte crc16 = crc16_generator_for_3byte(dest,src,resp);
 	 send_byte_rs485( FF         );send_byte_rs485( dest       );send_byte_rs485( src );
-         send_byte_rs485( response   );send_byte_rs485( 0          );/*empty*/
+         send_byte_rs485( resp       );send_byte_rs485( 0          );/*empty*/
          send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  );
     return 0;
-    }//write_response_rs485
+    }//write_3byte_payload_response_rs485
+    int  write_5byte_payload_response_rs485( int dest, int src, int resp, int len, int data){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
+	 struct twobyte crc16 = crc16_generator_for_5byte(dest,src,resp,len,data);
+	 send_byte_rs485( FF         );send_byte_rs485( dest       );send_byte_rs485( src );
+         send_byte_rs485( resp       );send_byte_rs485( 0          );/*empty*/
+         send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  );
+    return 0;
+    }//write_5byte_payload_response_rs485
     int check_input   (struct ninebyte inputx){ 
         if (  (input.byte1==inputx.byte1)&(input.byte2==inputx.byte2)&(input.byte3==inputx.byte3)&
               (input.byte4==inputx.byte4)&(input.byte5==inputx.byte5)&(input.byte6==inputx.byte6)&
