@@ -197,7 +197,29 @@ return 0;
 
 struct twobyte crc16_generator_for_3byte(int a, int b, int c){
        struct twobyte {int byte1; int byte2;} rslt;
-       int bits[(8*4)+16];//48
+       int bits[40];//24+16=(8*3)+16
+       for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
+       for(int i=8 ; i<=15 ;  i++){bits[i]=((b>>(15-i))&1);}
+       for(int i=16; i<=23 ;  i++){bits[i]=((c>>(23-i))&1);}//24 original
+       for(int i=24; i<=39 ;  i++){bits[i]=          0    ;}//16 padding
+       int poly[17]={1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1};//msb(left) to lsb(right)
+       //for(int b=0;b<=16;b++){bits[b  ]=(bits[b+0]^poly[b  ]);}
+       //for(int b=1;b<=17;b++){bits[b+1]=(bits[b+1]^poly[b-1]);}.........
+       for(int b=0;b<=23;b++){
+	  int one_is_present=0; int n=0;
+	  while( (n<=23)&(one_is_present==0) ){ if( bits[n]==1 ){one_is_present=1;} n=n+1; }
+	  if (one_is_present){    for(int x=b;x<=(b+16);x++){bits[x+b]=(bits[x+b]^poly[x-b]);}    }
+       }//for
+       rslt.byte1 = (bits[24]*128)+(bits[25]*64)+(bits[26]*32)+(bits[27]*16)+(bits[28]*8)+(bits[29]*4)+(bits[30]*2)+(bits[31] );
+       rslt.byte2 = (bits[32]*128)+(bits[33]*64)+(bits[34]*32)+(bits[35]*16)+(bits[36]*8)+(bits[37]*4)+(bits[38]*2)+(bits[39] );
+return rslt;
+}//crc_generator_for_3byte
+
+//########################
+
+struct twobyte crc16_generator_for_5byte(int a, int b, int c, int d, int e){
+       struct twobyte {int byte1; int byte2;} rslt;
+       int bits[56];//48
        for(int i=0 ; i<=7  ;  i++){bits[i]=((     dest>>(7 -i))&1);}
        for(int i=8 ; i<=15 ;  i++){bits[i]=((      src>>(15-i))&1);}
        for(int i=16; i<=23 ;  i++){bits[i]=(( response>>(23-i))&1);}
@@ -210,7 +232,7 @@ struct twobyte crc16_generator_for_3byte(int a, int b, int c){
        rslt.byte1 = (crc[0]*128)+(crc[1]*64)+(crc[2 ]*32)+(crc[3 ]*16)+(crc[4 ]*8)+(crc[5 ]*4)+(crc[6 ]*2)+(crc[7 ] );
        rslt.byte2 = (crc[8]*128)+(crc[9]*64)+(crc[10]*32)+(crc[11]*16)+(crc[12]*8)+(crc[13]*4)+(crc[14]*2)+(crc[15] );
 return rslt;
-}//crc_generator_for_3byte
+}//crc_generator_for_5byte
 	
 //################# RS485 METHODS/DECLARATIONS ###################
 
