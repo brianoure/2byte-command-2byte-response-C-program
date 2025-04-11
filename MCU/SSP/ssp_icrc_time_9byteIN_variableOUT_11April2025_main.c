@@ -196,31 +196,12 @@ return 0;
 
 //########################
 
-struct twobyte crc16_generator_for_3byte(int a, int b, int c){
+struct twobyte crc16_generator(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m, int n, int o, int p, int q, int r, int s, int t, int u){ //dest, src, cmd/resp , len, data[17] excluding 2 flags and 2 crcs
        struct twobyte {int byte1; int byte2;} rslt;
-       int bits[40];
-       for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
-       for(int i=8 ; i<=15 ;  i++){bits[i]=((b>>(15-i))&1);}
-       for(int i=16; i<=23 ;  i++){bits[i]=((c>>(23-i))&1);}//24 original
-       for(int i=24; i<=39 ;  i++){bits[i]=          0    ;}//16 padding
-       int poly[17]={1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1};//msb(left) to lsb(right)
-       //for(int b=0;b<=16;b++){bits[b  ]=(bits[b+0]^poly[b  ]);}
-       //for(int b=1;b<=17;b++){bits[b+1]=(bits[b+1]^poly[b-1]);}.........
-       for(int b=0;b<=23;b++){
-	  int one_is_present=0; int n=0;
-	  while( (n<=23)&(one_is_present==0) ){ if( bits[n]==1 ){one_is_present=1;} n=n+1; }
-	  if (one_is_present){    for(int x=b;x<=(b+16);x++){bits[x+b]=(bits[x+b]^poly[x-b]);}    }
-       }//for
-       rslt.byte1 = (bits[24]*128)+(bits[25]*64)+(bits[26]*32)+(bits[27]*16)+(bits[28]*8)+(bits[29]*4)+(bits[30]*2)+(bits[31] );
-       rslt.byte2 = (bits[32]*128)+(bits[33]*64)+(bits[34]*32)+(bits[35]*16)+(bits[36]*8)+(bits[37]*4)+(bits[38]*2)+(bits[39] );
-return rslt;
-}//crc_generator_for_3byte
-
-//########################
-
-struct twobyte crc16_generator(int a, int b, int c, int d, int e){
-       struct twobyte {int byte1; int byte2;} rslt;
-       int bits[56];
+       if(d){length=}
+       if(){}
+       if(){}
+       int bits[(8*8+d];
        for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
        for(int i=8 ; i<=15 ;  i++){bits[i]=((b>>(15-i))&1);}
        for(int i=16; i<=23 ;  i++){bits[i]=((c>>(23-i))&1);}
@@ -376,7 +357,7 @@ return 0;
 
 //################# SPI1 METHODS ########################
 
-struct fourbyte COMMAND_PARAMETER_SPI1  = {0,0,0,0};
+struct fourbyte COMMAND_PARAMETER_SPI1  = {0,0,0,0,0,0,0,0,0};
   
 int receive_spi1 (){
 int result=0; int spi1_mosi=0; int spi1_sck=0; int spi1_ss=0;
@@ -393,15 +374,21 @@ return result;
 }//
 
 //####################################
-	
+
 //get_command_parameter_after_leftShift_insertEnd_spi1
-struct fourbyte get_command_parameter_after_leftShift_insertEnd_spi1(int insertionbit){ 
-       COMMAND_PARAMETER_SPI1.byte1 = ( (COMMAND_PARAMETER_SPI1.byte1<<1) | (COMMAND_PARAMETER_SPI1.byte2>>7) ) & 255;
-       COMMAND_PARAMETER_SPI1.byte2 = ( (COMMAND_PARAMETER_SPI1.byte2<<1) | (COMMAND_PARAMETER_SPI1.byte3>>7) ) & 255;
-       COMMAND_PARAMETER_SPI1.byte3 = ( (COMMAND_PARAMETER_SPI1.byte3<<1) | (COMMAND_PARAMETER_SPI1.byte4>>7) ) & 255;
-       COMMAND_PARAMETER_SPI1.byte4 = ( (COMMAND_PARAMETER_SPI1.byte4<<1) | insertionbit                      ) & 255;
+struct ninebyte get_command_parameter_after_leftShift_insertEnd_spi1(int insertionbit){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
+       COMMAND_PARAMETER_SPI1.byte1 = ( (COMMAND_PARAMETER_SPI1.byte1<<1) | (COMMAND_PARAMETER_SPI1.byte2>>7) ) & 255;//flag
+       COMMAND_PARAMETER_SPI1.byte2 = ( (COMMAND_PARAMETER_SPI1.byte2<<1) | (COMMAND_PARAMETER_SPI1.byte3>>7) ) & 255;//dest
+       COMMAND_PARAMETER_SPI1.byte3 = ( (COMMAND_PARAMETER_SPI1.byte3<<1) | (COMMAND_PARAMETER_SPI1.byte4>>7) ) & 255;//src
+       COMMAND_PARAMETER_SPI1.byte4 = ( (COMMAND_PARAMETER_SPI1.byte4<<1) | (COMMAND_PARAMETER_SPI1.byte5>>7) ) & 255;//cmd/response
+       COMMAND_PARAMETER_SPI1.byte5 = ( (COMMAND_PARAMETER_SPI1.byte5<<1) | (COMMAND_PARAMETER_SPI1.byte6>>7) ) & 255;//len
+       COMMAND_PARAMETER_SPI1.byte6 = ( (COMMAND_PARAMETER_SPI1.byte6<<1) | (COMMAND_PARAMETER_SPI1.byte7>>7) ) & 255;//data
+       COMMAND_PARAMETER_SPI1.byte7 = ( (COMMAND_PARAMETER_SPI1.byte7<<1) | (COMMAND_PARAMETER_SPI1.byte8>>7) ) & 255;//crc1
+       COMMAND_PARAMETER_SPI1.byte8 = ( (COMMAND_PARAMETER_SPI1.byte8<<1) | (COMMAND_PARAMETER_SPI1.byte9>>7) ) & 255;//crc0
+       COMMAND_PARAMETER_SPI1.byte9 = ( (COMMAND_PARAMETER_SPI1.byte9<<1) | insertionbit                      ) & 255;//flag
 return COMMAND_PARAMETER_SPI1;
-}//get_command_parameter_after_leftShift_insertEnd_spi1	
+}//get_command_parameter_after_leftShift_insertEnd_spi1
+
 
 //###################################
 
@@ -423,7 +410,7 @@ int execute_spi1( struct ninebyte input){
                               for( int index= 0; index<= 7; index++ ){  send_bit_spi1( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }//for
                          }//send_byte_spi1
                          int  write_ssp_response_spi1( int dest, int src, int resp, int len, int d1, int d2, int d3, int d4, int d5, int d6, int d7, int d8, int d9, int d10, int d11, int d12, int d13, int d14, int d15, int d16, int d17){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
-			      struct twobyte crc16 = crc16_generator(dest,src,resp,len,data);//oops!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			      struct twobyte crc16 = crc16_generator(dest,src,resp,len, d1, d2, d3, d4, d5, d6, d7,  d8, d9, d10, d11, d12, d13, d14, d15, d16, d17);//oops!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	                      if(len==0 ){send_byte_spi1( FF );send_byte_spi1( dest );send_byte_spi1( src );send_byte_spi1( resp );send_byte_spi1( len );                                                                                send_byte_spi1( FF  );}//len 0
 	                      if(len==1 ){send_byte_spi1( FF );send_byte_spi1( dest );send_byte_spi1( src );send_byte_spi1( resp );send_byte_spi1( len );send_byte_spi1( d1  );send_byte_spi1( crc16.byte1);send_byte_spi1( crc16.byte2);send_byte_spi1( FF  );}//len 1
 	                      if(len==17){send_byte_spi1( FF );send_byte_spi1( dest );send_byte_spi1( src );send_byte_spi1( resp );send_byte_spi1( len ); 
