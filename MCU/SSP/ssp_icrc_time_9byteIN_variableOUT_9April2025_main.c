@@ -21,9 +21,9 @@
 
 
 int main(){//main
-struct ninebyte { int byte1; int byte2; int byte3; int byte4; int byte5; int byte6; int byte7; int byte8; int byte9; };
-struct fourbyte { int byte1; int byte2; int byte3; int byte4; };
-struct twobyte  { int byte1; int byte2; };
+struct ninebyte   { int byte1; int byte2; int byte3; int byte4; int byte5; int byte6; int byte7; int byte8; int byte9; };
+struct fourbyte   { int byte1; int byte2; int byte3; int byte4; };
+struct twobyte    { int byte1; int byte2; };
 // add const def	
 //############ DECLARATIONS ###########
 const int EPS_MCU_ADDRESS=2;
@@ -181,7 +181,8 @@ int CURRENTMODE              = 0;
 int CURRENTSYSTEMCLOCK       = 0;
 int FF                       = 255;
 int OBC_ADDRESS              = 1  ;
-int EPS_ADDRESS              =
+int CCU_ADDRESS              = 3  ;
+int EPS_ADDRESS              = 2  ;
 
 	
 //#######################
@@ -217,7 +218,7 @@ return rslt;
 
 //########################
 
-struct twobyte crc16_generator_for_5byte(int a, int b, int c, int d, int e){
+struct twobyte crc16_generator(int a, int b, int c, int d, int e){
        struct twobyte {int byte1; int byte2;} rslt;
        int bits[56];
        for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
@@ -239,7 +240,7 @@ return rslt;
 	
 //################# RS485 METHODS/DECLARATIONS ###################
 
-struct fourbyte COMMAND_PARAMETER_RS485  = {0,0,0,0};// a fusion of 4851 and 4852 because we can't identify pauses
+struct eleven COMMAND_PARAMETER_RS485  = {0,0,0,0,0,0,0,0,0};// a fusion of 4851 and 4852 because we can't identify pauses
   
 int receive_rs485 (){
 int result=0; int r4851=0; int r4852=0;
@@ -256,127 +257,119 @@ return result;
 //####################################
 	
 //get_command_parameter_after_leftShift_insertEnd_rs485
-struct ninebyte get_command_parameter_after_leftShift_insertEnd_rs485(int insertionbit){ 
-       COMMAND_PARAMETER_RS485.byte1 = ( (COMMAND_PARAMETER_RS485.byte1<<1) | (COMMAND_PARAMETER_RS485.byte2>>7) ) & 255;
-       COMMAND_PARAMETER_RS485.byte2 = ( (COMMAND_PARAMETER_RS485.byte2<<1) | (COMMAND_PARAMETER_RS485.byte3>>7) ) & 255;
-       COMMAND_PARAMETER_RS485.byte3 = ( (COMMAND_PARAMETER_RS485.byte3<<1) | (COMMAND_PARAMETER_RS485.byte4>>7) ) & 255;
-       COMMAND_PARAMETER_RS485.byte4 = ( (COMMAND_PARAMETER_RS485.byte4<<1) | insertionbit                       ) & 255;
-       COMMAND_PARAMETER_RS485.byte5 = ( (COMMAND_PARAMETER_RS485.byte1<<1) | (COMMAND_PARAMETER_RS485.byte2>>7) ) & 255;
-       COMMAND_PARAMETER_RS485.byte6 = ( (COMMAND_PARAMETER_RS485.byte2<<1) | (COMMAND_PARAMETER_RS485.byte3>>7) ) & 255;
-       COMMAND_PARAMETER_RS485.byte7 = ( (COMMAND_PARAMETER_RS485.byte3<<1) | (COMMAND_PARAMETER_RS485.byte4>>7) ) & 255;
-       COMMAND_PARAMETER_RS485.byte8 = ( (COMMAND_PARAMETER_RS485.byte4<<1) | insertionbit                       ) & 255;
-       COMMAND_PARAMETER_RS485.byte9 = ( (COMMAND_PARAMETER_RS485.byte4<<1) | insertionbit                       ) & 255;
+struct ninebyte get_command_parameter_after_leftShift_insertEnd_rs485(int insertionbit){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
+       COMMAND_PARAMETER_RS485.byte1 = ( (COMMAND_PARAMETER_RS485.byte1<<1) | (COMMAND_PARAMETER_RS485.byte2>>7) ) & 255;//flag
+       COMMAND_PARAMETER_RS485.byte2 = ( (COMMAND_PARAMETER_RS485.byte2<<1) | (COMMAND_PARAMETER_RS485.byte3>>7) ) & 255;//dest
+       COMMAND_PARAMETER_RS485.byte3 = ( (COMMAND_PARAMETER_RS485.byte3<<1) | (COMMAND_PARAMETER_RS485.byte4>>7) ) & 255;//src
+       COMMAND_PARAMETER_RS485.byte4 = ( (COMMAND_PARAMETER_RS485.byte4<<1) | (COMMAND_PARAMETER_RS485.byte5>>7) ) & 255;//cmd/response
+       COMMAND_PARAMETER_RS485.byte5 = ( (COMMAND_PARAMETER_RS485.byte5<<1) | (COMMAND_PARAMETER_RS485.byte6>>7) ) & 255;//len
+       COMMAND_PARAMETER_RS485.byte6 = ( (COMMAND_PARAMETER_RS485.byte6<<1) | (COMMAND_PARAMETER_RS485.byte7>>7) ) & 255;//data
+       COMMAND_PARAMETER_RS485.byte7 = ( (COMMAND_PARAMETER_RS485.byte7<<1) | (COMMAND_PARAMETER_RS485.byte8>>7) ) & 255;//crc1
+       COMMAND_PARAMETER_RS485.byte8 = ( (COMMAND_PARAMETER_RS485.byte8<<1) | (COMMAND_PARAMETER_RS485.byte9>>7) ) & 255;//crc0
+       COMMAND_PARAMETER_RS485.byte9 = ( (COMMAND_PARAMETER_RS485.byte9<<1) | insertionbit                       ) & 255;//flag
 return COMMAND_PARAMETER_RS485;
 }//get_command_parameter_after_leftShift_insertEnd_rs485
 
 //###################################
 
 //execute
-int execute_rs485(struct ninebyte input ){
-    struct ninebyte output_rs485;
-    int crc_validator_rs485 (){return 0;}
-    void pause_rs485(int x){}//mada mada
-    void send_bit_rs485  (int bit){
-         if(bit){ RS4851_TX(1); RS4852_TX(1); } else { RS4851_TX(0); RS4852_TX(0); }
-         RS4851_DE(1);RS4852_DE(1);
-         pause_rs485(1000);
-         RS4851_TX(0);RS4852_TX(1);
-         pause_rs485(1000);
-	 RS4851_DE(0);RS4852_DE(0);
-    }//send_bit_rs485
-    void send_byte_rs485( int out ){
-         for( int index= 0; index<= 7; index++ ){  send_bit_rs485( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }//for
-    }//send_byte_rs485
-    int  write_ssp_response_rs485( int dest, int src, int resp, int len, int d1, int d2, int d3, int d4, int d5, int d6, int d7, int d8, int d9, int d10, int d11, int d12, int d13, int d14, int d15, int d16, int d17){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
-	 struct twobyte crc16 = crc16_generator(dest,src,resp,len,data);
-	 if(len==0 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len );                       send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  );}//len 0
-	 if(len==1 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len ); send_byte_rs485( d1 );send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  );}//len 1
-	 if(len==17){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len ); 
-		     send_byte_rs485( d1 );send_byte_rs485( d2  );send_byte_rs485( d3  );send_byte_rs485( d4   );send_byte_rs485( d5  );send_byte_rs485( d6  );send_byte_rs485( d7  );send_byte_rs485( d8  );
-		     send_byte_rs485( d9 );send_byte_rs485( d10 );send_byte_rs485( d11 );send_byte_rs485( d12  );send_byte_rs485( d13 );send_byte_rs485( d14 );send_byte_rs485( d15 );send_byte_rs485( d16 );
-		     send_byte_rs485( d17);send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  ); }//len 1        
-    return 0;
-    }//write_3byte_payload_response_rs485
-    int  write_5byte_payload_response_rs485( int dest, int src, int resp, int len, int data){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
-	 struct twobyte crc16 = crc16_generator_for_5byte(dest,src,resp,len,data);
-	 send_byte_rs485( FF         );send_byte_rs485( dest       );send_byte_rs485( src );
-         send_byte_rs485( resp       );send_byte_rs485( 0          );/*empty*/
-         send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  );
-    return 0;
-    }//write_5byte_payload_response_rs485
-    int check_input   (struct ninebyte inputx){ 
-        if (  (input.byte1==inputx.byte1)&(input.byte2==inputx.byte2)&(input.byte3==inputx.byte3)&
-              (input.byte4==inputx.byte4)&(input.byte5==inputx.byte5)&(input.byte6==inputx.byte6)&
-              (input.byte7==inputx.byte7)&(input.byte7==inputx.byte7)&(input.byte8==inputx.byte8)&
-              (input.byte9==inputx.byte9) ){ return 1;}
-        else{ return 0;} 
-    }//check_input
-    if ( check_input(PING)  ){ write_3byte_payload_response_rs485( OBC, EPS, ACK); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
-    if ( check_input(SON )  ){
-                        int else_check=1;
-                        if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );PL5V_EN   (1); }//ACK.... do action
-                        if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );ADCS5V_EN (1); }//ACK.... do action
-                        if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );RS12V_EN  (1); }//ACK.... do action
-                        if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );XB12V_EN  (1); }//ACK.... do action
-                        if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );RS3V3_EN  (1); }//ACK.... do action
-                        if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );PL_EN     (1); }//ACK.... do action
-                        if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );ADCS_EN   (1); }//ACK.... do action
-                        if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );UHF_EN    (1); }//ACK.... do action
-                        if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );GPS_EN    (1); }//ACK.... do action
-                        if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );ADCS12V_EN(1); }//ACK.... do action
-                        if(else_check==1                ){                                write_3byte_payload_response_rs485( OBC, EPS, NACK);               }//NACK
-    }//SON
-    if ( check_input(SOF)  ){
-                        int else_check=1;
-                        if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );PL5V_EN   (0); }//ACK.... do action
-                        if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );ADCS5V_EN (0); }//ACK.... do action
-                        if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );RS12V_EN  (0); }//ACK.... do action
-                        if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );XB12V_EN  (0); }//ACK.... do action
-                        if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );RS3V3_EN  (0); }//ACK.... do action
-                        if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );PL_EN     (0); }//ACK.... do action
-                        if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );ADCS_EN   (0); }//ACK.... do action
-                        if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );UHF_EN    (0); }//ACK.... do action
-                        if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );GPS_EN    (0); }//ACK.... do action
-                        if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_3byte_payload_response_rs485( OBC, EPS, ACK );ADCS12V_EN(0); }//ACK.... do action
-                        if(else_check==1                ){                                write_3byte_payload_response_rs485( OBC, EPS, NACK);               }//NACK
-    }//SOF
-    if ( check_input(SM )  ){
-                         int else_check=1;
-                         if(check_parameter( INITIALIZE    ) ){else_check=0;CURRENTMODE=INITIALIZE   ;write_3byte_payload_response_rs485( OBC, EPS, ACK );     }//ACK.... do action
-                         if(check_parameter( DETUMBLE      ) ){else_check=0;CURRENTMODE=DETUMBLE     ;write_3byte_payload_response_rs485( OBC, EPS, ACK );     }//ACK.... do action
-                         if(check_parameter( NORMAL        ) ){else_check=0;CURRENTMODE=NORMAL       ;write_3byte_payload_response_rs485( OBC, EPS, ACK );     }//ACK.... do action
-                         if(check_parameter( COMMUNICATION ) ){else_check=0;CURRENTMODE=COMMUNICATION;write_3byte_payload_response_rs485( OBC, EPS, ACK );     }//ACK.... do action
-                         if(check_parameter( PAYLOAD       ) ){else_check=0;CURRENTMODE=PAYLOAD      ;write_3byte_payload_response_rs485( OBC, EPS, ACK );     }//ACK.... do action
-                         if(check_parameter( IMAGE         ) ){else_check=0;CURRENTMODE=IMAGE        ;write_3byte_payload_response_rs485( OBC, EPS, ACK );     }//ACK.... do action
-                         if(check_parameter( EMERGENCY     ) ){else_check=0;CURRENTMODE=EMERGENCY    ;write_3byte_payload_response_rs485( OBC, EPS, ACK );     }//ACK.... do action
-                         if(else_check==1                    ){                                       write_3byte_payload_response_rs485( OBC, EPS, NACK);     }//NACK
-    }//SM
-    if ( check_input(GM   ) ){ write_5byte_payload_response_rs485(OBC, EPS, ACK, 1, CURRENTMODE       ); }//ACK........ dest, src, cmd/response , len, data,
-    if ( check_input(GSC  ) ){ write_5byte_payload_response_rs485(OBC, EPS, ACK, 1, CURRENTSYSTEMCLOCK); }//ACK........ dest, src, cmd/response , len, data,
-    if ( check_input(SSC  ) ){ write_3byte_payload_response_rs485(OBC, EPS, ACK                       ); CURRENTSYSTEMCLOCK=parameter; }//ACK
-    if ( check_input(GOSTM) ){
-                             SA2_I      (); 
-                             SA3_I      (); 
-	   		     OBC_I      ();
-			     CCU_I      ();   
-			     ADCS_I     (); 
-	                     UHF_I      ();  
-			     PL_I       ();  
-			     RS3V3_I    ();        
-			     GPS_I      ();    
-			     ADCS5V_I   ();  
-			     PL5V_I     ();  
-			     CCU5V_I    ();  
-			     XB12V_I    ();   
-			     ADCS12V_I  ();  
-			     RS5V_I     ();
-	                     OBC_FAULT  (); CCU_FAULT  (); RS12V_FLT  ();  RS5V_FLT   ();  ADCS_FAULT ();  UHF_FLT    ();  PL_FLT     ();   RS3V3_FLT  ();
-	                     GPS_FLT    ();    ADCS5V_FLT ();   PL5V_FLT   (); CCU5V_FLT  ();    XB12V_FLT  ();   ADCS12V_FLT();  
-                             write_10byte_payload_response_rs485( OBC, EPS, ACK, 10, ,,,,,,,,,,,,,     );
-    }//ACK //GOSTM
-    if ( check_input(KEN ) ){ write_5byte_response_rs485(OBC, EPS, ACK, 1, KEN ); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
-    if ( check_input(KDIS) ){ write_5bytresponse_rs485(ACK, KDIS); }//ACK //KDIS
-    //YOU CAN ALSO ADD LOGIC
+int execute_rs485(struct ninebyte input ){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
+    int source      =input.byte3;
+    int destination =input.byte2;
+    int from_obc_or_from_ccu_to_eps = (int)(  ((source==OBC_ADDRESS)|(source==CCU_ADDRESS)) & (destination==EPS_ADDRESS)  );
+    int proper_ssp_frame  = 1;//set to 1 is easier
+    int proceed_execution = 0; if( from_obc_or_from_ccu_to_eps & proper_ssp_frame ){proceed_execution=1;}//who can talk to the EPS MCU
+    if(proceed_execution){
+                         int command  = input.byte4; int parameter= input.byte6;
+                         struct ninebyte output_rs485;
+                         int crc_validator_rs485 (){return 0;}
+                         void pause_rs485(int x){}//mada mada
+                         void send_bit_rs485  (int bit){
+                              if(bit){ RS4851_TX(1); RS4852_TX(1); } else { RS4851_TX(0); RS4852_TX(0); }
+                              RS4851_DE(1);RS4852_DE(1);
+                              pause_rs485(1000);
+                              RS4851_TX(0);RS4852_TX(1);
+                              pause_rs485(1000);
+	                      RS4851_DE(0);RS4852_DE(0);
+                         }//send_bit_rs485
+                         void send_byte_rs485( int out ){
+                              for( int index= 0; index<= 7; index++ ){  send_bit_rs485( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }//for
+                         }//send_byte_rs485
+                         int  write_ssp_response_rs485( int dest, int src, int resp, int len, int d1, int d2, int d3, int d4, int d5, int d6, int d7, int d8, int d9, int d10, int d11, int d12, int d13, int d14, int d15, int d16, int d17){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
+			      struct twobyte crc16 = crc16_generator(dest,src,resp,len,data);
+	                      if(len==0 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len );                                                                                   send_byte_rs485( FF  );}//len 0
+	                      if(len==1 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len );send_byte_rs485( d1  );send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  );}//len 1
+	                      if(len==17){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len ); 
+		                          send_byte_rs485( d1 );send_byte_rs485( d2   );send_byte_rs485( d3  );send_byte_rs485( d4   );send_byte_rs485( d5  );send_byte_rs485( d6  );send_byte_rs485( d7  );send_byte_rs485( d8  );
+		                          send_byte_rs485( d9 );send_byte_rs485( d10  );send_byte_rs485( d11 );send_byte_rs485( d12  );send_byte_rs485( d13 );send_byte_rs485( d14 );send_byte_rs485( d15 );send_byte_rs485( d16 );
+		                          send_byte_rs485( d17);send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  ); }//len 1        
+                              return 0;
+                         }//write_ssp_response_rs485
+                         int check_command   (int cmd  ){  if ( command  ==cmd   ){ return 1; }else{ return 0;}  }//check_command
+	                 int check_parameter (int param){  if ( parameter==param ){ return 1; }else{ return 0;}  }//check_input
+                         if (check_command(PING) ){ write_ssp_response_rs485( OBC,EPS,ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
+                         if (check_command(SON ) ){ int else_check=1;
+                                                    if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);PL5V_EN   (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);ADCS5V_EN (1); }//ACK.... do action
+                                                    if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);RS12V_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);XB12V_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);RS3V3_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);PL_EN     (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);ADCS_EN   (1); }//ACK.... do action
+                                                    if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);UHF_EN    (1); }//ACK.... do action
+                                                    if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);GPS_EN    (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);ADCS12V_EN(1); }//ACK.... do action
+                                                    if(else_check==1                ){                                write_ssp_response_rs485( OBC,EPS,NACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);               }//NACK
+                         }//SON
+                         if ( check_command(SOF) ){ int else_check=1;
+                                                    if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);PL5V_EN   (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);ADCS5V_EN (0); }//ACK.... do action
+                                                    if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);RS12V_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);XB12V_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);RS3V3_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);PL_EN     (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);ADCS_EN   (0); }//ACK.... do action
+                                                    if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);UHF_EN    (0); }//ACK.... do action
+                                                    if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);GPS_EN    (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);ADCS12V_EN(0); }//ACK.... do action
+                                                    if(else_check==1                ){                                write_ssp_response_rs485( OBC,EPS,NACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);               }//NACK
+                        }//SOF
+                        if ( check_command(SM )  ){ int else_check=1;
+                                                    if(check_parameter( INITIALIZE    ) ){else_check=0;CURRENTMODE=INITIALIZE   ;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);     }//ACK.... do action
+                                                    if(check_parameter( DETUMBLE      ) ){else_check=0;CURRENTMODE=DETUMBLE     ;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);     }//ACK.... do action
+                                                    if(check_parameter( NORMAL        ) ){else_check=0;CURRENTMODE=NORMAL       ;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);     }//ACK.... do action
+                                                    if(check_parameter( COMMUNICATION ) ){else_check=0;CURRENTMODE=COMMUNICATION;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);     }//ACK.... do action
+                                                    if(check_parameter( PAYLOAD       ) ){else_check=0;CURRENTMODE=PAYLOAD      ;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);     }//ACK.... do action
+                                                    if(check_parameter( IMAGE         ) ){else_check=0;CURRENTMODE=IMAGE        ;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);     }//ACK.... do action
+                                                    if(check_parameter( EMERGENCY     ) ){else_check=0;CURRENTMODE=EMERGENCY    ;write_ssp_response_rs485( OBC,EPS, ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);     }//ACK.... do action
+                                                    if(else_check==1                    ){                                       write_ssp_response_rs485( OBC,EPS,NACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);     }//NACK
+                        }//SM
+                        if ( check_command(GM   ) ){  write_ssp_response_rs485( OBC,EPS, ACK,1,CURRENTMODE       ,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);   }//ACK........ dest, src, cmd/response , len, data,
+                        if ( check_command(GSC  ) ){  write_ssp_response_rs485( OBC,EPS, ACK,1,CURRENTSYSTEMCLOCK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);   }//ACK........ dest, src, cmd/response , len, data,
+                        if ( check_command(SSC  ) ){  write_ssp_response_rs485( OBC,EPS, ACK,0,                 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); CURRENTSYSTEMCLOCK=input.byte6; }//ACK
+                        if ( check_command(GOSTM) ){  SA2_I      (); 
+                                                      SA3_I      (); 
+	   		                              OBC_I      ();
+			                              CCU_I      ();   
+			                              ADCS_I     (); 
+	                     			      UHF_I      ();  
+			     			      PL_I       ();  
+			    			      RS3V3_I    ();        
+			   			      GPS_I      ();    
+			   		              ADCS5V_I   ();  
+						      PL5V_I     ();  
+			  			      CCU5V_I    ();  
+						      XB12V_I    ();   
+						      ADCS12V_I  ();  
+						      RS5V_I     ();
+	                                              OBC_FAULT  (); CCU_FAULT  (); RS12V_FLT  ();  RS5V_FLT   ();  ADCS_FAULT ();  UHF_FLT    ();  PL_FLT     ();   RS3V3_FLT  ();
+	                                              GPS_FLT    ();    ADCS5V_FLT ();   PL5V_FLT   (); CCU5V_FLT  ();    XB12V_FLT  ();   ADCS12V_FLT();  
+                                                      write_ssp_response_rs485( OBC,EPS, ACK,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+                        }//ACK //GOSTM
+                        if ( check_command(KEN ) ){ write_ssp_response_rs485( OBC,EPS, ACK,1,KEN ,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
+                        if ( check_command(KDIS) ){ write_ssp_response_rs485( OBC,EPS, ACK,1,KDIS,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); }//ACK //KDIS
+                        //YOU CAN ALSO ADD LOGIC
+}//if proceed
 return 0;
 }//execute
 	
