@@ -287,11 +287,14 @@ int execute_rs485(struct ninebyte input ){
     void send_byte_rs485( int out ){
          for( int index= 0; index<= 7; index++ ){  send_bit_rs485( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }//for
     }//send_byte_rs485
-    int  write_3byte_payload_response_rs485( int dest, int src, int resp){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
-	 struct twobyte crc16 = crc16_generator_for_3byte(dest,src,resp);
-	 send_byte_rs485( FF         );send_byte_rs485( dest       );send_byte_rs485( src );
-         send_byte_rs485( resp       );send_byte_rs485( 0          );/*empty*/
-         send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  );
+    int  write_ssp_response_rs485( int dest, int src, int resp, int len, int d1, int d2, int d3, int d4, int d5, int d6, int d7, int d8, int d9, int d10, int d11, int d12, int d13, int d14, int d15, int d16, int d17){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
+	 struct twobyte crc16 = crc16_generator(dest,src,resp,len,data);
+	 if(len==0 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len );                       send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  );}//len 0
+	 if(len==1 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len ); send_byte_rs485( d1 );send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  );}//len 1
+	 if(len==17){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len ); 
+		     send_byte_rs485( d1 );send_byte_rs485( d2  );send_byte_rs485( d3  );send_byte_rs485( d4   );send_byte_rs485( d5  );send_byte_rs485( d6  );send_byte_rs485( d7  );send_byte_rs485( d8  );
+		     send_byte_rs485( d9 );send_byte_rs485( d10 );send_byte_rs485( d11 );send_byte_rs485( d12  );send_byte_rs485( d13 );send_byte_rs485( d14 );send_byte_rs485( d15 );send_byte_rs485( d16 );
+		     send_byte_rs485( d17);send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  ); }//len 1        
     return 0;
     }//write_3byte_payload_response_rs485
     int  write_5byte_payload_response_rs485( int dest, int src, int resp, int len, int data){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
