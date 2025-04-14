@@ -198,24 +198,39 @@ return 0;
 
 struct twobyte crc16_generator(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m, int n, int o, int p, int q, int r, int s, int t, int u){ //dest, src, cmd/resp , len, data[17] excluding 2 flags and 2 crcs
        struct twobyte {int byte1; int byte2;} rslt;
-       if(d){length=}
-       if(){}
-       if(){}
-       int bits[(8*8+d];
+       int number_of_bits = 8*(4+d);
+       int bits[ number_of_bits ];//total bits for 4 basic and [d] length data
        for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
        for(int i=8 ; i<=15 ;  i++){bits[i]=((b>>(15-i))&1);}
        for(int i=16; i<=23 ;  i++){bits[i]=((c>>(23-i))&1);}
        for(int i=24; i<=31 ;  i++){bits[i]=((d>>(31-i))&1);}
-       for(int i=32; i<=39 ;  i++){bits[i]=((e>>(39-i))&1);}//24 original
-       for(int i=40; i<=55 ;  i++){bits[i]=          0    ;}//16 padding
-       int poly[17]={1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1};//msb(left) to lsb(right)
-       for(int b=0;b<=39;b++){
+       if ( (d>=1 ) ) { for(int i=24 ; i<=31 ;  i++){bits[i]=((e>>(31 -i))&1);} }
+       if ( (d>=2 ) ) { for(int i=32 ; i<=39 ;  i++){bits[i]=((f>>(39 -i))&1);} }
+       if ( (d>=3 ) ) { for(int i=40 ; i<=47 ;  i++){bits[i]=((g>>(47 -i))&1);} }
+       if ( (d>=4 ) ) { for(int i=48 ; i<=55 ;  i++){bits[i]=((h>>(55 -i))&1);} }
+       if ( (d>=5 ) ) { for(int i=56 ; i<=63 ;  i++){bits[i]=((i>>(63 -i))&1);} }
+       if ( (d>=6 ) ) { for(int i=64 ; i<=71 ;  i++){bits[i]=((j>>(71 -i))&1);} }
+       if ( (d>=7 ) ) { for(int i=72 ; i<=79 ;  i++){bits[i]=((k>>(79 -i))&1);} }
+       if ( (d>=8 ) ) { for(int i=80 ; i<=87 ;  i++){bits[i]=((l>>(87 -i))&1);} }
+       if ( (d>=9 ) ) { for(int i=88 ; i<=95 ;  i++){bits[i]=((m>>(95 -i))&1);} }
+       if ( (d>=10) ) { for(int i=96 ; i<=103;  i++){bits[i]=((n>>(103-i))&1);} }
+       if ( (d>=11) ) { for(int i=104; i<=111;  i++){bits[i]=((o>>(111-i))&1);} }
+       if ( (d>=12) ) { for(int i=112; i<=119;  i++){bits[i]=((p>>(119-i))&1);} }
+       if ( (d>=13) ) { for(int i=120; i<=127;  i++){bits[i]=((q>>(127-i))&1);} }
+       if ( (d>=14) ) { for(int i=128; i<=135;  i++){bits[i]=((r>>(135-i))&1);} }
+       if ( (d>=15) ) { for(int i=136; i<=143;  i++){bits[i]=((s>>(143-i))&1);} }
+       if ( (d>=16) ) { for(int i=144; i<=151;  i++){bits[i]=((t>>(151-i))&1);} }
+       if ( (d>=17) ) { for(int i=152; i<=159;  i++){bits[i]=((u>>(159-i))&1);} }
+       int lastitemindex = ((8*(4+d))-1);     int firstitemindex = lastitem - 15;
+       for(int i = firstitemindex; i<= lastitemindex ; i++){     bits[i] = 0;   }//16 padding
+       int poly[17] = {1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1};//msb(left) to lsb(right)
+       for(int b=0; b<=(number_of_bits-1); b++){
 	  int one_is_present=0; int n=0;
 	  while( (n<=39)&(one_is_present==0) ){ if( bits[n]==1 ){one_is_present=1;} n=n+1; }
 	  if (one_is_present){    for(int x=b;x<=(b+16);x++){bits[x+b]=(bits[x+b]^poly[x-b]);}    }
        }//for
-       rslt.byte1 = (crc[0]*128)+(crc[1]*64)+(crc[2 ]*32)+(crc[3 ]*16)+(crc[4 ]*8)+(crc[5 ]*4)+(crc[6 ]*2)+(crc[7 ] );
-       rslt.byte2 = (crc[8]*128)+(crc[9]*64)+(crc[10]*32)+(crc[11]*16)+(crc[12]*8)+(crc[13]*4)+(crc[14]*2)+(crc[15] );
+       rslt.byte1 = (bits[ lastitemindex-15 ]*128)+(bits[ lastitemindex-14 ]*64)+(bits[ lastitemindex-13 ]*32)+(bits[ lastitemindex-12 ]*16)+(bits[ lastitemindex-11 ]*8)+(bits[ lastitemindex-10 ]*4)+(bits[ lastitemindex-9 ]*2)+(bits[ lastitemindex-8 ] );
+       rslt.byte2 = (bits[ lastitemindex-7  ]*128)+(bits[ lastitemindex-6  ]*64)+(bits[ lastitemindex-5  ]*32)+(bits[ lastitemindex-4  ]*16)+(bits[ lastitemindex-3  ]*8)+(bits[ lastitemindex-2  ]*4)+(bits[ lastitemindex-1 ]*2)+(bits[ lastitemindex   ] );
 return rslt;
 }//crc_generator_for_5byte
 	
@@ -261,8 +276,8 @@ int execute_rs485(struct ninebyte input ){ //flag, dest, src, cmd/response , len
     int proper_ssp_frame  = 1;//set to 1 is easier
     int proceed_execution = 0; if( from_obc_or_from_ccu_to_eps & proper_ssp_frame ){proceed_execution=1;}//who can talk to the EPS MCU
     if(proceed_execution){
-                         int command  = input.byte4; int parameter= input.byte6;
-                         int crc_validator_rs485 (){return 0;}
+                         int  command  = input.byte4; int parameter= input.byte6;
+                         int  crc_validator_rs485 (){return 0;}
                          void pause_rs485(int x){}//mada mada
                          void send_bit_rs485  (int bit){
                               if(bit){ RS4851_TX(1); RS4852_TX(1); } else { RS4851_TX(0); RS4852_TX(0); }
