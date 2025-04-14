@@ -269,15 +269,15 @@ return COMMAND_PARAMETER_RS485;
 //###################################
 
 //execute
-int execute_rs485(struct ninebyte input ){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
-    int source      =input.byte3;
-    int destination =input.byte2;
-    int from_obc_or_from_ccu_to_eps = (int)(  ((source==OBC_ADDRESS)|(source==CCU_ADDRESS)) & (destination==EPS_ADDRESS)  );
-    int proper_ssp_frame  = 1;//set to 1 is easier
-    int proceed_execution = 0; if( from_obc_or_from_ccu_to_eps & proper_ssp_frame ){proceed_execution=1;}//who can talk to the EPS MCU
-    if(proceed_execution){
+int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/response[4] , len[5], data[6], crc0[7], crc1[8], flag[9]
+    int    source      = input.byte3;
+    int    destination = input.byte2;
+    int    from_obc_or_from_ccu_to_eps = (int)(  ((source==OBC_ADDRESS)|(source==CCU_ADDRESS)) & (destination==EPS_ADDRESS)  );//who can talk to the EPS MCU
+    int    proper_ssp_frame  = 1;//set to 1 is easier
+    struct twobyte received_crc = crc16_generator (input.byte2,input.byte3,input.byte4,input.byte5,input.byte6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); //let's regenerate the crc if the command frame is: dest,src,cmd,len,data1
+    int    valid_crc = (received_crc.byte1==input.byte7)&(received_crc.byte2==input.byte8);
+    if (valid_crc & from_obc_or_from_ccu_to_eps & proper_ssp_frame) {
                          int  command  = input.byte4; int parameter= input.byte6;
-                         int  crc_validator_rs485 (){return 0;}
                          void pause_rs485(int x){}//mada mada
                          void send_bit_rs485  (int bit){
                               if(bit){ RS4851_TX(1); RS4852_TX(1); } else { RS4851_TX(0); RS4852_TX(0); }
@@ -291,7 +291,7 @@ int execute_rs485(struct ninebyte input ){ //flag, dest, src, cmd/response , len
                               for( int index= 0; index<= 7; index++ ){  send_bit_rs485( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }//for
                          }//send_byte_rs485
                          int  write_ssp_response_rs485( int dest, int src, int resp, int len, int d1, int d2, int d3, int d4, int d5, int d6, int d7, int d8, int d9, int d10, int d11, int d12, int d13, int d14, int d15, int d16, int d17){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
-			      struct twobyte crc16 = crc16_generator(dest,src,resp,len,data);
+			      struct twobyte crc16 = crc16_generator(dest,src,resp,len,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17);
 	                      if(len==0 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len );                                                                                   send_byte_rs485( FF  );}//len 0
 	                      if(len==1 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len );send_byte_rs485( d1  );send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF  );}//len 1
 	                      if(len==17){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len ); 
