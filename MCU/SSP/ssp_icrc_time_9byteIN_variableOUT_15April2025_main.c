@@ -18,6 +18,10 @@
 //                      start  ,  address=dest , cmd , param ,  end
 
 
+
+//mode actions, analogue reads(*_i), pause timing, 8bit ints
+
+
 int main(){//main
 struct ninebyte   { int byte1; int byte2; int byte3; int byte4; int byte5; int byte6; int byte7; int byte8; int byte9; };
 struct fourbyte   { int byte1; int byte2; int byte3; int byte4; };
@@ -196,7 +200,7 @@ return 0;
 
 struct twobyte crc16_generator(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m, int n, int o, int p, int q, int r, int s, int t, int u, int v){ //dest, src, cmd/resp , len, data[18] excluding 2 flags and 2 crcs
        struct twobyte {int byte1; int byte2;} rslt;
-       int number_of_bits = 8*(4+d);
+       int number_of_bits = (4*8) + (d*8) + 16; // (first4*8) + (len*8) +padding16
        int bits[ number_of_bits ];//total bits for 4 basic and [d] length data
        for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
        for(int i=8 ; i<=15 ;  i++){bits[i]=((b>>(15-i))&1);}
@@ -220,7 +224,7 @@ struct twobyte crc16_generator(int a, int b, int c, int d, int e, int f, int g, 
        if ( (d>=16) ) { for(int i=144; i<=151;  i++){bits[i]=((t>>(151-i))&1);} }
        if ( (d>=17) ) { for(int i=152; i<=159;  i++){bits[i]=((u>>(159-i))&1);} }
        if ( (d>=18) ) { for(int i=160; i<=167;  i++){bits[i]=((v>>(167-i))&1);} }
-       int lastitemindex = ((8*(4+d))-1);     int firstitemindex = lastitem - 15;
+       int lastitemindex = ( number_of_bits - 1); int firstitemindex = lastitemindex - 15;
        for(int i = firstitemindex; i<= lastitemindex ; i++){     bits[i] = 0;   }//16 padding
        int poly[17] = {1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1};//msb(left) to lsb(right)
        int indices_of_ones_in_bit_sequence [number_of_bits]; for(int i=0;i<number_of_bits;i++){   if(bits[i]==1){ indices_of_ones_in_bit_sequence[i] = i; }       }
@@ -230,8 +234,8 @@ struct twobyte crc16_generator(int a, int b, int c, int d, int e, int f, int g, 
 		bits [i+1] = bits[ indices_of_ones_in_bit_sequence[i] ] ^ poly[1];
 		bits [i+2] = bits[ indices_of_ones_in_bit_sequence[i] ] ^ poly[2];
 		for(int k=0;k<=16;k++) { bits [i+k] = bits[ indices_of_ones_in_bit_sequence[i] + k ] ^ poly[k];}
-	   }
-       }
+	   }//if
+       }//for
        rslt.byte1 = (bits[ lastitemindex-15 ]*128)+(bits[ lastitemindex-14 ]*64)+(bits[ lastitemindex-13 ]*32)+(bits[ lastitemindex-12 ]*16)+(bits[ lastitemindex-11 ]*8)+(bits[ lastitemindex-10 ]*4)+(bits[ lastitemindex-9 ]*2)+(bits[ lastitemindex-8 ] );
        rslt.byte2 = (bits[ lastitemindex-7  ]*128)+(bits[ lastitemindex-6  ]*64)+(bits[ lastitemindex-5  ]*32)+(bits[ lastitemindex-4  ]*16)+(bits[ lastitemindex-3  ]*8)+(bits[ lastitemindex-2  ]*4)+(bits[ lastitemindex-1 ]*2)+(bits[ lastitemindex   ] );
 return rslt;
