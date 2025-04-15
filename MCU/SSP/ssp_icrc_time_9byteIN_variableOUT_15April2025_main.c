@@ -235,7 +235,7 @@ return rslt;
 	
 //################# RS485 METHODS/DECLARATIONS ###################
 
-struct ninebyte COMMAND_PARAMETER_RS485  = {0,0,0,0,0,0,0,0,0};// a fusion of 4851 and 4852 because we can't identify pauses
+struct ninebyte COMMAND_PARAMETER_RS485  = {0,0,0,0,0,0,0,0,0};
   
 int receive_rs485 (){
     int result=0; int r4851=0; int r4852=0;
@@ -372,9 +372,19 @@ return 0;
 //################# END RS485 METHODS ###################
 
 //##################SPI1#################################
-struct ninebyte COMMAND_PARAMETER_SPI1  = {0,0,0,0,0,0,0,0,0};// a fusion of 4851 and 4852 because we can't identify pauses
+struct ninebyte COMMAND_PARAMETER_SPI1  = {0,0,0,0,0,0,0,0,0};
   
 int receive_spi1 (){//boom
+    int result=0; int spi1_mosi=0; int spi1_sck=0; int spi1_ss=0;
+    if ((SPI1_MOSI() + SPI1_MOSI() + SPI1_MOSI())>=2){spi1_mosi = 1;}
+    if ((SPI1_SS  () + SPI1_SS  () + SPI1_SS  ())>=2){spi1_ss   = 1;}
+    if ((SPI1_SCK () + SPI1_SCK () + SPI1_SCK ())>=2){spi1_sck  = 1;}
+    if ( spi1_ss ){
+	       if ( !spi1_ss & !spi1_sck ){result=3;}//3
+               if ( !spi1_ss &  spi1_sck ){result=0;}//0
+               if (  spi1_ss & !spi1_sck ){result=2;}//2
+               if (  spi1_ss &  spi1_sck ){result=1;}//1
+    }
 return result;
 }//
 
@@ -406,9 +416,10 @@ int execute_spi1(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
     int    valid_crc = (received_crc.byte1==input.byte7)&(received_crc.byte2==input.byte8);
     if (valid_crc & from_obc_or_from_ccu_to_eps & proper_ssp_frame) {
                          int  command  = input.byte4; int parameter= input.byte6;
-                         void pause_spi1(int x){}//mada mada
-                         void send_bit_spi1  (int bit){//boom
-                              //
+                         void pause_spi1(int x){for(int i=0;i<x;i++){}}//mada mada
+                         void send_bit_spi1  (int bit){// requires spi1 & spi3 collab
+			      if(bit){ SPI1_MISO(1); SPI3_MISO(1); pause_spi1(1000); SPI1_MISO(0); SPI3_MISO(1); pause_spi1(1000); }
+	                      else   { SPI1_MISO(1); SPI3_MISO(0); pause_spi1(1000); SPI1_MISO(0); SPI3_MISO(1); pause_spi1(1000); }
                          }//send_bit_spi1
                          void send_byte_spi1( int out ){
                               for( int index= 0; index<= 7; index++ ){  send_bit_spi1( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }//for
@@ -498,9 +509,19 @@ return 0;
 
 //####################SPI3################################
 
-struct ninebyte COMMAND_PARAMETER_SPI3  = {0,0,0,0,0,0,0,0,0};// a fusion of 4851 and 4852 because we can't identify pauses
+struct ninebyte COMMAND_PARAMETER_SPI3  = {0,0,0,0,0,0,0,0,0};
   
 int receive_spi3 (){//boom
+    int result=0; int spi3_mosi=0; int spi3_sck=0; int spi3_ss=0;
+    if ((SPI3_MOSI() + SPI3_MOSI() + SPI3_MOSI())>=2){spi3_mosi = 1;}
+    if ((SPI3_SS  () + SPI3_SS  () + SPI3_SS  ())>=2){spi3_ss   = 1;}
+    if ((SPI3_SCK () + SPI3_SCK () + SPI3_SCK ())>=2){spi3_sck  = 1;}
+    if ( spi3_ss ){
+	       if ( !spi3_ss & !spi3_sck ){result=3;}//3
+               if ( !spi3_ss &  spi3_sck ){result=0;}//0
+               if (  spi3_ss & !spi3_sck ){result=2;}//2
+               if (  spi3_ss &  spi3_sck ){result=1;}//1
+    }
 return result;
 }//
 
@@ -532,9 +553,10 @@ int execute_spi3(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
     int    valid_crc = (received_crc.byte1==input.byte7)&(received_crc.byte2==input.byte8);
     if (valid_crc & from_obc_or_from_ccu_to_eps & proper_ssp_frame) {
                          int  command  = input.byte4; int parameter= input.byte6;
-                         void pause_spi3(int x){}//mada mada
-                         void send_bit_spi3  (int bit){//boom
-                              //
+                         void pause_spi3(int x){for(int i=0;i<x;i++){}}//mada mada
+                         void send_bit_spi3  (int bit){//requires spi1 and spi3 collab
+			      if(bit){ SPI3_MISO(1); SPI3_MISO(1); pause_spi3(1000); SPI3_MISO(0); SPI3_MISO(1); pause_spi3(1000); }
+	                      else   { SPI3_MISO(1); SPI3_MISO(0); pause_spi3(1000); SPI3_MISO(0); SPI3_MISO(1); pause_spi3(1000); }
                          }//send_bit_spi3
                          void send_byte_spi3( int out ){
                               for( int index= 0; index<= 7; index++ ){  send_bit_spi3( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }//for
