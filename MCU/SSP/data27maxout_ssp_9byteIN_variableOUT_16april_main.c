@@ -178,13 +178,13 @@ int  RS5V_FLT   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_1        
 int  RS5V_I     ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_0         );} //                                           ..............................PC0
 void RS5V_EN    (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_2 , value );} //if write HIGH then enable, if write LOW then disable       ..............PE2
 // other variables
-int RESPONSE_WAIT            = 10000;//response_wait()
-int CURRENTMODE              = 0;
-int CURRENTSYSTEMCLOCK       = 0;
-int FF                       = 255;
-int OBC_ADDRESS              = 1  ;
-int CCU_ADDRESS              = 3  ;
-int EPS_ADDRESS              = 2  ;
+const int RESPONSE_WAIT            = 10000;//response_wait()
+const int CURRENTMODE              = 0;
+const int CURRENTSYSTEMCLOCK       = 0;
+const int FF                       = 255;
+const int OBC_ADDRESS              = 1  ; const int OBC = OBC_ADDRESS;
+const int CCU_ADDRESS              = 3  ; const int CCU = CCU_ADDRESS;
+const int EPS_ADDRESS              = 2  ; const int EPS = EPS_ADDRESS;
 
 	
 //#######################
