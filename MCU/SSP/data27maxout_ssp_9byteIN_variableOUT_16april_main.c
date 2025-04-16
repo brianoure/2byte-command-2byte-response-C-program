@@ -9,7 +9,7 @@
 
 //SSP input bit frame :   1    ,   1               , 8  , 8     ,  1
 //                      start  ,  address=number2 , cmd , param ,  end
-                        flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
+//                       flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
 
 //SSP output bit frame :   1    ,   1          , 8        , 8*16     ,  1
 //                      start  ,  address=dest , ack/nack ,          ,  end
