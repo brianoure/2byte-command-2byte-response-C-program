@@ -243,7 +243,7 @@ struct twobyte crc16_generator(int a, int b, int c, int d, int e, int f, int g, 
        int indices_of_ones_in_bit_sequence [number_of_bits]; for(int i=0;i<number_of_bits;i++){   if(bits[i]==1){ indices_of_ones_in_bit_sequence[i] = i; }       }
        for(int i=0;i<number_of_bits;i++){
 	     if( indices_of_ones_in_bit_sequence[i] ){
-	        //bits [i+0] = bits[ indices_of_ones_in_bit_sequence[i] ] ^ poly[0];
+	              //bits [i+0] = bits[ indices_of_ones_in_bit_sequence[i] ] ^ poly[0];
 		      //bits [i+1] = bits[ indices_of_ones_in_bit_sequence[i] ] ^ poly[1];
 		      //bits [i+2] = bits[ indices_of_ones_in_bit_sequence[i] ] ^ poly[2];
 		      for(int k=0;k<=16;k++) { bits [i+k] = bits[ indices_of_ones_in_bit_sequence[i] + k ] ^ poly[k];}
@@ -317,27 +317,27 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                                                         int d17 , int d18, int d19 , int d20,
                                                         int d21 , int d22, int d23 , int d24,
                                                         int d25 , int d26, int d27 ) { //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
-			                                                  struct twobyte crc16 = crc16_generator(dest,src,resp,len,
+			                                struct twobyte crc16 = crc16_generator(dest,src,resp,len,
                                                                                                d1 ,d2 ,d3 ,d4 ,d5 ,d6 ,d7 ,d8 ,d9,
                                                                                                d10,d11,d12,d13,d14,d15,d16,d17,d18,
                                                                                                d19,d20,d21,d22,d23,d24,d25,d26,d27);
-	                                                      if(len==0 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len );send_byte_rs485( FF  );}// NO CRC generated
-	                                                      if(len==1 ){send_byte_rs485( FF   );
+	                                                if(len==0 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len );send_byte_rs485( FF  );}// NO CRC generated
+	                                                if(len==1 ){send_byte_rs485( FF   );
                                                                     send_byte_rs485( dest );send_byte_rs485( src        );send_byte_rs485( resp       );send_byte_rs485( len );
                                                                     send_byte_rs485( d1   );send_byte_rs485( crc16.byte1);send_byte_rs485( crc16.byte2);send_byte_rs485( FF   );
                                                         }//len 1
-	                                                      if(len==27){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len ); 
-		                                                                send_byte_rs485( d1 );send_byte_rs485( d2   );send_byte_rs485( d3  );send_byte_rs485( d4   );send_byte_rs485( d5  );send_byte_rs485( d6  );
+	                                                if(len==27){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len ); 
+		                                                    send_byte_rs485( d1 );send_byte_rs485( d2   );send_byte_rs485( d3  );send_byte_rs485( d4   );send_byte_rs485( d5  );send_byte_rs485( d6  );
                                                                     send_byte_rs485( d7 );send_byte_rs485( d8   );send_byte_rs485( d9  );send_byte_rs485( d10  );send_byte_rs485( d11 );send_byte_rs485( d12 );
                                                                     send_byte_rs485( d13);send_byte_rs485( d14  );send_byte_rs485( d15 );send_byte_rs485( d16 ); send_byte_rs485( d17 );send_byte_rs485( d18 );
                                                                     send_byte_rs485( d19);send_byte_rs485( d20  );send_byte_rs485( d21 );send_byte_rs485( d22 ); send_byte_rs485( d23 );send_byte_rs485( d24 );
                                                                     send_byte_rs485( d25);send_byte_rs485( d26  );send_byte_rs485( d27 );
                                                                     send_byte_rs485( crc16.byte1);                send_byte_rs485( crc16.byte2);                 send_byte_rs485( FF  );
-                                                        }//len 18        
+                                                        }//len 27        
                          return 0;
                          }//write_ssp_response_rs485
                          int check_command   (int cmd  ){  if ( command  ==cmd   ){ return 1; }else{ return 0;}  }//check_command
-	                       int check_parameter (int param){  if ( parameter==param ){ return 1; }else{ return 0;}  }//check_input
+	                 int check_parameter (int param){  if ( parameter==param ){ return 1; }else{ return 0;}  }//check_input
                          if (check_command(PING) ){ write_ssp_response_rs485( OBC,EPS,ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
                          if (check_command(SON ) ){ int else_check=1;
                                                     if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (1); }//ACK.... do action
@@ -474,26 +474,26 @@ int execute_spi1(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
                                                        int d10, int d11, int d12, int d13, int d14, int d15, int d16, int d17, int d18
                                                        int d19, int d20, int d21, int d22, int d23, int d24, int d25, int d26, int d27
                                                      ){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
-			                                               struct twobyte crc16 = crc16_generator(dest,src,resp,len,
+			                             struct twobyte crc16 = crc16_generator(dest,src,resp,len,
                                                                                             d1 ,d2 ,d3 ,d4 ,d5 ,d6 ,d7 ,d8 ,d9 ,d10,
                                                                                             d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,
                                                                                             d21,d22,d23,d24,d25,d26,d27);
-	                                                   if(len==0 ){send_byte_spi1( FF );send_byte_spi1( dest );send_byte_spi1( src );send_byte_spi1( resp );send_byte_spi1( len );send_byte_spi1( FF  );}//len 0 NO CRC
-	                                                   if(len==1 ){send_byte_spi1( FF );send_byte_spi1( dest );send_byte_spi1( src );send_byte_spi1( resp );send_byte_spi1( len );send_byte_spi1( d1  );
+	                                             if(len==0 ){send_byte_spi1( FF );send_byte_spi1( dest );send_byte_spi1( src );send_byte_spi1( resp );send_byte_spi1( len );send_byte_spi1( FF  );}//len 0 NO CRC
+	                                             if(len==1 ){send_byte_spi1( FF );send_byte_spi1( dest );send_byte_spi1( src );send_byte_spi1( resp );send_byte_spi1( len );send_byte_spi1( d1  );
                                                                  send_byte_spi1( crc16.byte1);               send_byte_spi1( crc16.byte2);                send_byte_spi1( FF  );
                                                      }//len 1
-	                                                   if(len==27){send_byte_spi1( FF );send_byte_spi1( dest );send_byte_spi1( src );send_byte_spi1( resp );send_byte_spi1( len ); 
-		                                                             send_byte_spi1( d1 );send_byte_spi1( d2   );send_byte_spi1( d3  );send_byte_spi1( d4   );send_byte_spi1( d5  );send_byte_spi1( d6  );
+	                                             if(len==27){send_byte_spi1( FF );send_byte_spi1( dest );send_byte_spi1( src );send_byte_spi1( resp );send_byte_spi1( len ); 
+		                                                 send_byte_spi1( d1 );send_byte_spi1( d2   );send_byte_spi1( d3  );send_byte_spi1( d4   );send_byte_spi1( d5  );send_byte_spi1( d6  );
                                                                  send_byte_spi1( d7  );send_byte_spi1( d8  );send_byte_spi1( d9 );send_byte_spi1( d10   );send_byte_spi1( d11 );send_byte_spi1( d12  );
                                                                  send_byte_spi1( d13 );send_byte_spi1( d14 );send_byte_spi1( d15 );send_byte_spi1( d16  );send_byte_spi1( d17 );send_byte_spi1( d18 );
                                                                  send_byte_spi1( d19 );send_byte_spi1( d20 );send_byte_spi1( d21 );send_byte_spi1( d22  );send_byte_spi1( d23 );send_byte_spi1( d24 );
                                                                  send_byte_spi1( d25 );send_byte_spi1( d26 );send_byte_spi1( d27 );
-		                                                             send_byte_spi1( crc16.byte1);               send_byte_spi1( crc16.byte2);                send_byte_spi1( FF  ); 
+		                                                 send_byte_spi1( crc16.byte1);               send_byte_spi1( crc16.byte2);                send_byte_spi1( FF  ); 
                                                      }//len 27        
                          return 0;
                          }//write_ssp_response_spi1
                          int check_command   (int cmd  ){  if ( command  ==cmd   ){ return 1; }else{ return 0;}  }//check_command
-	                       int check_parameter (int param){  if ( parameter==param ){ return 1; }else{ return 0;}  }//check_input
+	                 int check_parameter (int param){  if ( parameter==param ){ return 1; }else{ return 0;}  }//check_input
                          if (check_command(PING) ){ write_ssp_response_spi1( OBC,EPS,ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
                          if (check_command(SON ) ){ int else_check=1; 
                                                     if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (1); }//ACK.... do action
@@ -630,17 +630,17 @@ int execute_spi3(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
 	                                               int d1  , int d2 , int d3  , int d4 , int d5  , int d6 , int d7  , int d8 , int d9 , 
 	                                               int d10 , int d11 ,int d12,  int d13, int d14, int d15 , int d16 , int d17, int d18,
 	                                               int d19 , int d20 ,int d21,  int d22, int d23, int d24 , int d25 , int d26, int d27 ){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
-			      struct twobyte crc16 = crc16_generator( dest,src,resp,len,
-				                                      d1 ,d2 ,d3 ,d4 ,d5 ,d6 ,d7 ,d8 ,d9 ,
-				                                      d10,d11,d12,d13,d14,d15,d16,d17,d18,
-				                                      d19,d20,d21,d22,d23,d24,d25,d26,d27);
-	                      if(len==0 ){send_byte_spi3( FF );send_byte_spi3( dest );send_byte_spi3( src );send_byte_spi3( resp );send_byte_spi3( len );send_byte_spi3( FF  );}//len 0 NO CRC sent
-	                      if(len==1 ){send_byte_spi3( FF );send_byte_spi3( dest );send_byte_spi3( src );send_byte_spi3( resp );send_byte_spi3( len );send_byte_spi3( d1  );send_byte_spi3( crc16.byte1);send_byte_spi3( crc16.byte2);send_byte_spi3( FF  );}//len 1
-	                      if(len==27){send_byte_spi3( FF );send_byte_spi3( dest );send_byte_spi3( src );send_byte_spi3( resp );send_byte_spi3( len ); 
-		                          send_byte_spi3( d1  );send_byte_spi3( d2  );send_byte_spi3( d3  );send_byte_spi3( d4   );send_byte_spi3( d5  );send_byte_spi3( d6  );send_byte_spi3( d7  );send_byte_spi3( d8  );send_byte_spi3( d9 );
-					  send_byte_spi3( d10 );send_byte_spi3( d11 );send_byte_spi3( d12  );send_byte_spi3( d13 );send_byte_spi3( d14 );send_byte_spi3( d15 );send_byte_spi3( d16 );send_byte_spi3( d17);send_byte_spi3( d18  );
-					  send_byte_spi3( d19 );send_byte_spi3( d20 );send_byte_spi3( d21  );send_byte_spi3( d22 );send_byte_spi3( d23 );send_byte_spi3( d24 );send_byte_spi3( d25 );send_byte_spi3( d26);send_byte_spi3( d27  );
-					  send_byte_spi3( crc16.byte1);send_byte_spi3( crc16.byte2);send_byte_spi3( FF  );
+			                               struct twobyte crc16 = crc16_generator( dest,src,resp,len,
+				                                                               d1, d2, d3, d4, d5, d6, d7, d8, d9, d10,
+				                                                              d11,d12,d13,d14,d15,d16,d17,d18,d19, d20,
+				                                                              d21,d22,d23,d24,d25,d26,d27);
+	                                             if(len==0 ){send_byte_spi3( FF );send_byte_spi3( dest );send_byte_spi3( src );send_byte_spi3( resp );send_byte_spi3( len );send_byte_spi3( FF  );}//len 0 NO CRC sent
+	                                             if(len==1 ){send_byte_spi3( FF );send_byte_spi3( dest );send_byte_spi3( src );send_byte_spi3( resp );send_byte_spi3( len );send_byte_spi3( d1  );send_byte_spi3( crc16.byte1);send_byte_spi3( crc16.byte2);send_byte_spi3( FF  );}//len 1
+	                                             if(len==27){send_byte_spi3( FF );send_byte_spi3( dest );send_byte_spi3( src );send_byte_spi3( resp );send_byte_spi3( len ); 
+		                                                 send_byte_spi3( d1  );send_byte_spi3( d2  );send_byte_spi3( d3  );send_byte_spi3( d4   );send_byte_spi3( d5  );send_byte_spi3( d6  );send_byte_spi3( d7  );send_byte_spi3( d8  );send_byte_spi3( d9 );
+					                         send_byte_spi3( d10 );send_byte_spi3( d11 );send_byte_spi3( d12  );send_byte_spi3( d13 );send_byte_spi3( d14 );send_byte_spi3( d15 );send_byte_spi3( d16 );send_byte_spi3( d17);send_byte_spi3( d18  );
+					                         send_byte_spi3( d19 );send_byte_spi3( d20 );send_byte_spi3( d21  );send_byte_spi3( d22 );send_byte_spi3( d23 );send_byte_spi3( d24 );send_byte_spi3( d25 );send_byte_spi3( d26);send_byte_spi3( d27  );
+					                         send_byte_spi3( crc16.byte1);               send_byte_spi3( crc16.byte2);                send_byte_spi3( FF  );
 			      }//len 27        
                          return 0;
                          }//write_ssp_response_spi3
