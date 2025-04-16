@@ -306,7 +306,7 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                               pause_rs485(1000);
                               RS4851_TX(0);RS4852_TX(1);
                               pause_rs485(1000);
-	                            RS4851_DE(0);RS4852_DE(0);//may or may not be appropriate...revisit
+	                      RS4851_DE(0);RS4852_DE(0);//may or may not be appropriate...revisit
                          }//send_bit_rs485
                          void send_byte_rs485( int out ){      for( int index= 0; index<= 7; index++ ){  send_bit_rs485( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }    }//send_byte_rs485
                          int  write_ssp_response_rs485( int dest, int src, int resp, int len,
@@ -375,9 +375,9 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                                                     if(check_parameter( EMERGENCY     ) ){else_check=0;CURRENTMODE=EMERGENCY    ;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);     }//ACK.... do action
                                                     if(else_check==1                    ){                                       write_ssp_response_rs485( OBC,EPS,NACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);     }//NACK
                         }//SM
-                        if ( check_command(GM   ) ){  write_ssp_response_rs485( OBC,EPS, ACK,1,CURRENTMODE       ,0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);   }//ACK........ dest, src, cmd/response , len, data,
-                        if ( check_command(GSC  ) ){  write_ssp_response_rs485( OBC,EPS, ACK,1,CURRENTSYSTEMCLOCK,0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);   }//ACK........ dest, src, cmd/response , len, data,
-                        if ( check_command(SSC  ) ){  write_ssp_response_rs485( OBC,EPS, ACK,0,                 0,0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); CURRENTSYSTEMCLOCK=input.byte6; }//ACK
+                        if ( check_command(GM   ) ){  write_ssp_response_rs485( OBC,EPS, ACK,1,CURRENTMODE       ,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);   }//ACK........ dest, src, cmd/response , len, data,
+                        if ( check_command(GSC  ) ){  write_ssp_response_rs485( OBC,EPS, ACK,1,CURRENTSYSTEMCLOCK,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);   }//ACK........ dest, src, cmd/response , len, data,
+                        if ( check_command(SSC  ) ){  write_ssp_response_rs485( OBC,EPS, ACK,0,                 0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); CURRENTSYSTEMCLOCK=input.byte6; }//ACK
                         if ( check_command(GOSTM) ){  //current range / 255 = current value for a step of 1
 				                      int d1  =0;//SA1_I      ();
 				                      int d2  =0;//SA2_I      (); 
@@ -408,8 +408,8 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
 				                      int d27 =0;//bat
                                                       write_ssp_response_rs485( OBC,EPS, ACK,27,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25,d26,d27);
                         }//ACK //GOSTM
-                        if ( check_command(KEN ) ){ write_ssp_response_rs485( OBC,EPS, ACK,1,KEN ,0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
-                        if ( check_command(KDIS) ){ write_ssp_response_rs485( OBC,EPS, ACK,1,KDIS,0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK //KDIS
+                        if ( check_command(KEN ) ){ write_ssp_response_rs485( OBC,EPS, ACK,1,KEN ,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
+                        if ( check_command(KDIS) ){ write_ssp_response_rs485( OBC,EPS, ACK,1,KDIS,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK //KDIS
                         //YOU CAN ALSO ADD LOGIC
 }//if proceed
 return 0;
@@ -465,8 +465,8 @@ int execute_spi1(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
                          int  command  = input.byte4; int parameter= input.byte6;
                          void pause_spi1(int x){for(int i=0;i<x;i++){}}//mada mada
                          void send_bit_spi1  (int bit){// requires spi1 & spi3 collab
-			                        if(bit){ SPI1_MISO(1); SPI3_MISO(1); pause_spi1(1000); SPI1_MISO(0); SPI3_MISO(1); pause_spi1(1000); }
-	                            else   { SPI1_MISO(1); SPI3_MISO(0); pause_spi1(1000); SPI1_MISO(0); SPI3_MISO(1); pause_spi1(1000); }
+			                     if(bit){ SPI1_MISO(1); SPI3_MISO(1); pause_spi1(1000); SPI1_MISO(0); SPI3_MISO(1); pause_spi1(1000); }
+	                                     else   { SPI1_MISO(1); SPI3_MISO(0); pause_spi1(1000); SPI1_MISO(0); SPI3_MISO(1); pause_spi1(1000); }
                          }//send_bit_spi1
                          void send_byte_spi1( int out ){   for( int index= 0; index<= 7; index++ ){  send_bit_spi1( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }     }//send_byte_spi1
                          int  write_ssp_response_spi1( int dest, int src, int resp, int len, 
@@ -494,7 +494,7 @@ int execute_spi1(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
                          }//write_ssp_response_spi1
                          int check_command   (int cmd  ){  if ( command  ==cmd   ){ return 1; }else{ return 0;}  }//check_command
 	                 int check_parameter (int param){  if ( parameter==param ){ return 1; }else{ return 0;}  }//check_input
-                         if (check_command(PING) ){ write_ssp_response_spi1( OBC,EPS,ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
+                         if (check_command(PING) ){ write_ssp_response_spi1( OBC,EPS,ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
                          if (check_command(SON ) ){ int else_check=1; 
                                                     if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (1); }//ACK.... do action
                                                     if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (1); }//ACK.... do action
@@ -564,8 +564,8 @@ int execute_spi1(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
 				                      int d27 =0;//bat
                                                       write_ssp_response_spi1( OBC,EPS, ACK,27,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25,d26,d27);
                         }//ACK //GOSTM
-                        if ( check_command(KEN ) ){ write_ssp_response_spi1( OBC,EPS, ACK,1,KEN ,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
-                        if ( check_command(KDIS) ){ write_ssp_response_spi1( OBC,EPS, ACK,1,KDIS,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); }//ACK //KDIS
+                        if ( check_command(KEN ) ){ write_ssp_response_spi1( OBC,EPS, ACK,1,KEN ,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
+                        if ( check_command(KDIS) ){ write_ssp_response_spi1( OBC,EPS, ACK,1,KDIS,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK //KDIS
                         //YOU CAN ALSO ADD LOGIC
 }//if proceed
 return 0;
@@ -616,7 +616,8 @@ int execute_spi3(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
     int    destination = input.byte2;
     int    from_obc_or_from_ccu_to_eps = (int)(  ((source==OBC_ADDRESS)|(source==CCU_ADDRESS)) & (destination==EPS_ADDRESS)  );//who can talk to the EPS MCU
     int    proper_ssp_frame  = 1;//set to 1 is easier
-    struct twobyte received_crc = crc16_generator (input.byte2,input.byte3,input.byte4,input.byte5,input.byte6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); //let's regenerate the crc if the command frame is: dest,src,cmd,len,data1
+    struct twobyte received_crc = crc16_generator (input.byte2,input.byte3,input.byte4,input.byte5,input.byte6,
+	                                           0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0, 0,0,0,0,0, 0); //let's regenerate the crc if the command frame is: dest,src,cmd,len,data1
     int    valid_crc = (received_crc.byte1==input.byte7)&(received_crc.byte2==input.byte8);
     if (valid_crc & from_obc_or_from_ccu_to_eps & proper_ssp_frame) {
                          int  command  = input.byte4; int parameter= input.byte6;
@@ -646,7 +647,7 @@ int execute_spi3(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
                          }//write_ssp_response_spi3
                          int check_command   (int cmd  ){  if ( command  ==cmd   ){ return 1; }else{ return 0;}  }//check_command
 	                 int check_parameter (int param){  if ( parameter==param ){ return 1; }else{ return 0;}  }//check_input
-                         if (check_command(PING) ){ write_ssp_response_spi3( OBC,EPS,ACK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
+                         if (check_command(PING) ){ write_ssp_response_spi3( OBC,EPS,ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
                          if (check_command(SON ) ){ int else_check=1;
                                                     if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (1); }//ACK.... do action
                                                     if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (1); }//ACK.... do action
