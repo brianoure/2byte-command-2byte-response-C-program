@@ -202,55 +202,55 @@ struct twobyte crc16_generator(int a, int b, int c, int d, int e, int f, int g, 
                                int k, int l, int m, int n, int o, int p, int q, int r, int s, int t,
                                int u, int v, int w, int x, int y, int z, int A, int B, int C, int D, 
                                int E)
-       { //dest, src, cmd/resp , len, data[18] excluding 2 flags and 2 crcs
-       struct twobyte {int byte1; int byte2;} rslt;
-       int number_of_bits = (4*8) + (d*8) + 16; // (first4*8) + (len*8) +padding16
-       int bits[ number_of_bits ];//total bits for 4 basic and [d] length data
-       for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
-       for(int i=8 ; i<=15 ;  i++){bits[i]=((b>>(15-i))&1);}
-       for(int i=16; i<=23 ;  i++){bits[i]=((c>>(23-i))&1);}
-       for(int i=24; i<=31 ;  i++){bits[i]=((d>>(31-i))&1);}
-       if ( (d>=1 ) ) { for(int i=24 ; i<=31 ;  i++){bits[i]=((e>>(31 -i))&1);} }
-       if ( (d>=2 ) ) { for(int i=32 ; i<=39 ;  i++){bits[i]=((f>>(39 -i))&1);} }
-       if ( (d>=3 ) ) { for(int i=40 ; i<=47 ;  i++){bits[i]=((g>>(47 -i))&1);} }
-       if ( (d>=4 ) ) { for(int i=48 ; i<=55 ;  i++){bits[i]=((h>>(55 -i))&1);} }
-       if ( (d>=5 ) ) { for(int i=56 ; i<=63 ;  i++){bits[i]=((i>>(63 -i))&1);} }
-       if ( (d>=6 ) ) { for(int i=64 ; i<=71 ;  i++){bits[i]=((j>>(71 -i))&1);} }
-       if ( (d>=7 ) ) { for(int i=72 ; i<=79 ;  i++){bits[i]=((k>>(79 -i))&1);} }
-       if ( (d>=8 ) ) { for(int i=80 ; i<=87 ;  i++){bits[i]=((l>>(87 -i))&1);} }
-       if ( (d>=9 ) ) { for(int i=88 ; i<=95 ;  i++){bits[i]=((m>>(95 -i))&1);} }
-       if ( (d>=10) ) { for(int i=96 ; i<=103;  i++){bits[i]=((n>>(103-i))&1);} }
-       if ( (d>=11) ) { for(int i=104; i<=111;  i++){bits[i]=((o>>(111-i))&1);} }
-       if ( (d>=12) ) { for(int i=112; i<=119;  i++){bits[i]=((p>>(119-i))&1);} }
-       if ( (d>=13) ) { for(int i=120; i<=127;  i++){bits[i]=((q>>(127-i))&1);} }
-       if ( (d>=14) ) { for(int i=128; i<=135;  i++){bits[i]=((r>>(135-i))&1);} }
-       if ( (d>=15) ) { for(int i=136; i<=143;  i++){bits[i]=((s>>(143-i))&1);} }
-       if ( (d>=16) ) { for(int i=144; i<=151;  i++){bits[i]=((t>>(151-i))&1);} }
-       if ( (d>=17) ) { for(int i=152; i<=159;  i++){bits[i]=((u>>(159-i))&1);} }
-       if ( (d>=18) ) { for(int i=160; i<=167;  i++){bits[i]=((v>>(167-i))&1);} }
-       if ( (d>=19) ) { for(int i=168; i<=175;  i++){bits[i]=((w>>(175-i))&1);} }
-       if ( (d>=20) ) { for(int i=176; i<=183;  i++){bits[i]=((x>>(183-i))&1);} }
-       if ( (d>=21) ) { for(int i=184; i<=191;  i++){bits[i]=((y>>(191-i))&1);} }
-       if ( (d>=22) ) { for(int i=192; i<=199;  i++){bits[i]=((z>>(199-i))&1);} }
-       if ( (d>=23) ) { for(int i=200; i<=207;  i++){bits[i]=((A>>(207-i))&1);} }
-       if ( (d>=24) ) { for(int i=208; i<=215;  i++){bits[i]=((B>>(215-i))&1);} }
-       if ( (d>=25) ) { for(int i=216; i<=223;  i++){bits[i]=((C>>(223-i))&1);} }
-       if ( (d>=26) ) { for(int i=224; i<=231;  i++){bits[i]=((D>>(231-i))&1);} }
-       if ( (d>=27) ) { for(int i=232; i<=239;  i++){bits[i]=((E>>(239-i))&1);} }
-       int lastitemindex = ( number_of_bits - 1); int firstitemindex = lastitemindex - 15;
-       for(int i = firstitemindex; i<= lastitemindex ; i++){     bits[i] = 0;   }//16 padding
-       int poly[17] = {1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1};//msb(left) to lsb(right)
-       int indices_of_ones_in_bit_sequence [number_of_bits]; for(int i=0;i<number_of_bits;i++){   if(bits[i]==1){ indices_of_ones_in_bit_sequence[i] = i; }       }
-       for(int i=0;i<number_of_bits;i++){
-	     if( indices_of_ones_in_bit_sequence[i] ){
-	              //bits [i+0] = bits[ indices_of_ones_in_bit_sequence[i] ] ^ poly[0];
-		      //bits [i+1] = bits[ indices_of_ones_in_bit_sequence[i] ] ^ poly[1];
-		      //bits [i+2] = bits[ indices_of_ones_in_bit_sequence[i] ] ^ poly[2];
-		      for(int k=0;k<=16;k++) { bits [i+k] = bits[ indices_of_ones_in_bit_sequence[i] + k ] ^ poly[k];}
-	     }//if
-       }//for
-       rslt.byte1 = (bits[ lastitemindex-15 ]*128)+(bits[ lastitemindex-14 ]*64)+(bits[ lastitemindex-13 ]*32)+(bits[ lastitemindex-12 ]*16)+(bits[ lastitemindex-11 ]*8)+(bits[ lastitemindex-10 ]*4)+(bits[ lastitemindex-9 ]*2)+(bits[ lastitemindex-8 ] );
-       rslt.byte2 = (bits[ lastitemindex-7  ]*128)+(bits[ lastitemindex-6  ]*64)+(bits[ lastitemindex-5  ]*32)+(bits[ lastitemindex-4  ]*16)+(bits[ lastitemindex-3  ]*8)+(bits[ lastitemindex-2  ]*4)+(bits[ lastitemindex-1 ]*2)+(bits[ lastitemindex   ] );
+                              { //dest, src, cmd/resp , len, data[27] excluding 2 flags and 2 crcs
+                              struct twobyte {int byte1; int byte2;} rslt;
+                              int number_of_bits = (4*8) + (d*8) + 16; // (first4*8) + (len*8) +padding16
+                              int bits[ number_of_bits ];//total bits for 4 basic and [d] length data
+                              for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
+                              for(int i=8 ; i<=15 ;  i++){bits[i]=((b>>(15-i))&1);}
+                              for(int i=16; i<=23 ;  i++){bits[i]=((c>>(23-i))&1);}
+                              for(int i=24; i<=31 ;  i++){bits[i]=((d>>(31-i))&1);}
+                              if ( (d>=1 ) ) { for(int i=24 ; i<=31 ;  i++){bits[i]=((e>>(31 -i))&1);} }
+                              if ( (d>=2 ) ) { for(int i=32 ; i<=39 ;  i++){bits[i]=((f>>(39 -i))&1);} }
+                              if ( (d>=3 ) ) { for(int i=40 ; i<=47 ;  i++){bits[i]=((g>>(47 -i))&1);} }
+                              if ( (d>=4 ) ) { for(int i=48 ; i<=55 ;  i++){bits[i]=((h>>(55 -i))&1);} }
+                              if ( (d>=5 ) ) { for(int i=56 ; i<=63 ;  i++){bits[i]=((i>>(63 -i))&1);} }
+                              if ( (d>=6 ) ) { for(int i=64 ; i<=71 ;  i++){bits[i]=((j>>(71 -i))&1);} }
+                              if ( (d>=7 ) ) { for(int i=72 ; i<=79 ;  i++){bits[i]=((k>>(79 -i))&1);} }
+                              if ( (d>=8 ) ) { for(int i=80 ; i<=87 ;  i++){bits[i]=((l>>(87 -i))&1);} }
+                              if ( (d>=9 ) ) { for(int i=88 ; i<=95 ;  i++){bits[i]=((m>>(95 -i))&1);} }
+                              if ( (d>=10) ) { for(int i=96 ; i<=103;  i++){bits[i]=((n>>(103-i))&1);} }
+                              if ( (d>=11) ) { for(int i=104; i<=111;  i++){bits[i]=((o>>(111-i))&1);} }
+                              if ( (d>=12) ) { for(int i=112; i<=119;  i++){bits[i]=((p>>(119-i))&1);} }
+                              if ( (d>=13) ) { for(int i=120; i<=127;  i++){bits[i]=((q>>(127-i))&1);} }
+                              if ( (d>=14) ) { for(int i=128; i<=135;  i++){bits[i]=((r>>(135-i))&1);} }
+                              if ( (d>=15) ) { for(int i=136; i<=143;  i++){bits[i]=((s>>(143-i))&1);} }
+                              if ( (d>=16) ) { for(int i=144; i<=151;  i++){bits[i]=((t>>(151-i))&1);} }
+                              if ( (d>=17) ) { for(int i=152; i<=159;  i++){bits[i]=((u>>(159-i))&1);} }
+                              if ( (d>=18) ) { for(int i=160; i<=167;  i++){bits[i]=((v>>(167-i))&1);} }
+                              if ( (d>=19) ) { for(int i=168; i<=175;  i++){bits[i]=((w>>(175-i))&1);} }
+                              if ( (d>=20) ) { for(int i=176; i<=183;  i++){bits[i]=((x>>(183-i))&1);} }
+                              if ( (d>=21) ) { for(int i=184; i<=191;  i++){bits[i]=((y>>(191-i))&1);} }
+                              if ( (d>=22) ) { for(int i=192; i<=199;  i++){bits[i]=((z>>(199-i))&1);} }
+                              if ( (d>=23) ) { for(int i=200; i<=207;  i++){bits[i]=((A>>(207-i))&1);} }
+                              if ( (d>=24) ) { for(int i=208; i<=215;  i++){bits[i]=((B>>(215-i))&1);} }
+                              if ( (d>=25) ) { for(int i=216; i<=223;  i++){bits[i]=((C>>(223-i))&1);} }
+                              if ( (d>=26) ) { for(int i=224; i<=231;  i++){bits[i]=((D>>(231-i))&1);} }
+                              if ( (d>=27) ) { for(int i=232; i<=239;  i++){bits[i]=((E>>(239-i))&1);} }
+                              int lastitemindex = ( number_of_bits - 1); int firstitemindex = lastitemindex - 15;
+                              for(int i = firstitemindex; i<= lastitemindex ; i++){     bits[i] = 0;   }//16 padding
+                              int poly[17] = {1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1};//msb(left) to lsb(right)
+			      int number_of_ones_in_sequence=0;
+			      for(int i=0;i<number_of_bits;i++){   if(bits[i]==1){ number_of_ones_in_sequence = number_of_ones_in_sequence+1; }       }
+                              int indices_of_ones_in_bit_sequence [number_of_ones_in_sequence]; for(int i=0;i<number_of_bits;i++){   if(bits[i]==1){ indices_of_ones_in_bit_sequence[i] = i; }      }
+                              for(int i=0;i<number_of_ones_in_sequence;i++){
+							                   //bits [  indices_of_ones_in_bit_sequence [ i+0 ]   ] = bits[  indices_of_ones_in_bit_sequence [ i+0 ]   ] ^ poly[0+0];
+							                   //bits [  indices_of_ones_in_bit_sequence [ i+1 ]   ] = bits[  indices_of_ones_in_bit_sequence [ i+1 ]   ] ^ poly[0+1];
+							                   //bits [  indices_of_ones_in_bit_sequence [ i+2 ]   ] = bits[  indices_of_ones_in_bit_sequence [ i+2 ]   ] ^ poly[0+2];
+		                                                           for(int k=0;k<=16;k++) {     bits [  indices_of_ones_in_bit_sequence [ i+k ]   ] = (bits[  indices_of_ones_in_bit_sequence [ i+k ]   ] ^ poly[ k ]);    }
+                              }//for
+                              rslt.byte1 = (bits[ lastitemindex-15 ]*128)+(bits[ lastitemindex-14 ]*64)+(bits[ lastitemindex-13 ]*32)+(bits[ lastitemindex-12 ]*16)+(bits[ lastitemindex-11 ]*8)+(bits[ lastitemindex-10 ]*4)+(bits[ lastitemindex-9 ]*2)+(bits[ lastitemindex-8 ] );
+                              rslt.byte2 = (bits[ lastitemindex-7  ]*128)+(bits[ lastitemindex-6  ]*64)+(bits[ lastitemindex-5  ]*32)+(bits[ lastitemindex-4  ]*16)+(bits[ lastitemindex-3  ]*8)+(bits[ lastitemindex-2  ]*4)+(bits[ lastitemindex-1 ]*2)+(bits[ lastitemindex   ] );
 return rslt;
 }//crc_generator_for_5byte
 	
@@ -446,7 +446,7 @@ struct ninebyte get_command_parameter_after_leftShift_insertEnd_spi1(int inserti
        COMMAND_PARAMETER_SPI1.byte6 = ( (COMMAND_PARAMETER_SPI1.byte6<<1) | (COMMAND_PARAMETER_SPI1.byte7>>7) ) & 255;//data
        COMMAND_PARAMETER_SPI1.byte7 = ( (COMMAND_PARAMETER_SPI1.byte7<<1) | (COMMAND_PARAMETER_SPI1.byte8>>7) ) & 255;//crc1
        COMMAND_PARAMETER_SPI1.byte8 = ( (COMMAND_PARAMETER_SPI1.byte8<<1) | (COMMAND_PARAMETER_SPI1.byte9>>7) ) & 255;//crc0
-       COMMAND_PARAMETER_SPI1.byte9 = ( (COMMAND_PARAMETER_SPI1.byte9<<1) | insertionbit                       ) & 255;//flag
+       COMMAND_PARAMETER_SPI1.byte9 = ( (COMMAND_PARAMETER_SPI1.byte9<<1) | insertionbit                      ) & 255;//flag
 return COMMAND_PARAMETER_SPI1;
 }//get_command_parameter_after_leftShift_insertEnd_spi1
 
@@ -604,7 +604,7 @@ struct ninebyte get_command_parameter_after_leftShift_insertEnd_spi3(int inserti
        COMMAND_PARAMETER_SPI3.byte6 = ( (COMMAND_PARAMETER_SPI3.byte6<<1) | (COMMAND_PARAMETER_SPI3.byte7>>7) ) & 255;//data
        COMMAND_PARAMETER_SPI3.byte7 = ( (COMMAND_PARAMETER_SPI3.byte7<<1) | (COMMAND_PARAMETER_SPI3.byte8>>7) ) & 255;//crc1
        COMMAND_PARAMETER_SPI3.byte8 = ( (COMMAND_PARAMETER_SPI3.byte8<<1) | (COMMAND_PARAMETER_SPI3.byte9>>7) ) & 255;//crc0
-       COMMAND_PARAMETER_SPI3.byte9 = ( (COMMAND_PARAMETER_SPI3.byte9<<1) | insertionbit                       ) & 255;//flag
+       COMMAND_PARAMETER_SPI3.byte9 = ( (COMMAND_PARAMETER_SPI3.byte9<<1) | insertionbit                      ) & 255;//flag
 return COMMAND_PARAMETER_SPI3;
 }//get_command_parameter_after_leftShift_insertEnd_spi3
 
@@ -715,7 +715,7 @@ int execute_spi3(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
 				                      int d25 =0;//bat
 				                      int d26 =0;//bat
 				                      int d27 =0;//bat
-                                                      write_ssp_response_spi3( OBC,EPS, ACK,18,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25,d26,d27);
+                                                      write_ssp_response_spi3( OBC,EPS, ACK,27,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25,d26,d27);
                         }//ACK //GOSTM
                         if ( check_command(KEN ) ){ write_ssp_response_spi3( OBC,EPS, ACK,1,KEN ,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK ...........shutting down all activity received from GCS or OBC //KEN
                         if ( check_command(KDIS) ){ write_ssp_response_spi3( OBC,EPS, ACK,1,KDIS,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK //KDIS
