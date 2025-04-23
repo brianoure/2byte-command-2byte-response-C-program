@@ -23,98 +23,98 @@
 
 
 int main(){//main
-struct ninebyte   { int byte1; int byte2; int byte3; int byte4; int byte5; int byte6; int byte7; int byte8; int byte9; };
-struct fourbyte   { int byte1; int byte2; int byte3; int byte4; };
-struct twobyte    { int byte1; int byte2; };
-// add const def	
-//############ DECLARATIONS ###########
-const int EPS_MCU_ADDRESS=2;
-//Boolean
-const int HIGH    = 1 ;  
-const int TRUE    = 1 ;
-const int ONE     = 1 ;
-const int LOW     = 0 ;  
-const int FALSE   = 0 ;
-const int ZERO    = 0 ;
-const int PAUSE   = 2 ;
-const int END     = 3 ;
-//TRANSMISSION AND RECEPTION (COMMUNICATION) SYMBOLS
-const int EMPTY           = 0   ;
-const int PING            = 34  ; //command
-const int ACK             = 47  ;
-const int ACKNOWLEDGE     = 47 ;
-const int NACK            = 52  ;
-const int NOT_ACKNOWLEDGE = 52  ;
-const int SON             = 140 ;
-const int SWITCH_ON       = 140 ;
-const int UHF             = 24  ; //parameter
-const int ADCS            = 162 ; //parameter
-const int GPS             = 75  ; //parameter
-const int SOF             = 218 ;
-const int SWITCH_OFF      = 218 ; //command
-const int SM              = 107 ;
-const int SET_MODE        = 107 ; //command
-const int GM              = 122 ;
-const int GET_MODE        = 122 ; //command
-const int GSC             = 94  ;
-const int GET_SYSTEM_CLOCK= 94  ; //command
-const int SSC             = 209 ; 
-const int SET_SYSTEM_CLOCK= 209 ; //command
-const int GFP             = 134 ; //command
-const int SFP             = 90  ; //command
-const int FON             = 55  ; 
-const int FUNCTION_ON     = 55  ; //command
-const int TWELVEBUS       = 100 ; //telemetry parameter
-const int FIVEBUS         = 150 ; //telemetry parameter
-const int THREEBUS        = 200 ; //parameter
-const int FOF             = 233 ; 
-const int FUNCTION_OFF    = 233 ; //command
-const int GOSTM           = 157 ;
-const int GET_ONLINE_SYSTEM_TELEMETRY = 157; //command
-const int KEN             = 255 ;
-const int KILL_ENABLE     = 255 ; //command
-const int KDIS            = 227 ;
-const int KILL_DISABLE    = 227 ; //command
-const int GD              = 15  ;
-const int GET_DATA        = 15  ; //command
-const int PD              = 245 ;
-const int PUT_DATA        = 245 ; //command
-const int RD              = 222 ; 
-const int READ_DATA       = 222 ; //command
-const int WD              = 133 ; 
-const int WRITE_DATA      = 133 ; //command
-const int INITIALIZE      = 60  ; //mode parameter
-const int DETUMBLE        = 71  ; //mode parameter
-const int NORMAL          = 82  ; //mode parameter
-const int COMMUNICATION   = 93  ; //mode parameter
-const int PAYLOAD         = 104 ; //mode parameter
-const int IMAGE           = 115 ; //mode parameter
-const int EMERGENCY       = 126 ; //mode parameter
-const int CUSTOM          = 69  ; //mode parameter
-const int PL5V_EN           = 230      ; 
-const int PAYLOAD_5V_ENABLE = 230      ; //pin
-const int ADCS5V_EN         = 143      ;
-const int ADCS_5V_ENABLE    = 143      ; //pin
-const int RS12V_EN          = 205      ;
-const int RESERVED_12V_EN   = 205      ; //pin
-const int XB12V_EN          = 139      ;
-const int XBAND_12V_ENABLE  = 139      ; //pin
-const int CCU5V_EN          = 155      ; 
-const int CENTRAL_COMMAND_UNIT_5V_ENABLE = 155 ; //pin
-const int RS3V3_EN          = 212      ;
-const int RESERVED_3V_ENABLE= 212      ; //pin
-const int PL_EN             = 172      ;
-const int PAYLOAD_ENABLE    = 172      ; //pin
-const int ADCS_EN           = 144      ;
-const int ADCS_ENABLE       = 144      ; //pin
-const int UHF_EN            = 189      ;
-const int UHF_ENABLE        = 189      ; //pin
-const int GPS_EN            = 57       ;
-const int GPS_ENABLE        = 57       ; //pin
-const int ADCS12V_EN        = 199      ; 
-const int ADCS_12V_ENABLE   = 199      ; //pin
-const int EPS_EN            = 97       ; 
-const int EPS_ENABLE        = 97       ;//funny
+    struct ninebyte   { int byte1; int byte2; int byte3; int byte4; int byte5; int byte6; int byte7; int byte8; int byte9; };
+    struct fourbyte   { int byte1; int byte2; int byte3; int byte4; };
+    struct twobyte    { int byte1; int byte2; };
+    // add const def	
+    //############ DECLARATIONS ###########
+    const int EPS_MCU_ADDRESS=2;
+    //Boolean
+    const int HIGH    = 1 ;  
+    const int TRUE    = 1 ;
+    const int ONE     = 1 ;
+    const int LOW     = 0 ;  
+    const int FALSE   = 0 ;
+    const int ZERO    = 0 ;
+    const int PAUSE   = 2 ;
+    const int END     = 3 ;
+    //TRANSMISSION AND RECEPTION (COMMUNICATION) SYMBOLS
+    const int EMPTY           = 0   ;
+    const int PING            = 34  ; //command
+    const int ACK             = 47  ;
+    const int ACKNOWLEDGE     = 47 ;
+    const int NACK            = 52  ;
+    const int NOT_ACKNOWLEDGE = 52  ;
+    const int SON             = 140 ;
+    const int SWITCH_ON       = 140 ;
+    const int UHF             = 24  ; //parameter
+    const int ADCS            = 162 ; //parameter
+    const int GPS             = 75  ; //parameter
+    const int SOF             = 218 ;
+    const int SWITCH_OFF      = 218 ; //command
+    const int SM              = 107 ;
+    const int SET_MODE        = 107 ; //command
+    const int GM              = 122 ;
+    const int GET_MODE        = 122 ; //command
+    const int GSC             = 94  ;
+    const int GET_SYSTEM_CLOCK= 94  ; //command
+    const int SSC             = 209 ; 
+    const int SET_SYSTEM_CLOCK= 209 ; //command
+    const int GFP             = 134 ; //command
+    const int SFP             = 90  ; //command
+    const int FON             = 55  ; 
+    const int FUNCTION_ON     = 55  ; //command
+    const int TWELVEBUS       = 100 ; //telemetry parameter
+    const int FIVEBUS         = 150 ; //telemetry parameter
+    const int THREEBUS        = 200 ; //parameter
+    const int FOF             = 233 ; 
+    const int FUNCTION_OFF    = 233 ; //command
+    const int GOSTM           = 157 ;
+    const int GET_ONLINE_SYSTEM_TELEMETRY = 157; //command
+    const int KEN             = 255 ;
+    const int KILL_ENABLE     = 255 ; //command
+    const int KDIS            = 227 ;
+    const int KILL_DISABLE    = 227 ; //command
+    const int GD              = 15  ;
+    const int GET_DATA        = 15  ; //command
+    const int PD              = 245 ;
+    const int PUT_DATA        = 245 ; //command
+    const int RD              = 222 ; 
+    const int READ_DATA       = 222 ; //command
+    const int WD              = 133 ; 
+    const int WRITE_DATA      = 133 ; //command
+    const int INITIALIZE      = 60  ; //mode parameter
+    const int DETUMBLE        = 71  ; //mode parameter
+    const int NORMAL          = 82  ; //mode parameter
+    const int COMMUNICATION   = 93  ; //mode parameter
+    const int PAYLOAD         = 104 ; //mode parameter
+    const int IMAGE           = 115 ; //mode parameter
+    const int EMERGENCY       = 126 ; //mode parameter
+    const int CUSTOM          = 69  ; //mode parameter
+    const int PL5V_EN           = 230      ; 
+    const int PAYLOAD_5V_ENABLE = 230      ; //pin
+    const int ADCS5V_EN         = 143      ;
+    const int ADCS_5V_ENABLE    = 143      ; //pin
+    const int RS12V_EN          = 205      ;
+    const int RESERVED_12V_EN   = 205      ; //pin
+    const int XB12V_EN          = 139      ;
+    const int XBAND_12V_ENABLE  = 139      ; //pin
+    const int CCU5V_EN          = 155      ; 
+    const int CENTRAL_COMMAND_UNIT_5V_ENABLE = 155 ; //pin
+    const int RS3V3_EN          = 212      ;
+    const int RESERVED_3V_ENABLE= 212      ; //pin
+    const int PL_EN             = 172      ;
+    const int PAYLOAD_ENABLE    = 172      ; //pin
+    const int ADCS_EN           = 144      ;
+    const int ADCS_ENABLE       = 144      ; //pin
+    const int UHF_EN            = 189      ;
+    const int UHF_ENABLE        = 189      ; //pin
+    const int GPS_EN            = 57       ;
+    const int GPS_ENABLE        = 57       ; //pin
+    const int ADCS12V_EN        = 199      ; 
+    const int ADCS_12V_ENABLE   = 199      ; //pin
+    const int EPS_EN            = 97       ; 
+    const int EPS_ENABLE        = 97       ;//funny
 
 //############## PINS ##################
 
@@ -203,7 +203,7 @@ struct twobyte crc16_generator(int a, int b, int c, int d, int e, int f, int g, 
                                int u, int v, int w, int x, int y, int z, int A, int B, int C, int D, 
                                int E)
                               { //dest, src, cmd/resp , len, data[27] excluding 2 flags and 2 crcs
-                              struct twobyte {int byte1; int byte2;} rslt;
+                              struct twobyte rslt;
                               int number_of_bits = (4*8) + (d*8) + 16; // (first4*8) + (len*8) +padding16
                               int bits[ number_of_bits ];//total bits for 4 basic and [d] length data
                               for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
