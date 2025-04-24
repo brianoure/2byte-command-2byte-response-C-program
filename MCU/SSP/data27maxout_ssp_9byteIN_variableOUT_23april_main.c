@@ -335,8 +335,21 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
     int    valid_crc = (received_crc.byte1==input.byte7)&(received_crc.byte2==input.byte8);
     if (valid_crc & from_obc_or_from_ccu_to_eps & proper_ssp_frame) {
                          int  command  = input.byte4; int parameter= input.byte6;
-                         void pause_rs485(int x){}//mada mada
-                         void send_bit_rs485  (int bit){
+                         void pause_rs485(int symbol_duration){
+			      void DWT_Init(void) {
+                              CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+                              DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+                              }
+                              void delay_us(uint32_t us) {
+                              uint32_t cycles_per_us = HAL_RCC_GetHCLKFreq() / 1000000;
+                              uint32_t start = DWT->CYCCNT;
+                              uint32_t delay_cycles = us * cycles_per_us;
+                              while ((DWT->CYCCNT - start) < delay_cycles);
+                              }
+                              DWT_Init();
+                              delay_us(symbol_duration);  // 5.208 ms
+			 }//mada mada
+                         void send_bit_rs485 (int bit){// 
                               if(bit){ RS4851_TX(1); RS4852_TX(1); } else { RS4851_TX(0); RS4852_TX(0); }
                               RS4851_DE(1);RS4852_DE(1);
                               pause_rs485(1000);
@@ -344,7 +357,7 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                               pause_rs485(1000);
 	                      RS4851_DE(0);RS4852_DE(0);//may or may not be appropriate...revisit
                          }//send_bit_rs485
-                         void send_byte_rs485( int out ){      for( int index= 0; index<= 7; index++ ){  send_bit_rs485( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }    }//send_byte_rs485
+                         void send_byte_rs485( int out ){      for( int index= 0; index<= 7; index++ ){  send_bit_rs485( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }       }//send_byte_rs485
                          int  write_ssp_response_rs485( int dest, int src, int resp, int len,
                                                         int d1  , int d2 , int d3  , int d4 ,
                                                         int d5  , int d6 , int d7  , int d8 ,
@@ -354,7 +367,7 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                                                         int d21 , int d22, int d23 , int d24,
                                                         int d25 , int d26, int d27 ) { //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
 			                                struct twobyte crc16 = crc16_generator(dest,src,resp,len,
-                                                                                               d1 ,d2 ,d3 ,d4 ,d5 ,d6 ,d7 ,d8 ,d9,
+                                                                                               d1 ,d2 ,d3 ,d4 ,d5 ,d6 ,d7 ,d8 ,d9 ,
                                                                                                d10,d11,d12,d13,d14,d15,d16,d17,d18,
                                                                                                d19,d20,d21,d22,d23,d24,d25,d26,d27);
 	                                                if(len==0 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len );send_byte_rs485( FF  );}// NO CRC generated
