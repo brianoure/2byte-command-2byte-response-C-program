@@ -358,13 +358,13 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                               while ((DWT->CYCCNT - start) < delay_cycles);
                               }
                               DWT_Init();
-                              delay_us(symbol_duration);  // 5.208 ms
+                              delay_us(symbol_duration);  // 52080ms rep 52.08us rep 9600bps rep 19200symbols per s
 			 }//mada mada
                          void send_bit_rs485 (int bit){// 
                               if(bit){ RS4851_TX(1); RS4852_TX(1); } else { RS4851_TX(0); RS4852_TX(0); }
-                              RS4851_DE(1);RS4852_DE(1);
+                              RS4851_DE(1); RS4852_DE(1);
                               pause_rs485(1000);
-                              RS4851_TX(0);RS4852_TX(1);
+                              RS4851_TX(0); RS4852_TX(1);
                               pause_rs485(1000);
 	                      RS4851_DE(0);RS4852_DE(0);//may or may not be appropriate...revisit
                          }//send_bit_rs485
