@@ -78,7 +78,8 @@ int main(){//main
     const int EMPTY           = 0   ;
     const int PING            = 34  ; //command
     const int ACK             = 47  ;
-    const int ACKNOWLEDGE     = 47 ;
+    const int ACKNOWLEDGE     = 47  ;
+    const int FLT             = 85  ;
     const int NACK            = 52  ;
     const int NOT_ACKNOWLEDGE = 52  ;
     const int SON             = 140 ;
@@ -218,11 +219,21 @@ const int RESPONSE_WAIT            = 10000;//response_wait()
 const int CURRENTMODE              = 0;
 const int CURRENTSYSTEMCLOCK       = 0;
 const int FF                       = 255;
-const int OBC_ADDRESS              = 1  ; const int OBC = OBC_ADDRESS;
-const int CCU_ADDRESS              = 3  ; const int CCU = CCU_ADDRESS;
-const int EPS_ADDRESS              = 2  ; const int EPS = EPS_ADDRESS;
-
-	
+const int OBC_ADDRESS              = 1  ; const int OBC = 1;
+const int CCU_ADDRESS              = 3  ; const int CCU = 3;
+const int EPS_ADDRESS              = 2  ; const int EPS = 2;
+const int ADCSFLT   =100;
+const int UHFFLT    =101;
+const int PLFLT     =102;
+const int RS3V3FLT  =103;
+const int GPSFLT    =104;
+const int ADCS5VFLT =105;
+const int PL5VFLT   =106;
+const int CCU5VFLT  =107;
+const int XB12VFLT  =108;
+const int ADCS12VFLT=109;
+const int RS12VFLT  =110;
+const int RS5VFLT   =111;
 //#######################
 
 //response_wait
@@ -333,7 +344,7 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
     struct twobyte received_crc = crc16_generator (input.byte2, input.byte3, input.byte4, input.byte5, input.byte6,
                                                    0,0,0,0,0,   0,0,0,0,0,   0,0,0,0,0,   0,0,0,0,0,   0,0,0,0,0,   0); //let's regenerate the crc if the command frame is: dest,src,cmd,len,data1
     int    valid_crc = (received_crc.byte1==input.byte7)&(received_crc.byte2==input.byte8);
-    if (valid_crc & from_obc_or_from_ccu_to_eps & proper_ssp_frame) {
+    if (valid_crc & from_obc_or_from_ccu_to_eps & proper_ssp_frame) {//proceed
                          int  command  = input.byte4; int parameter= input.byte6;
                          void pause_rs485(int symbol_duration){
 			      void DWT_Init(void) {
@@ -461,6 +472,21 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                         if ( check_command(KDIS) ){ write_ssp_response_rs485( OBC,EPS, ACK,1,KDIS,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK //KDIS
                         //YOU CAN ALSO ADD LOGIC
 }//if proceed
+if ( (OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( (CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    CCUFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( (ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,   ADCSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( (UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    UHFFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( (PL_FLT     ()+PL_FLT     ()+PL_FLT     ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,     PLFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( (RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  RS3V3FLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( (GPS_FLT    ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    GPSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if     
+if ( (ADCS5V_FLT ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1, ADCS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( (PL5V_FLT   ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,   PL5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( (CCU5V_FLT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  CCU5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( (XB12V_FLT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  XB12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( (ADCS12V_FLT())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,ADCS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( (RS12V_FLT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  RS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( (RS5V_FLT   ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,   RS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+
 return 0;
 }//execute
 	
