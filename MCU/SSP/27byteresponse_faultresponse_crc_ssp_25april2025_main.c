@@ -308,8 +308,8 @@ struct ninebyte COMMAND_PARAMETER_RS485  = {0,0,0,0,0,0,0,0,0};
 int receive_rs485 (){
     int result=0; int r4851=0; int r4852=0;
     RS4851_DE(0); RS4852_DE(0);
-    if( (RS4851_RX()+RS4851_RX()+RS4851_RX())>=2 ){r4851=1;}
-    if( (RS4852_RX()+RS4852_RX()+RS4852_RX())>=2 ){r4852=1;}
+    if( ( RS4851_RX()+RS4851_RX()  +RS4851_RX()+RS4851_RX()  +RS4851_RX()+RS4851_RX()  +RS4851_RX()+RS4851_RX()  +RS4851_RX()+RS4851_RX() )>=7 ){r4851=1;}
+    if( ( RS4852_RX()+RS4852_RX()  +RS4852_RX()+RS4852_RX()  +RS4852_RX()+RS4852_RX()  +RS4852_RX()+RS4852_RX()  +RS4852_RX()+RS4852_RX() )>=7 ){r4852=1;}
     if ( !r4851 & !r4852 ){result=0;}//0
     if ( !r4851 &  r4852 ){result=2;}//2
     if (  r4851 & !r4852 ){result=3;}//3
@@ -497,9 +497,9 @@ struct ninebyte COMMAND_PARAMETER_SPI1  = {0,0,0,0,0,0,0,0,0};
   
 int receive_spi1 (){//boom
     int result=0; int spi1_mosi=0; int spi1_sck=0; int spi1_ss=0;
-    if ((SPI1_MOSI() + SPI1_MOSI() + SPI1_MOSI())>=2){spi1_mosi = 1;}
-    if ((SPI1_SS  () + SPI1_SS  () + SPI1_SS  ())>=2){spi1_ss   = 1;}
-    if ((SPI1_SCK () + SPI1_SCK () + SPI1_SCK ())>=2){spi1_sck  = 1;}
+    if ((   SPI1_MOSI() + SPI1_MOSI() + SPI1_MOSI()   +SPI1_MOSI() + SPI1_MOSI() + SPI1_MOSI()   +SPI1_MOSI() + SPI1_MOSI() + SPI1_MOSI()   +SPI1_MOSI()  )>=7){spi1_mosi = 1;}
+    if ((   SPI1_SS  () + SPI1_SS  () + SPI1_SS  ()   +SPI1_SS  () + SPI1_SS  () + SPI1_SS  ()   +SPI1_SS  () + SPI1_SS  () + SPI1_SS  ()   +SPI1_SS  ()  )>=7){spi1_ss   = 1;}
+    if ((   SPI1_SCK () + SPI1_SCK () + SPI1_SCK ()   +SPI1_SCK () + SPI1_SCK () + SPI1_SCK ()   +SPI1_SCK () + SPI1_SCK () + SPI1_SCK ()   +SPI1_SCK ()  )>=7){spi1_sck  = 1;}
     if ( spi1_ss ){
 	       if ( !spi1_ss & !spi1_sck ){result=3;}//3
                if ( !spi1_ss &  spi1_sck ){result=0;}//0
@@ -671,9 +671,9 @@ struct ninebyte COMMAND_PARAMETER_SPI3  = {0,0,0,0,0,0,0,0,0};
   
 int receive_spi3 (){//boom
     int result=0; int spi3_mosi=0; int spi3_sck=0; int spi3_ss=0;
-    if ((SPI3_MOSI() + SPI3_MOSI() + SPI3_MOSI())>=2){spi3_mosi = 1;}
-    if ((SPI3_SS  () + SPI3_SS  () + SPI3_SS  ())>=2){spi3_ss   = 1;}
-    if ((SPI3_SCK () + SPI3_SCK () + SPI3_SCK ())>=2){spi3_sck  = 1;}
+    if ((  SPI3_MOSI() + SPI3_MOSI() + SPI3_MOSI()   +SPI3_MOSI() + SPI3_MOSI() + SPI3_MOSI()    +SPI3_MOSI() + SPI3_MOSI() + SPI3_MOSI()    +SPI3_MOSI()  )>=7){spi3_mosi = 1;}
+    if ((  SPI3_SS  () + SPI3_SS  () + SPI3_SS  ()   +SPI3_SS  () + SPI3_SS  () + SPI3_SS  ()    +SPI3_SS  () + SPI3_SS  () + SPI3_SS  ()    +SPI3_SS  ()  )>=7){spi3_ss   = 1;}
+    if ((  SPI3_SCK () + SPI3_SCK () + SPI3_SCK ()   +SPI3_SCK () + SPI3_SCK () + SPI3_SCK ()    +SPI3_SCK () + SPI3_SCK () + SPI3_SCK ()    +SPI3_SS  ()  )>=7){spi3_sck  = 1;}
     if ( spi3_ss ){
 	       if ( !spi3_ss & !spi3_sck ){result=3;}//3
                if ( !spi3_ss &  spi3_sck ){result=0;}//0
