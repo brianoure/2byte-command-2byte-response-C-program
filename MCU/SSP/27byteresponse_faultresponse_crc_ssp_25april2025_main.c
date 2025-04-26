@@ -472,20 +472,20 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                         if ( check_command(KDIS) ){ write_ssp_response_rs485( OBC,EPS, ACK,1,KDIS,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK //KDIS
                         //YOU CAN ALSO ADD LOGIC
 }//if proceed
-if ( (OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    CCUFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,   ADCSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    UHFFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (PL_FLT     ()+PL_FLT     ()+PL_FLT     ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,     PLFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  RS3V3FLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    GPSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if     
-if ( (ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1, ADCS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,   PL5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  CCU5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  XB12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,ADCS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  RS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ())>=2 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,   RS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () +OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  () +CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    CCUFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT () +ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,   ADCSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    () +UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    UHFFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( PL_FLT     ()+PL_FLT     ()+PL_FLT     () +PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,     PLFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  () +RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  RS3V3FLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    () +GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    GPSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if     
+if ( ( ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT () +ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1, ADCS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   () +PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,   PL5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  () +CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  CCU5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  () +XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  XB12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT() +ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT() )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,ADCS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  () +RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,  RS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   () +RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,   RS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
 
 return 0;
 }//execute
@@ -644,20 +644,20 @@ int execute_spi1(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
                         //YOU CAN ALSO ADD LOGIC
 }//if proceed
 
-if ( (OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    CCUFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,   ADCSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    UHFFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (PL_FLT     ()+PL_FLT     ()+PL_FLT     ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,     PLFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,  RS3V3FLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    GPSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if     
-if ( (ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1, ADCS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,   PL5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,  CCU5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,  XB12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,ADCS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,  RS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ())>=2 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,   RS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    CCUFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,   ADCSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    UHFFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,     PLFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,  RS3V3FLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    GPSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if     
+if ( ( ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1, ADCS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,   PL5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,  CCU5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,  XB12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT() )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,ADCS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,  RS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,   RS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
 	
 return 0;
 }//execute
@@ -813,20 +813,20 @@ int execute_spi3(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
                         //YOU CAN ALSO ADD LOGIC
 }//if proceed
 
-if ( (OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    CCUFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,   ADCSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    UHFFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (PL_FLT     ()+PL_FLT     ()+PL_FLT     ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,     PLFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
-if ( (RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,  RS3V3FLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    GPSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if     
-if ( (ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1, ADCS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,   PL5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,  CCU5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,  XB12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,ADCS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,  RS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
-if ( (RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ())>=2 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,   RS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    CCUFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,   ADCSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    UHFFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     ()+PL_FLT     () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,     PLFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if    
+if ( ( RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  ()+RS3V3_FLT  () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,  RS3V3FLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    ()+GPS_FLT    () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    GPSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if     
+if ( ( ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT ()+ADCS5V_FLT () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1, ADCS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   ()+PL5V_FLT   () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,   PL5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  ()+CCU5V_FLT  () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,  CCU5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  ()+XB12V_FLT  () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,  XB12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT()+ADCS12V_FLT() )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,ADCS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  ()+RS12V_FLT  () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,  RS12VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
+if ( ( RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   ()+RS5V_FLT   () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,   RS5VFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//if   
 
 return 0;
 }//execute
