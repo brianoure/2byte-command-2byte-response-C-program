@@ -154,8 +154,27 @@ int main(){//main
     const int EPS_ENABLE        = 97       ;//funny
 
 //############## PINS ##################
-
-int  SA1_I      ()          {    return  (int)((adcValues[0] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_0         );} //current reading from SA1  .............................................. PA0
+//..................PA8
+//USART1_TX ........PA9
+//USART1_RX ........PA10
+//..................PA11
+//SWDIO.............PA13
+//SWCLK.............PA14
+//SWO...............PB3
+//..................PC6
+//S0..................PC7
+//S1..................PC8
+//S2..................PC9
+//....................PC13
+//OSC32_IN.............PC14
+//OSC32_OUT............PC15
+//....................PD3
+//.....................PD10
+//....................PD11
+//....................PD15
+//....................PE5
+//...................PE6
+int  M_OUT      ()          {    return  (int)((adcValues[0] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_0         );} //current reading from SA1  .............................................. PA0
 int  SA2_I      ()          {    return  (int)((adcValues[1] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_1         );} //current reading from SA2  .............................................. PA1
 int  SA3_I      ()          {    return  (int)((adcValues[2] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_2         );} //current reading from SA3  .............................................. PA2
 int  RS4851_RX  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_6         );} //                          .............................................. PD6              //receiving (convolution amigo)
