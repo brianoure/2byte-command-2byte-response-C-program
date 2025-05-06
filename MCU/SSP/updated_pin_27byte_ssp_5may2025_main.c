@@ -128,30 +128,30 @@ int main(){//main
     const int IMAGE           = 115 ; //mode parameter
     const int EMERGENCY       = 126 ; //mode parameter
     const int CUSTOM          = 69  ; //mode parameter
-    const int PL5V_BUS          = 230      ; 
-    const int PAYLOAD_5V_BUS    = 230      ; //pin
+    const int PL5V_BUS           = 230      ; 
+    const int PAYLOAD_5V_BUS     = 230      ; //pin
     const int ADCS5V_BUS         = 143      ;
-    const int ADCS_5V_BUS    = 143      ; //pin
-    const int RS12V_BUS         = 205      ;
+    const int ADCS_5V_BUS        = 143      ; //pin
+    const int RS12V_BUS          = 205      ;
     const int RESERVED_12V_BUS   = 205      ; //pin
     const int XB12V_BUS          = 139      ;
-    const int XBAND_12V_BUS  = 139      ; //pin
+    const int XBAND_12V_BUS      = 139      ; //pin
     const int CCU5V_BUS          = 155      ; 
     const int CENTRAL_COMMAND_UNIT_5V_BUS = 155 ; //pin
     const int RS3V3_BUS          = 212      ;
-    const int RESERVED_3V_BUS= 212      ; //pin
+    const int RESERVED_3V_BUS    = 212      ; //pin
     const int PL_BUS             = 172      ;
-    const int PAYLOAD_BUS    = 172      ; //pin
+    const int PAYLOAD_BUS        = 172      ; //pin
     const int ADCS_BUS           = 144      ;
-    const int ADCS_BUS       = 144      ; //pin
+    const int ADCS_BUS           = 144      ; //pin
     const int UHF_BUS            = 189      ;
-    const int UHF_BUS        = 189      ; //pin
+    const int UHF_BUS            = 189      ; //pin
     const int GPS_BUS            = 57       ;
-    const int GPS_BUS        = 57       ; //pin
+    const int GPS_BUS            = 57       ; //pin
     const int ADCS12V_BUS        = 199      ; 
-    const int ADCS_12V_BUS   = 199      ; //pin
+    const int ADCS_12V_BUS       = 199      ; //pin
     const int EPS_BUS            = 97       ; 
-    const int EPS_BUS        = 97       ;//funny
+    const int EPS_BUS            = 97       ;//funny
 //############## PINS ##################
 //..................PA8
 //USART1_TX ........PA9
@@ -161,97 +161,97 @@ int main(){//main
 //SWCLK.............PA14
 //SWO...............PB3
 //..................PC6
-//S0..................PC7
-//S1..................PC8
-//S2..................PC9
-//....................PC13
-//OSC32_IN.............PC14
-//OSC32_OUT............PC15
-//....................PD3
-//.....................PD10
-//....................PD11
-//....................PD15
-//....................PE5
-//...................PE6
-int  M_OUT      ()          {    return  (int)((adcValues[0] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_0         );} //current reading from SA1  .............................................. PA0
-int  SA2_I      ()          {    return  (int)((adcValues[1] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_1         );} //current reading from SA2  .............................................. PA1
-int  SA3_I      ()          {    return  (int)((adcValues[2] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_2         );} //current reading from SA3  .............................................. PA2
-int  RS4851_RX  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_6         );} //                          .............................................. PD6              //receiving (convolution amigo)
-void RS4851_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_4 , value );} //                          .............................................. PD4              //sending if high, receiving if low
-void RS4851_TX  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_5 , value );} //                          .............................................. PD5              //sending
-int  RS4852_RX  ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_11        );} //                          .............................................. PB11             //receiving (convolution amigo)
-void RS4852_DE  (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_12, value );} //                          .............................................. PD12             //sending if high, receiving if low
-void RS4852_TX  (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_10, value );} //                          .............................................. PB10             //sending 
-int  SPI1_SS    ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_12        );} //                          .............................................. PE12
-int  SPI1_SCK   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_13        );} //                          .............................................. PE13
-void SPI1_MISO  (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_14, value );} //                          .............................................. PE14
-int  SPI1_MOSI  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_15        );} //                          .............................................. PE15
-int  SPI3_SS    ()          {return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_15        );} //                          .............................................. PA15
-void SPI3_SCK   ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_10        );} //                          .............................................. PC10
-void SPI3_MISO  (int value) {       HAL_GPIO_WritePin( GPIOC, GPIO_PIN_11, value );} //                          .............................................. PC11
-int  SPI3_MOSI  ()          {return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_12        );} //                          .............................................. PC12
-int  I2C2_SCL   ()          {                                             return 0;} // ccu/obc master, unidirectional  ....................................... PB13
-int  I2C2_SDA   ()          {                                             return 0;} // ccu/obc master, unidirectional  ....................................... PB14
-int  SYNC_PULSE ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_12        );} // clock drain                     ....................................... PD1
-int  OBC_FAULT  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_2         );} //if read LOW then fault, else no fault    ............................... PD2
-int  CCU_FAULT  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_9         );} //if read LOW then fault, else no fault    ............................... PD9
-int  OBC_I      ()          {    return  (int)((adcValues[9 ] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_1         );} //     ....................................................................PB1
-int  CCU_I      ()          {    return  (int)((adcValues[5 ] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_5         );} //     ....................................................................PA5
-int  ADCS_I     ()          {    return  (int)((adcValues[7 ] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_7         );} //     ....................................................................PA7
-int  ADCS_FAULT ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_0         );} //if read LOW then fault, else no fault                ....................PD0
-void ADCS_EN    (int value) {       HAL_GPIO_WritePin( GPIOA, GPIO_PIN_12, value );} //if write HIGH then enable, if write LOW then disable ....................PA12
-int  UHF_I      ()          {    return  (int)((adcValues[8 ] / 4095.0f) * 3.3f);   }//{    return  (int)((adcValues[0] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_0         );} //              ..........................PB0
-int  UHF_FLT    ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_4         );} //if read LOW then fault, else no fault              ......................PB4
-void UHF_EN     (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_7 , value );} //        .................................................................PD7
-int  PL_I       ()          {    return  (int)((adcValues[14] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_4         );} //        .................................................................PC4
-int  PL_FLT     ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_14        );} //if read LOW then fault, else no fault  ..................................PD14
-void PL_EN      (int value) {       HAL_GPIO_WritePin( GPIOD, GPIO_PIN_13, value );} //                                       ..................................PD13
-int  RS3V3_I    ()          {    return  (int)((adcValues[6 ] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_6         );} //                                       ..................................PA6
-int  RS3V3_FLT  ()          {return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_8         );} //if read LOW then fault, else no fault  ..................................PD8
-void RS3V3_EN   (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_15        );} //if write HIGH then enable, if write LOW then disable     ................PB15
-int  GPS_I      ()          {    return  (int)((adcValues[13] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_3         );} //                                                 ........................PC3
-int  GPS_FLT    ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_5         );} //if read LOW then fault, else no fault                       .............PB5
-void GPS_EN     (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_6,  value );} //if write HIGH then enable, if write LOW then disable        .............PB6
-int  ADCS5V_I   ()          {    return  (int)((adcValues[12] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_2         );} //                                                        .................PC2
-int  ADCS5V_FLT ()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_9         );} //if read LOW then fault, else no fault                     ...............PB9
-void ADCS5V_EN  (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_4,  value );} //if write HIGH then enable, if write LOW then disable      ...............PE4
-int  PL5V_I     ()          {    return  (int)((adcValues[11] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_1         );} //                                                     ....................PC1
-int  PL5V_FLT   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_0         );} //if read LOW then fault, else no fault                       .............PE0
-void PL5V_EN    (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_3,  value );} //if write HIGH then enable, if write LOW then disable        .............PE3
-int  CCU5V_I    ()          {    return  (int)((adcValues[4 ] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_4         );} //                                                   ......................PA4
-int  CCU5V_FLT  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_11        );} //if read LOW then fault, else no fault         ...........................PE11
-void CCU5V_EN   (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_10, value );} //if write HIGH then enable, if write LOW then disable                 ....PE10
-int  XB12V_I    ()          {    return  (int)((adcValues[3 ] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_3         );} //                                      ...................................PA3
-int  XB12V_FLT  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_9         );} //if read LOW then fault, else no fault               .....................PE9
-void XB12V_EN   (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_8,  value );} //if write HIGH then enable, if write LOW then disable          ...........PE8
-int  ADCS12V_FLT()          {return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_7         );} //if read LOW then fault, else no fault                      ..............PB7
-int  ADCS12V_I  ()          {    return  (int)((adcValues[15] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_5         );} //                                                  .......................PC5
-void ADCS12V_EN (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_8,  value );} //if write HIGH then enable, if write LOW then disable           ..........PB8
-int  RS12V_FLT  ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_7         );} //if read LOW then fault, else no fault                    ................PE7
-void RS12V_EN   (int value) {       HAL_GPIO_WritePin( GPIOB, GPIO_PIN_2,  value );} //if write HIGH then enable, if write LOW then disable          ...........PB2
-int  RS5V_FLT   ()          {return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_1         );} //if read LOW then fault, else no fault               .....................PE1
-int  RS5V_I     ()          {    return  (int)((adcValues[10] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_0         );} //                                           ..............................PC0
-void RS5V_EN    (int value) {       HAL_GPIO_WritePin( GPIOE, GPIO_PIN_2 , value );} //if write HIGH then enable, if write LOW then disable       ..............PE2
+//S0................PC7
+//S1................PC8
+//S2................PC9
+//..................PC13
+//OSC32_IN..........PC14
+//OSC32_OUT.........PC15
+//..................PD3
+//..................PD10
+//..................PD11
+//..................PD15
+//..................PE5
+//..................PE6
+int  M_OUT      ()          { return  (int)((adcValues[0] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_0         );} //current reading from SA1  .............................................. PA0
+int  SA2_I      ()          { return  (int)((adcValues[1] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_1         );} //current reading from SA2  .............................................. PA1
+int  SA3_I      ()          { return  (int)((adcValues[2] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_2         );} //current reading from SA3  .............................................. PA2
+int  RS4851_RX  ()          { return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_6         ); } //                          .............................................. PD6              //receiving (convolution amigo)
+void RS4851_DE  (int value) {        HAL_GPIO_WritePin( GPIOD, GPIO_PIN_4 , value ); } //                          .............................................. PD4              //sending if high, receiving if low
+void RS4851_TX  (int value) {        HAL_GPIO_WritePin( GPIOD, GPIO_PIN_5 , value ); } //                          .............................................. PD5              //sending
+int  RS4852_RX  ()          { return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_11        ); } //                          .............................................. PB11             //receiving (convolution amigo)
+void RS4852_DE  (int value) {        HAL_GPIO_WritePin( GPIOD, GPIO_PIN_12, value ); } //                          .............................................. PD12             //sending if high, receiving if low
+void RS4852_TX  (int value) {        HAL_GPIO_WritePin( GPIOB, GPIO_PIN_10, value ); } //                          .............................................. PB10             //sending 
+int  SPI1_SS    ()          { return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_12        ); } //                          .............................................. PE12
+int  SPI1_SCK   ()          { return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_13        ); } //                          .............................................. PE13
+void SPI1_MISO  (int value) {        HAL_GPIO_WritePin( GPIOE, GPIO_PIN_14, value ); } //                          .............................................. PE14
+int  SPI1_MOSI  ()          { return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_15        ); } //                          .............................................. PE15
+int  SPI3_SS    ()          { return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_15        ); } //                          .............................................. PA15
+void SPI3_SCK   ()          { return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_10        ); } //                          .............................................. PC10
+void SPI3_MISO  (int value) {        HAL_GPIO_WritePin( GPIOC, GPIO_PIN_11, value ); } //                          .............................................. PC11
+int  SPI3_MOSI  ()          { return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_12        ); } //                          .............................................. PC12
+int  I2C2_SCL   ()          {                                              return 0; } // ccu/obc master, unidirectional  ....................................... PB13
+int  I2C2_SDA   ()          {                                              return 0; } // ccu/obc master, unidirectional  ....................................... PB14
+int  SYNC_PULSE ()          { return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_12        ); } // clock drain                     ....................................... PD1
+int  OBC_FAULT  ()          { return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_2         ); } //if read LOW then fault, else no fault    ............................... PD2
+int  CCU_FAULT  ()          { return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_9         ); } //if read LOW then fault, else no fault    ............................... PD9
+int  OBC_I      ()          { return  (int)((adcValues[9 ] / 4095.0f) * 3.3f);       }//{return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_1         );} //     ....................................................................PB1
+int  CCU_I      ()          { return  (int)((adcValues[5 ] / 4095.0f) * 3.3f);       }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_5         );} //     ....................................................................PA5
+int  ADCS_I     ()          { return  (int)((adcValues[7 ] / 4095.0f) * 3.3f);       }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_7         );} //     ....................................................................PA7
+int  ADCS_FAULT ()          { return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_0   );       } //if read LOW then fault, else no fault                ....................PD0
+void ADCS_EN    (int value) {        HAL_GPIO_WritePin( GPIOA, GPIO_PIN_12, value ); } //if write HIGH then enable, if write LOW then disable ....................PA12
+int  UHF_I      ()          { return (int)((adcValues[8 ] / 4095.0f) * 3.3f);        }//{    return  (int)((adcValues[0] / 4095.0f) * 3.3f);   }//{return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_0         );} //              ..........................PB0
+int  UHF_FLT    ()          { return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_4         ); } //if read LOW then fault, else no fault              ......................PB4
+void UHF_EN     (int value) {        HAL_GPIO_WritePin( GPIOD, GPIO_PIN_7 , value ); } //        .................................................................PD7
+int  PL_I       ()          { return (int)((adcValues[14] / 4095.0f) * 3.3f);        }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_4         );} //        .................................................................PC4
+int  PL_FLT     ()          { return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_14        ); } //if read LOW then fault, else no fault  ..................................PD14
+void PL_EN      (int value) {        HAL_GPIO_WritePin( GPIOD, GPIO_PIN_13, value ); } //                                       ..................................PD13
+int  RS3V3_I    ()          { return (int)((adcValues[6 ] / 4095.0f) * 3.3f);        }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_6         );} //                                       ..................................PA6
+int  RS3V3_FLT  ()          { return HAL_GPIO_ReadPin ( GPIOD, GPIO_PIN_8         ); } //if read LOW then fault, else no fault  ..................................PD8
+void RS3V3_EN   (int value) {        HAL_GPIO_WritePin( GPIOB, GPIO_PIN_15        ); } //if write HIGH then enable, if write LOW then disable     ................PB15
+int  GPS_I      ()          { return (int)((adcValues[13] / 4095.0f) * 3.3f);        }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_3         );} //                                                 ........................PC3
+int  GPS_FLT    ()          { return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_5         ); } //if read LOW then fault, else no fault                       .............PB5
+void GPS_EN     (int value) {        HAL_GPIO_WritePin( GPIOB, GPIO_PIN_6,  value ); } //if write HIGH then enable, if write LOW then disable        .............PB6
+int  ADCS5V_I   ()          { return (int)((adcValues[12] / 4095.0f) * 3.3f);        }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_2         );} //                                                        .................PC2
+int  ADCS5V_FLT ()          { return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_9         ); } //if read LOW then fault, else no fault                     ...............PB9
+void ADCS5V_EN  (int value) {        HAL_GPIO_WritePin( GPIOE, GPIO_PIN_4,  value ); } //if write HIGH then enable, if write LOW then disable      ...............PE4
+int  PL5V_I     ()          { return (int)((adcValues[11] / 4095.0f) * 3.3f);        }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_1         );} //                                                     ....................PC1
+int  PL5V_FLT   ()          { return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_0         ); } //if read LOW then fault, else no fault                       .............PE0
+void PL5V_EN    (int value) {        HAL_GPIO_WritePin( GPIOE, GPIO_PIN_3,  value ); } //if write HIGH then enable, if write LOW then disable        .............PE3
+int  CCU5V_I    ()          { return (int)((adcValues[4 ] / 4095.0f) * 3.3f);        }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_4         );} //                                                   ......................PA4
+int  CCU5V_FLT  ()          { return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_11        ); } //if read LOW then fault, else no fault         ...........................PE11
+void CCU5V_EN   (int value) {        HAL_GPIO_WritePin( GPIOE, GPIO_PIN_10, value ); } //if write HIGH then enable, if write LOW then disable                 ....PE10
+int  XB12V_I    ()          { return (int)((adcValues[3 ] / 4095.0f) * 3.3f);        }//{return HAL_GPIO_ReadPin ( GPIOA, GPIO_PIN_3         );} //                                      ...................................PA3
+int  XB12V_FLT  ()          { return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_9         ); } //if read LOW then fault, else no fault               .....................PE9
+void XB12V_EN   (int value) {        HAL_GPIO_WritePin( GPIOE, GPIO_PIN_8,  value ); } //if write HIGH then enable, if write LOW then disable          ...........PE8
+int  ADCS12V_FLT()          { return HAL_GPIO_ReadPin ( GPIOB, GPIO_PIN_7         ); } //if read LOW then fault, else no fault                      ..............PB7
+int  ADCS12V_I  ()          { return (int)((adcValues[15] / 4095.0f) * 3.3f);        }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_5         );} //                                                  .......................PC5
+void ADCS12V_EN (int value) {        HAL_GPIO_WritePin( GPIOB, GPIO_PIN_8,  value ); } //if write HIGH then enable, if write LOW then disable           ..........PB8
+int  RS12V_FLT  ()          { return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_7         ); } //if read LOW then fault, else no fault                    ................PE7
+void RS12V_EN   (int value) {        HAL_GPIO_WritePin( GPIOB, GPIO_PIN_2,  value ); } //if write HIGH then enable, if write LOW then disable          ...........PB2
+int  RS5V_FLT   ()          { return HAL_GPIO_ReadPin ( GPIOE, GPIO_PIN_1         ); } //if read LOW then fault, else no fault               .....................PE1
+int  RS5V_I     ()          { return (int)((adcValues[10] / 4095.0f) * 3.3f);        }//{return HAL_GPIO_ReadPin ( GPIOC, GPIO_PIN_0         );} //                                           ..............................PC0
+void RS5V_EN    (int value) {        HAL_GPIO_WritePin( GPIOE, GPIO_PIN_2 , value ); } //if write HIGH then enable, if write LOW then disable       ..............PE2
 // other variables
 const int RESPONSE_WAIT            = 10000;//response_wait()
-int CURRENTMODE                    =0;
-const int CURRENTSYSTEMCLOCK       = 0;
+int CURRENTMODE                    = 0  ;
+const int CURRENTSYSTEMCLOCK       = 0  ;
 const int FF                       = 255;
-const int OBC_ADDRESS              = 1  ; const int OBC = 1;
-const int CCU_ADDRESS              = 3  ; const int CCU = 3;
-const int EPS_ADDRESS              = 2  ; const int EPS = 2;
-const int ADCSFLT   =100;
-const int UHFFLT    =101;
-const int PLFLT     =102;
-const int RS3V3FLT  =103;
-const int GPSFLT    =104;
-const int ADCS5VFLT =105;
-const int PL5VFLT   =106;
-const int CCU5VFLT  =107;
-const int XB12VFLT  =108;
-const int ADCS12VFLT=109;
-const int RS12VFLT  =110;
-const int RS5VFLT   =111;
+const int OBC_ADDRESS              = 1  ; const int OBC = 1 ;
+const int CCU_ADDRESS              = 3  ; const int CCU = 3 ;
+const int EPS_ADDRESS              = 2  ; const int EPS = 2 ;
+const int ADCSFLT   = 100;
+const int UHFFLT    = 101;
+const int PLFLT     = 102;
+const int RS3V3FLT  = 103;
+const int GPSFLT    = 104;
+const int ADCS5VFLT = 105;
+const int PL5VFLT   = 106;
+const int CCU5VFLT  = 107;
+const int XB12VFLT  = 108;
+const int ADCS12VFLT= 109;
+const int RS12VFLT  = 110;
+const int RS5VFLT   = 111;
 //#######################
 
 //response_wait
@@ -263,10 +263,10 @@ return 0;
 
 //########################
 
-struct twobyte crc16_generator(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, 
-                               int k, int l, int m, int n, int o, int p, int q, int r, int s, int t,
-                               int u, int v, int w, int x, int y, int z, int A, int B, int C, int D, 
-                               int E)
+struct twobyte crc16_generator( int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, 
+                                int k, int l, int m, int n, int o, int p, int q, int r, int s, int t,
+                                int u, int v, int w, int x, int y, int z, int A, int B, int C, int D, 
+                                int E)
                               { //dest, src, cmd/resp , len, data[27] excluding 2 flags and 2 crcs
                               struct twobyte rslt;
                               int number_of_bits = (4*8) + (d*8) + 16; // (first4*8) + (len*8) +padding16
@@ -490,7 +490,7 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                         if ( check_command(KDIS) ){ write_ssp_response_rs485( OBC,EPS, ACK,1,KDIS,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK //KDIS
                         //YOU CAN ALSO ADD LOGIC
 }//if proceed
-if ( ( OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () +OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); OBC_EN    (0); CURRENTMODE=CUSTOM;}//if    
+if ( ( OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () +OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);                                   }//if    
 if ( ( CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  () +CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    CCUFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); CCU_EN    (0); CURRENTMODE=CUSTOM;}//if    
 if ( ( ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT () +ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,   ADCSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); ADCS_EN   (0); CURRENTMODE=CUSTOM; }//if    
 if ( ( UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    () +UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    () )>=7 ){ write_ssp_response_rs485( OBC,EPS, FLT,1,    UHFFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); UHF_EN    (0); CURRENTMODE=CUSTOM; }//if   
@@ -662,7 +662,7 @@ int execute_spi1(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
                         //YOU CAN ALSO ADD LOGIC
 }//if proceed
 
-if ( ( OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); OBC_EN    (0); CURRENTMODE=CUSTOM;}//if    
+if ( ( OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);                                  }//if    
 if ( ( CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    CCUFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); CCU_EN    (0); CURRENTMODE=CUSTOM;}//if    
 if ( ( ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,   ADCSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); ADCS_EN   (0); CURRENTMODE=CUSTOM;}//if    
 if ( ( UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    () )>=7 ){ write_ssp_response_spi1( OBC,EPS, FLT,1,    UHFFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); UHF_EN    (0); CURRENTMODE=CUSTOM;}//if   
@@ -831,7 +831,7 @@ int execute_spi3(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
                         //YOU CAN ALSO ADD LOGIC
 }//if proceed
 
-if ( ( OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); OBC_EN    (0); CURRENTMODE=CUSTOM; }//if    
+if ( ( OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  ()+OBC_FAULT  () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    OBCFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);                                    }//if    
 if ( ( CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  ()+CCU_FAULT  () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    CCUFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); CCU_EN    (0); CURRENTMODE=CUSTOM; }//if    
 if ( ( ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT ()+ADCS_FAULT () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,   ADCSFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); ADCS_EN   (0); CURRENTMODE=CUSTOM; }//if    
 if ( ( UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    ()+UHF_FLT    () )>=7 ){ write_ssp_response_spi3( OBC,EPS, FLT,1,    UHFFLT,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); UHF_EN    (0); CURRENTMODE=CUSTOM; }//if   
