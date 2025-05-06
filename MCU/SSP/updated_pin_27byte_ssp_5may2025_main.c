@@ -128,30 +128,30 @@ int main(){//main
     const int IMAGE           = 115 ; //mode parameter
     const int EMERGENCY       = 126 ; //mode parameter
     const int CUSTOM          = 69  ; //mode parameter
-    const int PL5V_EN           = 230      ; 
-    const int PAYLOAD_5V_ENABLE = 230      ; //pin
-    const int ADCS5V_EN         = 143      ;
-    const int ADCS_5V_ENABLE    = 143      ; //pin
-    const int RS12V_EN          = 205      ;
-    const int RESERVED_12V_EN   = 205      ; //pin
-    const int XB12V_EN          = 139      ;
-    const int XBAND_12V_ENABLE  = 139      ; //pin
-    const int CCU5V_EN          = 155      ; 
-    const int CENTRAL_COMMAND_UNIT_5V_ENABLE = 155 ; //pin
-    const int RS3V3_EN          = 212      ;
-    const int RESERVED_3V_ENABLE= 212      ; //pin
-    const int PL_EN             = 172      ;
-    const int PAYLOAD_ENABLE    = 172      ; //pin
-    const int ADCS_EN           = 144      ;
-    const int ADCS_ENABLE       = 144      ; //pin
-    const int UHF_EN            = 189      ;
-    const int UHF_ENABLE        = 189      ; //pin
-    const int GPS_EN            = 57       ;
-    const int GPS_ENABLE        = 57       ; //pin
-    const int ADCS12V_EN        = 199      ; 
-    const int ADCS_12V_ENABLE   = 199      ; //pin
-    const int EPS_EN            = 97       ; 
-    const int EPS_ENABLE        = 97       ;//funny
+    const int PL5V_BUS          = 230      ; 
+    const int PAYLOAD_5V_BUS    = 230      ; //pin
+    const int ADCS5V_BUS         = 143      ;
+    const int ADCS_5V_BUS    = 143      ; //pin
+    const int RS12V_BUS         = 205      ;
+    const int RESERVED_12V_BUS   = 205      ; //pin
+    const int XB12V_BUS          = 139      ;
+    const int XBAND_12V_BUS  = 139      ; //pin
+    const int CCU5V_BUS          = 155      ; 
+    const int CENTRAL_COMMAND_UNIT_5V_BUS = 155 ; //pin
+    const int RS3V3_BUS          = 212      ;
+    const int RESERVED_3V_BUS= 212      ; //pin
+    const int PL_BUS             = 172      ;
+    const int PAYLOAD_BUS    = 172      ; //pin
+    const int ADCS_BUS           = 144      ;
+    const int ADCS_BUS       = 144      ; //pin
+    const int UHF_BUS            = 189      ;
+    const int UHF_BUS        = 189      ; //pin
+    const int GPS_BUS            = 57       ;
+    const int GPS_BUS        = 57       ; //pin
+    const int ADCS12V_BUS        = 199      ; 
+    const int ADCS_12V_BUS   = 199      ; //pin
+    const int EPS_BUS            = 97       ; 
+    const int EPS_BUS        = 97       ;//funny
 
 //############## PINS ##################
 //..................PA8
@@ -272,10 +272,10 @@ struct twobyte crc16_generator(int a, int b, int c, int d, int e, int f, int g, 
                               struct twobyte rslt;
                               int number_of_bits = (4*8) + (d*8) + 16; // (first4*8) + (len*8) +padding16
                               int bits[ number_of_bits ];//total bits for 4 basic and [d] length data
-                              for(int i=0 ; i<=7  ;  i++){bits[i]=((a>>(7 -i))&1);}
-                              for(int i=8 ; i<=15 ;  i++){bits[i]=((b>>(15-i))&1);}
-                              for(int i=16; i<=23 ;  i++){bits[i]=((c>>(23-i))&1);}
-                              for(int i=24; i<=31 ;  i++){bits[i]=((d>>(31-i))&1);}
+                              for( int i=0 ; i<=7  ;  i++ ){ bits[i]=((a>>(7 -i))&1); }
+                              for( int i=8 ; i<=15 ;  i++ ){ bits[i]=((b>>(15-i))&1); }
+                              for( int i=16; i<=23 ;  i++ ){ bits[i]=((c>>(23-i))&1); }
+                              for( int i=24; i<=31 ;  i++ ){ bits[i]=((d>>(31-i))&1); }
                               if ( (d>=1 ) ) { for(int i=24 ; i<=31 ;  i++){bits[i]=((e>>(31 -i))&1);} }
                               if ( (d>=2 ) ) { for(int i=32 ; i<=39 ;  i++){bits[i]=((f>>(39 -i))&1);} }
                               if ( (d>=3 ) ) { for(int i=40 ; i<=47 ;  i++){bits[i]=((g>>(47 -i))&1);} }
@@ -419,29 +419,29 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
 	                 int check_parameter (int param){  if ( parameter==param ){ return 1; }else{ return 0;}  }//check_input
                          if (check_command(PING) ){ write_ssp_response_rs485( OBC,EPS,ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
                          if (check_command(SON ) ){ int else_check=1;
-                                                    if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (1); }//ACK.... do action
-                                                    if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (1); }//ACK.... do action
-                                                    if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (1); }//ACK.... do action
-                                                    if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (1); }//ACK.... do action
-                                                    if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (1); }//ACK.... do action
-                                                    if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (1); }//ACK.... do action
-                                                    if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (1); }//ACK.... do action
-                                                    if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (1); }//ACK.... do action
-                                                    if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (1); }//ACK.... do action
-                                                    if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(1); }//ACK.... do action
+                                                    if(check_parameter( PL5V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS5V_BUS ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (1); }//ACK.... do action
+                                                    if(check_parameter( RS12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( XB12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( RS3V3_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( PL_BUS     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (1); }//ACK.... do action
+                                                    if(check_parameter( UHF_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (1); }//ACK.... do action
+                                                    if(check_parameter( GPS_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS12V_BUS) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(1); }//ACK.... do action
                                                     if(else_check==1                ){                                write_ssp_response_rs485( OBC,EPS,NACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);               }//NACK
                          }//SON
                          if ( check_command(SOF) ){ int else_check=1;
-                                                    if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (0); }//ACK.... do action
-                                                    if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (0); }//ACK.... do action
-                                                    if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (0); }//ACK.... do action
-                                                    if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (0); }//ACK.... do action
-                                                    if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (0); }//ACK.... do action
-                                                    if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (0); }//ACK.... do action
-                                                    if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (0); }//ACK.... do action
-                                                    if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (0); }//ACK.... do action
-                                                    if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (0); }//ACK.... do action
-                                                    if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(0); }//ACK.... do action
+                                                    if(check_parameter( PL5V_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS5V_BUS ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (0); }//ACK.... do action
+                                                    if(check_parameter( RS12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( XB12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( RS3V3_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( PL_BUS     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (0); }//ACK.... do action
+                                                    if(check_parameter( UHF_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (0); }//ACK.... do action
+                                                    if(check_parameter( GPS_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS12V_BUS) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(0); }//ACK.... do action
                                                     if(else_check==1                ){                                write_ssp_response_rs485( OBC,EPS,NACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);               }//NACK
                         }//SOF
                         if ( check_command(SM )  ){ int else_check=1;
@@ -590,29 +590,29 @@ int execute_spi1(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
 	                 int check_parameter (int param){  if ( parameter==param ){ return 1; }else{ return 0;}  }//check_input
                          if (check_command(PING) ){ write_ssp_response_spi1( OBC,EPS,ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
                          if (check_command(SON ) ){ int else_check=1; 
-                                                    if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (1); }//ACK.... do action
-                                                    if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (1); }//ACK.... do action
-                                                    if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (1); }//ACK.... do action
-                                                    if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (1); }//ACK.... do action
-                                                    if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (1); }//ACK.... do action
-                                                    if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (1); }//ACK.... do action
-                                                    if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (1); }//ACK.... do action
-                                                    if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (1); }//ACK.... do action
-                                                    if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (1); }//ACK.... do action
-                                                    if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(1); }//ACK.... do action
+                                                    if(check_parameter( PL5V_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS5V_BUS ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (1); }//ACK.... do action
+                                                    if(check_parameter( RS12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( XB12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( RS3V3_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( PL_BUS     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (1); }//ACK.... do action
+                                                    if(check_parameter( UHF_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (1); }//ACK.... do action
+                                                    if(check_parameter( GPS_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS12V_BUS) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(1); }//ACK.... do action
                                                     if(else_check==1                ){                                write_ssp_response_spi1( OBC,EPS,NACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);               }//NACK
                          }//SON
                          if ( check_command(SOF) ){ int else_check=1;
-                                                    if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (0); }//ACK.... do action
-                                                    if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (0); }//ACK.... do action
-                                                    if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (0); }//ACK.... do action
-                                                    if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (0); }//ACK.... do action
-                                                    if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (0); }//ACK.... do action
-                                                    if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (0); }//ACK.... do action
-                                                    if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (0); }//ACK.... do action
-                                                    if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (0); }//ACK.... do action
-                                                    if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (0); }//ACK.... do action
-                                                    if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(0); }//ACK.... do action
+                                                    if(check_parameter( PL5V_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS5V_BUS ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (0); }//ACK.... do action
+                                                    if(check_parameter( RS12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( XB12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( RS3V3_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( PL_BUS     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (0); }//ACK.... do action
+                                                    if(check_parameter( UHF_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (0); }//ACK.... do action
+                                                    if(check_parameter( GPS_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS12V_BUS) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi1( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(0); }//ACK.... do action
                                                     if(else_check==1                ){                                write_ssp_response_spi1( OBC,EPS,NACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);               }//NACK
                         }//SOF
                         if ( check_command(SM )  ){ int else_check=1;
@@ -759,29 +759,29 @@ int execute_spi3(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respon
 	                 int check_parameter (int param){  if ( parameter==param ){ return 1; }else{ return 0;}  }//check_input
                          if (check_command(PING) ){ write_ssp_response_spi3( OBC,EPS,ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0); }//ACK...........Fault reporting mechanisms? flag, dest, src, cmd/resp , len, data, crc0, crc1, flag
                          if (check_command(SON ) ){ int else_check=1;
-                                                    if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (1); }//ACK.... do action
-                                                    if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (1); }//ACK.... do action
-                                                    if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (1); }//ACK.... do action
-                                                    if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (1); }//ACK.... do action
-                                                    if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (1); }//ACK.... do action
-                                                    if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (1); }//ACK.... do action
-                                                    if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (1); }//ACK.... do action
-                                                    if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (1); }//ACK.... do action
-                                                    if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (1); }//ACK.... do action
-                                                    if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(1); }//ACK.... do action
+                                                    if(check_parameter( PL5V_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS5V_BUS ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (1); }//ACK.... do action
+                                                    if(check_parameter( RS12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( XB12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( RS3V3_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (1); }//ACK.... do action
+                                                    if(check_parameter( PL_BUS     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (1); }//ACK.... do action
+                                                    if(check_parameter( UHF_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (1); }//ACK.... do action
+                                                    if(check_parameter( GPS_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (1); }//ACK.... do action
+                                                    if(check_parameter( ADCS12V_BUS) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(1); }//ACK.... do action
                                                     if(else_check==1                ){                                write_ssp_response_spi3( OBC,EPS,NACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);               }//NACK
                          }//SON
                          if ( check_command(SOF) ){ int else_check=1;
-                                                    if(check_parameter( PL5V_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (0); }//ACK.... do action
-                                                    if(check_parameter( ADCS5V_EN ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (0); }//ACK.... do action
-                                                    if(check_parameter( RS12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (0); }//ACK.... do action
-                                                    if(check_parameter( XB12V_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (0); }//ACK.... do action
-                                                    if(check_parameter( RS3V3_EN  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (0); }//ACK.... do action
-                                                    if(check_parameter( PL_EN     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (0); }//ACK.... do action
-                                                    if(check_parameter( ADCS_EN   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (0); }//ACK.... do action
-                                                    if(check_parameter( UHF_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (0); }//ACK.... do action
-                                                    if(check_parameter( GPS_EN    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (0); }//ACK.... do action
-                                                    if(check_parameter( ADCS12V_EN) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(0); }//ACK.... do action
+                                                    if(check_parameter( PL5V_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS5V_BUS ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS5V_EN (0); }//ACK.... do action
+                                                    if(check_parameter( RS12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS12V_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( XB12V_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);XB12V_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( RS3V3_BUS  ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);RS3V3_EN  (0); }//ACK.... do action
+                                                    if(check_parameter( PL_BUS     ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL_EN     (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS_EN   (0); }//ACK.... do action
+                                                    if(check_parameter( UHF_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (0); }//ACK.... do action
+                                                    if(check_parameter( GPS_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (0); }//ACK.... do action
+                                                    if(check_parameter( ADCS12V_BUS) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_spi3( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(0); }//ACK.... do action
                                                     if(else_check==1                ){                                write_ssp_response_spi3( OBC,EPS,NACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);               }//NACK
                         }//SOF
                         if ( check_command(SM )  ){ int else_check=1;
