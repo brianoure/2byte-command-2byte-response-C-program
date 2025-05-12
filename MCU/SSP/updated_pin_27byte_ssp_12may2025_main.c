@@ -75,7 +75,6 @@ int main(){//main
     const int PAUSE   = 2 ;
     const int END     = 3 ;
     //TRANSMISSION AND RECEPTION (COMMUNICATION) SYMBOLS
-    const int EMPTY           = 0   ;
     const int PING            = 34  ; //command
     const int ACK             = 47  ;
     const int ACKNOWLEDGE     = 47  ;
@@ -142,17 +141,14 @@ int main(){//main
     const int RESERVED_3V_BUS    = 212      ; //pin
     const int PL_BUS             = 172      ;
     const int PAYLOAD_BUS        = 172      ; //pin
-    const int ADCS_BUS           = 144      ;
     const int ADCS_BUS           = 144      ; //pin
     const int UHF_BUS            = 189      ;
-    const int UHF_BUS            = 189      ; //pin
     const int GPS_BUS            = 57       ;
     const int GPS_BUS            = 57       ; //pin
     const int ADCS12V_BUS        = 199      ; 
     const int ADCS_12V_BUS       = 199      ; //pin
-    const int EPS_BUS            = 97       ; 
-    const int EPS_BUS            = 97       ;//funny
-//############## PINS ##################
+    const int EPS_BUS            = 97       ;//funny 
+    //############## PINS ##################
 //..................PA8
 //USART1_TX ........PA9
 //USART1_RX ........PA10
@@ -234,7 +230,7 @@ int  RS5V_I     ()          { return (int)((adcValues[10] / 4095.0f) * 3.3f);   
 void RS5V_EN    (int value) {        HAL_GPIO_WritePin( GPIOE, GPIO_PIN_2 , value ); } //if write HIGH then enable, if write LOW then disable       ..............PE2
 // other variables
 const int RESPONSE_WAIT            = 10000;//response_wait()
-int CURRENTMODE                    = 0  ;
+      int CURRENTMODE              = 0  ;
 const int CURRENTSYSTEMCLOCK       = 0  ;
 const int FF                       = 255;
 const int OBC_ADDRESS              = 1  ; const int OBC = 1 ;
@@ -257,7 +253,13 @@ const int RS5VFLT   = 111;
 //response_wait
 int response_wait(){
     for( int count=0;  count<=RESPONSE_WAIT ;count++ ){ }//do nothing
-    //HAL delay could work too
+    //HAL delay could work too *brian*
+return 0;
+}//response_wait
+
+//response_wait
+int pause_count (int mycount){
+    for( int count=0;  count<=mycount ;count++ ){ }//do nothing
 return 0;
 }//response_wait
 
@@ -267,14 +269,14 @@ struct twobyte crc16_generator( int a, int b, int c, int d, int e, int f, int g,
                                 int k, int l, int m, int n, int o, int p, int q, int r, int s, int t,
                                 int u, int v, int w, int x, int y, int z, int A, int B, int C, int D, 
                                 int E)
-                              { //dest, src, cmd/resp , len, data[27] excluding 2 flags and 2 crcs
+                              { //crc 16 only for: dest, src, cmd/resp , len, data[1 to 27], excluding 2 flags and 2 crcs
                               struct twobyte rslt;
-                              int number_of_bits = (4*8) + (d*8) + 16; // (first4*8) + (len*8) +padding16
-                              int bits[ number_of_bits ];//total bits for 4 basic and [d] length data
-                              for( int i=0 ; i<=7  ;  i++ ){ bits[i]=((a>>(7 -i))&1); }
-                              for( int i=8 ; i<=15 ;  i++ ){ bits[i]=((b>>(15-i))&1); }
-                              for( int i=16; i<=23 ;  i++ ){ bits[i]=((c>>(23-i))&1); }
-                              for( int i=24; i<=31 ;  i++ ){ bits[i]=((d>>(31-i))&1); }
+                              int number_of_bits = (4*8) + (d*8) + 16; // (first4*8) + (len*8) + padding16
+                              int bits [ number_of_bits ];//total bits for 4 basic and [d] length data
+                              for( int i=0 ; i<=7  ;  i++ ){ bits[i] = ( (a>>(7 -i) ) & 1 ); } //capture only last bit (&1)
+                              for( int i=8 ; i<=15 ;  i++ ){ bits[i] = ( (b>>(15-i) ) & 1 ); }
+                              for( int i=16; i<=23 ;  i++ ){ bits[i] = ( (c>>(23-i) ) & 1 ); }
+                              for( int i=24; i<=31 ;  i++ ){ bits[i] = ( (d>>(31-i) ) & 1 ); }
                               if ( (d>=1 ) ) { for(int i=24 ; i<=31 ;  i++){bits[i]=((e>>(31 -i))&1);} }
                               if ( (d>=2 ) ) { for(int i=32 ; i<=39 ;  i++){bits[i]=((f>>(39 -i))&1);} }
                               if ( (d>=3 ) ) { for(int i=40 ; i<=47 ;  i++){bits[i]=((g>>(47 -i))&1);} }
@@ -302,20 +304,20 @@ struct twobyte crc16_generator( int a, int b, int c, int d, int e, int f, int g,
                               if ( (d>=25) ) { for(int i=216; i<=223;  i++){bits[i]=((C>>(223-i))&1);} }
                               if ( (d>=26) ) { for(int i=224; i<=231;  i++){bits[i]=((D>>(231-i))&1);} }
                               if ( (d>=27) ) { for(int i=232; i<=239;  i++){bits[i]=((E>>(239-i))&1);} }
-                              int lastitemindex = ( number_of_bits - 1); int firstitemindex = lastitemindex - 15;
-                              for(int i = firstitemindex; i<= lastitemindex ; i++){     bits[i] = 0;   }//16 padding
-                              int poly[17] = {1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1};//msb(left) to lsb(right)
-			      int number_of_ones_in_sequence=0;
-			      for(int i=0;i<number_of_bits;i++){   if(bits[i]==1){ number_of_ones_in_sequence = number_of_ones_in_sequence+1; }       }
-                              int indices_of_ones_in_bit_sequence [number_of_ones_in_sequence]; for(int i=0;i<number_of_bits;i++){   if(bits[i]==1){ indices_of_ones_in_bit_sequence[i] = i; }      }
-                              for(int i=0;i<number_of_ones_in_sequence;i++){
+                              int last_padding_bit_index = ( number_of_bits - 1); int first_padding_bit_index = last_padding_bit_index - 15;
+                              for(int i = first_padding_bit_index; i<= last_padding_bit_index ; i++){     bits[i] = 0;   } //16 assign padding bits
+                              int poly [17] = { 1,0,0,0,0,   0,0,0,0,1,  0,1,0,0,0,  0,1}; //msb(left) to lsb(right)
+			      int number_of_ones_in_sequence = 0;
+			      for(int i=0; i<number_of_bits; i++){   if( bits[i]==1 ) { number_of_ones_in_sequence = number_of_ones_in_sequence+1; }       }
+                              int indices_of_ones_in_bit_sequence [ number_of_ones_in_sequence ]; for(int i=0; i<number_of_bits; i++){   if(bits[i]==1) { indices_of_ones_in_bit_sequence[i] = i; }      }
+                              for(int i=0; i<number_of_ones_in_sequence; i++){
 							                   //bits [  indices_of_ones_in_bit_sequence [ i+0 ]   ] = bits[  indices_of_ones_in_bit_sequence [ i+0 ]   ] ^ poly[0+0];
 							                   //bits [  indices_of_ones_in_bit_sequence [ i+1 ]   ] = bits[  indices_of_ones_in_bit_sequence [ i+1 ]   ] ^ poly[0+1];
 							                   //bits [  indices_of_ones_in_bit_sequence [ i+2 ]   ] = bits[  indices_of_ones_in_bit_sequence [ i+2 ]   ] ^ poly[0+2];
-		                                                           for(int k=0;k<=16;k++) {     bits [  indices_of_ones_in_bit_sequence [ i+k ]   ] = (bits[  indices_of_ones_in_bit_sequence [ i+k ]   ] ^ poly[ k ]);    }
+		                                                           for(int k=0; k<=16; k++) {     bits [  indices_of_ones_in_bit_sequence [ i+k ]   ] = (bits[  indices_of_ones_in_bit_sequence [ i+k ]   ] ^ poly[ k ]);    }
                               }//for
-                              rslt.byte1 = (bits[ lastitemindex-15 ]*128)+(bits[ lastitemindex-14 ]*64)+(bits[ lastitemindex-13 ]*32)+(bits[ lastitemindex-12 ]*16)+(bits[ lastitemindex-11 ]*8)+(bits[ lastitemindex-10 ]*4)+(bits[ lastitemindex-9 ]*2)+(bits[ lastitemindex-8 ] );
-                              rslt.byte2 = (bits[ lastitemindex-7  ]*128)+(bits[ lastitemindex-6  ]*64)+(bits[ lastitemindex-5  ]*32)+(bits[ lastitemindex-4  ]*16)+(bits[ lastitemindex-3  ]*8)+(bits[ lastitemindex-2  ]*4)+(bits[ lastitemindex-1 ]*2)+(bits[ lastitemindex   ] );
+                              rslt.byte1 = (bits[ last_padding_bit_index-15 ]*128)+(bits[ last_padding_bit_index-14 ]*64)+(bits[ last_padding_bit_index-13 ]*32)+(bits[ last_padding_bit_index-12 ]*16)+(bits[ last_padding_bit_index-11 ]*8)+(bits[ last_padding_bit_index-10 ]*4)+(bits[ last_padding_bit_index-9 ]*2)+(bits[ last_padding_bit_index-8 ] );
+                              rslt.byte2 = (bits[ last_padding_bit_index-7  ]*128)+(bits[ last_padding_bit_index-6  ]*64)+(bits[ last_padding_bit_index-5  ]*32)+(bits[ last_padding_bit_index-4  ]*16)+(bits[ last_padding_bit_index-3  ]*8)+(bits[ last_padding_bit_index-2  ]*4)+(bits[ last_padding_bit_index-1 ]*2)+(bits[ last_padding_bit_index   ] );
 return rslt;
 }//crc_generator_for_5byte
 	
@@ -323,22 +325,22 @@ return rslt;
 
 struct ninebyte COMMAND_PARAMETER_RS485  = {0,0,0,0,0,0,0,0,0};
   
-int receive_rs485 (){
+int receive_rs485 (){//10 samples/poliing
     int result=0; int r4851=0; int r4852=0;
     RS4851_DE(0); RS4852_DE(0);
     if( ( RS4851_RX()+RS4851_RX()  +RS4851_RX()+RS4851_RX()  +RS4851_RX()+RS4851_RX()  +RS4851_RX()+RS4851_RX()  +RS4851_RX()+RS4851_RX() )>=7 ){r4851=1;}
     if( ( RS4852_RX()+RS4852_RX()  +RS4852_RX()+RS4852_RX()  +RS4852_RX()+RS4852_RX()  +RS4852_RX()+RS4852_RX()  +RS4852_RX()+RS4852_RX() )>=7 ){r4852=1;}
-    if ( !r4851 & !r4852 ){result=0;}//0
-    if ( !r4851 &  r4852 ){result=2;}//2
-    if (  r4851 & !r4852 ){result=3;}//3
-    if (  r4851 &  r4852 ){result=1;}//1
+    if ( !r4851 & !r4852 ){ result=0; }//0
+    if ( !r4851 &  r4852 ){ result=2; }//2
+    if (  r4851 & !r4852 ){ result=3; }//3
+    if (  r4851 &  r4852 ){ result=1; }//1
 return result;
 }//
 
 //####################################
 	
 //get_command_parameter_after_leftShift_insertEnd_rs485
-struct ninebyte get_command_parameter_after_leftShift_insertEnd_rs485(int insertionbit){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
+struct ninebyte get_command_parameter_after_leftShift_insertEnd_rs485(  int insertionbit  ){ //flag, dest, src, cmd/response , len, data, crc0, crc1, flag
        COMMAND_PARAMETER_RS485.byte1 = ( (COMMAND_PARAMETER_RS485.byte1<<1) | (COMMAND_PARAMETER_RS485.byte2>>7) ) & 255;//flag
        COMMAND_PARAMETER_RS485.byte2 = ( (COMMAND_PARAMETER_RS485.byte2<<1) | (COMMAND_PARAMETER_RS485.byte3>>7) ) & 255;//dest
        COMMAND_PARAMETER_RS485.byte3 = ( (COMMAND_PARAMETER_RS485.byte3<<1) | (COMMAND_PARAMETER_RS485.byte4>>7) ) & 255;//src
@@ -347,29 +349,29 @@ struct ninebyte get_command_parameter_after_leftShift_insertEnd_rs485(int insert
        COMMAND_PARAMETER_RS485.byte6 = ( (COMMAND_PARAMETER_RS485.byte6<<1) | (COMMAND_PARAMETER_RS485.byte7>>7) ) & 255;//data
        COMMAND_PARAMETER_RS485.byte7 = ( (COMMAND_PARAMETER_RS485.byte7<<1) | (COMMAND_PARAMETER_RS485.byte8>>7) ) & 255;//crc1
        COMMAND_PARAMETER_RS485.byte8 = ( (COMMAND_PARAMETER_RS485.byte8<<1) | (COMMAND_PARAMETER_RS485.byte9>>7) ) & 255;//crc0
-       COMMAND_PARAMETER_RS485.byte9 = ( (COMMAND_PARAMETER_RS485.byte9<<1) | insertionbit                       ) & 255;//flag
+       COMMAND_PARAMETER_RS485.byte9 = ( (COMMAND_PARAMETER_RS485.byte9<<1) | (insertionbit&1)                   ) & 255;//flag
 return COMMAND_PARAMETER_RS485;
 }//get_command_parameter_after_leftShift_insertEnd_rs485
 
 //###################################
 
 //execute
-int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/response[4] , len[5], data[6], crc0[7], crc1[8], flag[9]
+int execute_rs485(  struct ninebyte input  ){ //flag[1], dest[2], src[3], cmd/response[4] , len[5], data[6], crc0[7], crc1[8], flag[9]
     int    source      = input.byte3;
     int    destination = input.byte2;
     int    from_obc_or_from_ccu_to_eps = (int)(  ((source==OBC_ADDRESS)|(source==CCU_ADDRESS)) & (destination==EPS_ADDRESS)  );//who can talk to the EPS MCU
     int    proper_ssp_frame  = 1;//set to 1 is easier
     struct twobyte received_crc = crc16_generator (input.byte2, input.byte3, input.byte4, input.byte5, input.byte6,
-                                                   0,0,0,0,0,   0,0,0,0,0,   0,0,0,0,0,   0,0,0,0,0,   0,0,0,0,0,   0); //let's regenerate the crc if the command frame is: dest,src,cmd,len,data1
-    int    valid_crc = (received_crc.byte1==input.byte7)&(received_crc.byte2==input.byte8);
+                                                   0,0,0,0,0,   0,0,0,0,0,   0,0,0,0,0,   0,0,0,0,0,   0,0,0,0,0,   0); //let's regenerate the crc if the command frame is: dest,src,cmd,len,data....
+    int    valid_crc = (  received_crc.byte1==input.byte7  )&(  received_crc.byte2==input.byte8);
     if (valid_crc & from_obc_or_from_ccu_to_eps & proper_ssp_frame) {//proceed
                          int  command  = input.byte4; int parameter= input.byte6;
                          void pause_rs485(int symbol_duration){
-			      void DWT_Init(void) {
+			      void DWT_Init(void) { //*brian oure*
                               CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
                               DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
                               }
-                              void delay_us(uint32_t us) {
+                              void delay_us (uint32_t us) {
                               uint32_t cycles_per_us = HAL_RCC_GetHCLKFreq() / 1000000;
                               uint32_t start = DWT->CYCCNT;
                               uint32_t delay_cycles = us * cycles_per_us;
@@ -378,13 +380,13 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                               DWT_Init();
                               delay_us(symbol_duration);  // 52080ms rep 52.08us rep 9600bps rep 19200symbols per s
 			 }//mada mada
-                         void send_bit_rs485 (int bit){// 
+                         void send_bit_rs485 (int bit){ //
                               if(bit){ RS4851_TX(1); RS4852_TX(1); } else { RS4851_TX(0); RS4852_TX(0); }
                               RS4851_DE(1); RS4852_DE(1);
                               pause_rs485(1000);
                               RS4851_TX(0); RS4852_TX(1);
                               pause_rs485(1000);
-	                      RS4851_DE(0);RS4852_DE(0);//may or may not be appropriate...revisit
+	                      RS4851_DE(0);RS4852_DE(0);//may or may not be appropriate...revisit *brian oure*
                          }//send_bit_rs485
                          void send_byte_rs485( int out ){      for( int index= 0; index<= 7; index++ ){  send_bit_rs485( (int) ( ( (int) ( out >>(7 -index) ) ) & 1 ) ); }       }//send_byte_rs485
                          int  write_ssp_response_rs485( int dest, int src, int resp, int len,
@@ -399,6 +401,7 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                                                                                                d1 ,d2 ,d3 ,d4 ,d5 ,d6 ,d7 ,d8 ,d9 ,
                                                                                                d10,d11,d12,d13,d14,d15,d16,d17,d18,
                                                                                                d19,d20,d21,d22,d23,d24,d25,d26,d27);
+				                        // regardless of length: send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len );send_byte_rs485( FF  ); but for specifity/security....
 	                                                if(len==0 ){send_byte_rs485( FF );send_byte_rs485( dest );send_byte_rs485( src );send_byte_rs485( resp );send_byte_rs485( len );send_byte_rs485( FF  );}// NO CRC generated
 	                                                if(len==1 ){send_byte_rs485( FF   );
                                                                     send_byte_rs485( dest );send_byte_rs485( src        );send_byte_rs485( resp       );send_byte_rs485( len );
@@ -428,7 +431,7 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                                                     if(check_parameter( UHF_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (1); }//ACK.... do action
                                                     if(check_parameter( GPS_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (1); }//ACK.... do action
                                                     if(check_parameter( ADCS12V_BUS) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(1); }//ACK.... do action
-                                                    if(else_check==1                ){                                write_ssp_response_rs485( OBC,EPS,NACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);               }//NACK
+                                                    if(else_check==1                ){                                 write_ssp_response_rs485( OBC,EPS,NACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);               }//NACK
                          }//SON
                          if ( check_command(SOF) ){ int else_check=1;
                                                     if(check_parameter( PL5V_BUS   ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);PL5V_EN   (0); }//ACK.... do action
@@ -441,7 +444,7 @@ int execute_rs485(struct ninebyte input ){ //flag[1], dest[2], src[3], cmd/respo
                                                     if(check_parameter( UHF_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);UHF_EN    (0); }//ACK.... do action
                                                     if(check_parameter( GPS_BUS    ) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);GPS_EN    (0); }//ACK.... do action
                                                     if(check_parameter( ADCS12V_BUS) ){else_check=0;CURRENTMODE=CUSTOM;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);ADCS12V_EN(0); }//ACK.... do action
-                                                    if(else_check==1                ){                                write_ssp_response_rs485( OBC,EPS,NACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);               }//NACK
+                                                    if(else_check==1                ){                                 write_ssp_response_rs485( OBC,EPS,NACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);               }//NACK
                         }//SOF
                         if ( check_command(SM )  ){ int else_check=1;
                                                     if(check_parameter( INITIALIZE    ) ){else_check=0;CURRENTMODE=INITIALIZE   ;write_ssp_response_rs485( OBC,EPS, ACK,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0,0,0,0,0,  0);  ADCS_EN(0);UHF_EN(0);PL_EN(0);RS3V3_EN(1);GPS_EN(0);ADCS5V_EN(0);PL5V_EN(0);CCU5V_EN(1);XB12V_EN(0);ADCS12V_EN(0);RS12V_EN(0);RS5V_EN(1);  }//init..ACK.... do action
