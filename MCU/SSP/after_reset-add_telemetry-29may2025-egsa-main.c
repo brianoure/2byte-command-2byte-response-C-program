@@ -146,7 +146,6 @@ int main(){//main
     const int PAYLOAD_BUS        = 172      ; //pin
     const int ADCS_BUS           = 144      ; //pin
     const int UHF_BUS            = 189      ;
-    const int GPS_BUS            = 57       ;
     const int GPS_BUS            = 57       ; //pin
     const int ADCS12V_BUS        = 199      ; 
     const int ADCS_12V_BUS       = 199      ; //pin
